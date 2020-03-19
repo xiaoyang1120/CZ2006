@@ -9,7 +9,7 @@
         <result property="password" column="password"/>
     </resultMap>
 
-    <insert id="addUser" parameterType="map">
+    <insert id="addUser" parameterType="realEstatistic.model.User">
         insert into user (
              userId,
              email,
@@ -23,7 +23,7 @@
     </insert>
     <update id="changeUserPassword" parameterType="map">
         update user
-        set password=#{password}
+        set password=#{newPassword}
         where email=#{email}
     </update>
 

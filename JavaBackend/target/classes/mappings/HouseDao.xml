@@ -103,7 +103,7 @@
                districtId,
                isAvailable
         from house
-        where ownerId = #{ownerId}
+        where ownerId = #{userId}
     </select>
 
     <!--    <select id="selectAll" resultMap="userMap">-->

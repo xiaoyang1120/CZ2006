@@ -7,6 +7,9 @@ public class User {
     private String email;
     private String password;
 
+    public User() {
+    }
+
     public User(UUID userId, String email, String password) {
         this.userId = userId;
         this.email = email;
