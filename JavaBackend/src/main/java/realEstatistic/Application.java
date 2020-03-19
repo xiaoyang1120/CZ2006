@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.jdbc.core.JdbcTemplate;
+import realEstatistic.mapper.CronSupermarketDao;
 
 @SpringBootApplication
 @MapperScan("softwareGenius.mapper")
@@ -19,8 +20,6 @@ public class Application implements CommandLineRunner{
 	}
 
 	public void run(String... args) throws Exception {
-		jdbcTemplate.execute("CREATE TABLE IF NOT EXISTS test(name VARCHAR(20))");
-		jdbcTemplate.execute("INSERT INTO test VALUES ('check')");
 	}
 
 }
