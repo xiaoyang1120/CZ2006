@@ -1,3 +1,5 @@
+package realEstatistic.util;
+
 import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -14,7 +16,12 @@ public class UUIDTypeHandler extends BaseTypeHandler {
 			throws SQLException {
 		return UUID.fromString(rs.getString(columnName));
 	}
- 
+
+	@Override
+	public Object getNullableResult(ResultSet resultSet, int i) throws SQLException {
+		return null;
+	}
+
 	@Override
 	public Object getNullableResult(CallableStatement cs, int columnIndex)
 			throws SQLException {

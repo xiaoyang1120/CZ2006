@@ -13,13 +13,13 @@
         <result property="districtDescription" column="description"/>
     </resultMap>
 
-    <select id="getDistrictById" parameterType="java.lang.UUID" resultMap="districtMap">
+    <select id="getDistrictById" parameterType="java.util.UUID" resultMap="districtMap">
         select districtId, districtName, latStart, latEnd, longStart, longEnd, description
         from district
         where districtId = #{districtId}
     </select>
 
-    <select id="getAllDistrict" resultMap="houseMap">
+    <select id="getAllDistrict" resultMap="districtMap">
         select districtId, districtName, latStart, latEnd, longStart, longEnd, description
         from district
     </select>

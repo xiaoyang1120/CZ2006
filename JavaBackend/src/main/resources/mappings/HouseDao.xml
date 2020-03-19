@@ -70,19 +70,19 @@
     <!--        WHERE id = #{id}-->
     <!--    </delete>-->
 
-    <select id="getHouseByDistrictId" parameterType="java.lang.UUID" resultMap="houseMap">
+    <select id="getHouseByDistrictId" parameterType="java.util.UUID" resultMap="houseMap">
         select houseId, houseImage, houseVenue, houseDescription, ownerId, districtId, isAvailable
         from house
         where districtId = #{districtId}
     </select>
 
-    <select id="getHouseById" parameterType="java.lang.UUID" resultMap="houseMap">
+    <select id="getHouseById" parameterType="java.util.UUID" resultMap="houseMap">
         select houseId, houseImage, houseVenue, houseDescription, ownerId, districtId, isAvailable
         from house
         where houseId = #{houseId}
     </select>
 
-    <select id="getFavouriteByUserId" parameterType="java.lang.UUID" resultMap="houseMap">
+    <select id="getFavouriteByUserId" parameterType="java.util.UUID" resultMap="houseMap">
         select houseId,
                houseImage,
                houseVenue,
@@ -94,7 +94,7 @@
         where favourite.userId = #{userId} AND favourite.houseId = house.houseId
     </select>
 
-    <select id="getPostedRecordsByOwnerId" parameterType="java.lang.UUID" resultMap="houseMap">
+    <select id="getPostedRecordsByOwnerId" parameterType="java.util.UUID" resultMap="houseMap">
         select houseId,
                houseImage,
                houseVenue,

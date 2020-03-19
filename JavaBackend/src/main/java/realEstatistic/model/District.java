@@ -11,6 +11,9 @@ public class District {
     private float longEnd;
     private String districtDescription;
 
+    public District(){
+
+    }
     public District(UUID districtId, String districtName, float latStart, float latEnd, float longStart, float longEnd, String districtDescription) {
         this.districtId = districtId;
         this.districtName = districtName;

@@ -10,6 +10,7 @@ import java.util.UUID;
 @Mapper
 @Component
 public interface DistrictDao {
+    void addNewDistrict(District district);
     District getDistrictById(UUID districtId);
     List<District> getAllDistrict();
 }
