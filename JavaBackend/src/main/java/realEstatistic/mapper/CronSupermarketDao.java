@@ -13,25 +13,23 @@ import java.util.List;
 import org.apache.commons.io.FileUtils;
 import realEstatistic.util.Unzipper;
 
-import javax.net.ssl.HttpsURLConnection;
-
 @Component
 @EnableScheduling
 @Lazy(value = false)
 public class CronSupermarketDao implements SupermarketDao{
 
-    private static List<Supermarket> SupermarketList = new ArrayList<Supermarket>();
+    private static List<Supermarket> supermarketList = new ArrayList<Supermarket>();
     private static String downloadDir = "./src/main/java/realEstatistic/downloads";
 
     @Override
     public List<Supermarket> getAllSupermarket() {
-        return SupermarketList;
+        return supermarketList;
     }
 
     @Override
     public List<Supermarket> getSupermarketByLocation(float startLat, float endLat, float startLon, float endLon) {
         ArrayList<Supermarket> filteredList = new ArrayList<Supermarket>();
-        for(Supermarket s : SupermarketList){
+        for(Supermarket s : supermarketList){
             float lat = s.getLat();
             float lon = s.getLong_();
             if (lat >= startLat && lat <= endLat && lon >= startLon && lon <= endLon){
@@ -64,6 +62,6 @@ public class CronSupermarketDao implements SupermarketDao{
 
     private void supermarketListGenerator(){
         String unzippedFileName = "supermarkets-geojson.geojson";
-        //read downloadDir + "/" + unzippedFileName, update SupermarketList here
+        //read downloadDir + "/" + unzippedFileName, update supermarketList here
     }
 }
