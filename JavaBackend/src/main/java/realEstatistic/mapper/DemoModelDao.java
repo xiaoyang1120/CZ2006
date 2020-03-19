@@ -1,8 +1,8 @@
-package softwareGenius.mapper;
+package realEstatistic.mapper;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.springframework.stereotype.Component;
-import softwareGenius.model.DemoModel;
+import realEstatistic.model.DemoModel;
 
 import java.util.List;
 

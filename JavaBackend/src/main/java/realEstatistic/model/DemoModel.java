@@ -1,4 +1,4 @@
-package softwareGenius.model;
+package realEstatistic.model;
 
 public class DemoModel {
     private Integer id;

@@ -2,15 +2,15 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="softwareGenius.mapper.DemoModelDao">
-    <resultMap id="userMap" type="softwareGenius.model.DemoModel">
+<mapper namespace="realEstatistic.mapper.DemoModelDao">
+    <resultMap id="userMap" type="realEstatistic.model.DemoModel">
         <result property="id" column="id"/>
         <result property="username" column="username"/>
         <result property="sex" column="sex"/>
         <result property="age" column="age"/>
     </resultMap>
 
-    <insert id="insert" parameterType="softwareGenius.model.DemoModel">
+    <insert id="insert" parameterType="realEstatistic.model.DemoModel">
         insert into user (
              username,
              sex,
@@ -22,7 +22,7 @@
             #{age}
           )
     </insert>
-    <update id="update" parameterType="softwareGenius.model.DemoModel">
+    <update id="update" parameterType="realEstatistic.model.DemoModel">
         update user
         set username=#{username},
             sex=#{sex},

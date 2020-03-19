@@ -1,7 +1,7 @@
-package softwareGenius.service;
+package realEstatistic.service;
 
-import softwareGenius.mapper.DemoModelDao;
-import softwareGenius.model.DemoModel;
+import realEstatistic.mapper.DemoModelDao;
+import realEstatistic.model.DemoModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

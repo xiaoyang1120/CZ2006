@@ -1,9 +1,9 @@
-package softwareGenius.api;
+package realEstatistic.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-import softwareGenius.model.DemoModel;
-import softwareGenius.service.DemoModelService;
+import realEstatistic.model.DemoModel;
+import realEstatistic.service.DemoModelService;
 
 import java.util.List;
 
