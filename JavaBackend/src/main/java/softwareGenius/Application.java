@@ -13,7 +13,6 @@ public class Application implements CommandLineRunner{
 
 	@Autowired
 	private JdbcTemplate jdbcTemplate;
-
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}

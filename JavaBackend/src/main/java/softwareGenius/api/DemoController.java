@@ -10,7 +10,6 @@ import java.util.List;
 @RequestMapping("api/demo")
 @RestController
 public class DemoController {
-
     private DemoModelService demoModelService;
 
     @Autowired
