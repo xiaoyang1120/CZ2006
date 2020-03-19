@@ -20,5 +20,7 @@
     <typeHandlers>
         <typeHandler handler="org.apache.ibatis.type.LocalDateTimeTypeHandler"
                      javaType="java.time.LocalDateTime"/>
+        <typeHandler handler="realEstatistic.util.UUIDTypeHandler"
+			javaType="UUID" jdbcType="VARCHAR" />
     </typeHandlers>
 </configuration>

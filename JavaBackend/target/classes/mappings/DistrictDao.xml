@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="realEstatistic.mapper.DistrictDao">
+    <resultMap id="districtMap" type="realEstatistic.model.District">
+        <result property="districtId" column="districtId"/>
+        <result property="districtName" column="districtName"/>
+        <result property="latStart" column="latStart"/>
+        <result property="latEnd" column="latEnd"/>
+        <result property="longStart" column="longStart"/>
+        <result property="longEnd" column="longEnd"/>
+        <result property="districtDescription" column="description"/>
+    </resultMap>
+
+    <select id="getDistrictById" parameterType="java.lang.UUID" resultMap="districtMap">
+        select districtId, districtName, latStart, latEnd, longStart, longEnd, description
+        from district
+        where districtId = #{districtId}
+    </select>
+
+    <select id="getAllDistrict" resultMap="houseMap">
+        select districtId, districtName, latStart, latEnd, longStart, longEnd, description
+        from district
+    </select>
+</mapper>

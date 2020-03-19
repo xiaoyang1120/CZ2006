@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="realEstatistic.mapper.UserDao">
+    <resultMap id="userMap" type="realEstatistic.model.User">
+        <result property="userId" column="userId"/>
+        <result property="email" column="email"/>
+        <result property="password" column="password"/>
+    </resultMap>
+
+    <insert id="addUser" parameterType="map">
+        insert into user (
+             userId,
+             email,
+             password
+              )
+        VALUES (
+            #{userId},
+            #{email},
+            #{password}
+          )
+    </insert>
+    <update id="changeUserPassword" parameterType="map">
+        update user
+        set password=#{password}
+        where email=#{email}
+    </update>
+
+<!--    <delete id="delete">-->
+<!--        DELETE FROM user-->
+<!--        WHERE id = #{id}-->
+<!--    </delete>-->
+
+    <select id="getUserByEmail" parameterType="java.lang.String" resultMap="userMap">
+        select userId, email, password
+        from user
+        where email = #{email}
+    </select>
+
+<!--    <select id="selectAll" resultMap="userMap">-->
+<!--        select id,username,sex,age-->
+<!--        from user-->
+<!--    </select>-->
+</mapper>
