@@ -20,10 +20,8 @@ import javax.net.ssl.HttpsURLConnection;
 @Lazy(value = false)
 public class CronSupermarketDao implements SupermarketDao{
 
-    private List<Supermarket> SupermarketList = new ArrayList<Supermarket>();
+    private static List<Supermarket> SupermarketList = new ArrayList<Supermarket>();
     private static String downloadDir = "./src/main/java/realEstatistic/downloads";
-    private static String url = "https://data.gov.sg/dataset/11bb7b0b-ea38-4981-9f1f-660ad88409aa/download";
-    private static String fileName = "supermarkets.zip";
 
     @Override
     public List<Supermarket> getAllSupermarket() {
@@ -45,7 +43,6 @@ public class CronSupermarketDao implements SupermarketDao{
 
     @Scheduled(cron = "* 0 0 * * *")
     public void CronFetch(){
-        String downloadDir = "./src/main/java/realEstatistic/downloads";
         String url = "https://data.gov.sg/dataset/11bb7b0b-ea38-4981-9f1f-660ad88409aa/download";
         String fileName = "supermarkets.zip";
         try {
@@ -59,8 +56,14 @@ public class CronSupermarketDao implements SupermarketDao{
             FileUtils.copyURLToFile(dataSource, new File(dir+"/"+fileName));
             Unzipper.unzip(downloadDir+"/" + fileName, downloadDir);
             System.out.println("download finished");
+            supermarketListGenerator();
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void supermarketListGenerator(){
+        String unzippedFileName = "supermarkets-geojson.geojson";
+        //read downloadDir + "/" + unzippedFileName, update SupermarketList here
     }
 }
