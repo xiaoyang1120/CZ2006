@@ -23,4 +23,12 @@
         select districtId, districtName, latStart, latEnd, longStart, longEnd, description
         from district
     </select>
+
+    <insert id="addNewDistrict" parameterType="realEstatistic.model.District">
+        insert into district(
+            districtId, districtName, latStart, latEnd, longStart, longEnd, description
+        ) values (
+                     #{districtId}, #{districtName}, #{latStart}, #{latEnd}, #{longStart}, #{longEnd}, #{districtDescription}
+        )
+    </insert>
 </mapper>

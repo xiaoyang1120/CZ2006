@@ -27,13 +27,16 @@ public class DistrictService {
         double tempLon = minLon;
         Integer i = 1;
         while (tempLat < maxLat){
-            UUID id = UUID.randomUUID();
-            String name = "District " + i.toString();
-            District tempDistrict = new District(id, name, (float)tempLat, (float)(tempLat+stepLat), (float)tempLon, (float)(tempLon+stepLon), "null");
-            districtDao.addNewDistrict(tempDistrict);
+            while (tempLon <= maxLon){
+                UUID id = UUID.randomUUID();
+                String name = "District " + i.toString();
+                District tempDistrict = new District(id, name, (float)tempLat, (float)(tempLat+stepLat), (float)tempLon, (float)(tempLon+stepLon), "");
+                districtDao.addNewDistrict(tempDistrict);
+                tempLon += stepLon;
+                i++;
+            }
+            tempLon = minLon;
             tempLat += stepLat;
-            tempLon += stepLon;
-            i++;
         }
     }
 }
