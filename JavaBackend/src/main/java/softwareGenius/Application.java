@@ -11,9 +11,9 @@ import org.springframework.jdbc.core.JdbcTemplate;
 @MapperScan("softwareGenius.mapper")
 public class Application implements CommandLineRunner{
 
-	@Autowired
 	private JdbcTemplate jdbcTemplate;
 
+	@Autowired
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);
 	}
