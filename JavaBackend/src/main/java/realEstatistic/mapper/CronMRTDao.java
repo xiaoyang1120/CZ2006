@@ -1,6 +1,7 @@
 package realEstatistic.mapper;
 
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.stereotype.Component;
 import realEstatistic.model.MRT;
@@ -12,7 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-
+@Primary
 @Component
 @EnableScheduling
 @Lazy(value = false)

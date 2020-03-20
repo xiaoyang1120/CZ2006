@@ -7,7 +7,7 @@
         <result property="districtId" column="districtId"/>
         <result property="numOfPrimary" column="primarySchool"/>
         <result property="numOfSecondary" column="secondarySchool"/>
-        <result property="numOfJc" column="juniorCollage"/>
+        <result property="numOfJc" column="juniorCollege"/>
         <result property="numOfMixed" column="mixedCollege"/>
         <result property="numOfPark" column="park"/>
         <result property="numOfClinic" column="clinic"/>
@@ -34,7 +34,7 @@
     <update id="updateJuniorCollege" parameterType="map">
         update districtInfo
         set
-            juniorCollage=#{num}
+            juniorCollege=#{num}
         where districtId =#{id}
     </update>
 

@@ -3,6 +3,7 @@ package realEstatistic.mapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -14,6 +15,7 @@ import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
 
+@Primary
 @Component
 @EnableScheduling
 @Lazy(value = false)

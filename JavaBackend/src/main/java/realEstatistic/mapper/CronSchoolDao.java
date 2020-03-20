@@ -4,6 +4,7 @@ import net.minidev.json.parser.ParseException;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -19,6 +20,7 @@ import java.util.List;
 import java.util.UUID;
 
 
+@Primary
 @Component
 @EnableScheduling
 @Lazy(value = false)

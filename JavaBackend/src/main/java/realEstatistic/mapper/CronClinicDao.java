@@ -6,6 +6,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.context.annotation.Lazy;
+import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -19,7 +20,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-
+@Primary
 @Component
 @EnableScheduling
 @Lazy(value = false)
