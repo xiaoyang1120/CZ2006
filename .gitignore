@@ -26,7 +26,6 @@ yarn-error.log*
 housing/node_modules/
 
 HELP.md
-JavaBackend/target/
 **/target/
 !JavaBackend/.mvn/wrapper/maven-wrapper.jar
 !**/src/main/**
@@ -59,3 +58,5 @@ build/
 .vscode/
 
 **/.DS_Store
+target/
+JavaBackend/target/
