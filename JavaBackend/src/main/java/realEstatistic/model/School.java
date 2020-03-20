@@ -2,17 +2,13 @@ package realEstatistic.model;
 
 import java.util.UUID;
 
-
 public class School {
-    public enum Type{
-        PRIMARY, SECONDASRY, MIXEDLEVEL, JC;
-    }
     private UUID schoolId;
     private String schoolName;
     private float lat;
     private float long_;
     private String description;
-    private String type;
+    private SCHOOL_TYPE type;
 
     public UUID getSchoolId() {
         return schoolId;
@@ -54,15 +50,15 @@ public class School {
         this.description = description;
     }
 
-    public String getType() {
+    public SCHOOL_TYPE getType() {
         return type;
     }
 
-    public void setType(String type) {
+    public void setType(SCHOOL_TYPE type) {
         this.type = type;
     }
 
-    public School(UUID schoolId, String schoolName, float lat, float long_, String description, String type) {
+    public School(UUID schoolId, String schoolName, float lat, float long_, String description, SCHOOL_TYPE type) {
         this.schoolId = schoolId;
         this.schoolName = schoolName;
         this.lat = lat;

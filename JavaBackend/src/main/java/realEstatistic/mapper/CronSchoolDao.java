@@ -7,6 +7,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import realEstatistic.model.SCHOOL_TYPE;
 import realEstatistic.model.School;
 
 import java.io.*;
@@ -51,6 +52,7 @@ public class CronSchoolDao implements SchoolDao{
     @Override
     public List<School> getPrimaryByLocation(float startLat, float endLat, float startLon, float endLon) {
         ArrayList<School> filteredList = new ArrayList<>();
+        //TODO fix this duplicate code issue
         for(School s : primaryList){
             float lat = s.getLat();
             float lon = s.getLong_();
@@ -130,17 +132,19 @@ public class CronSchoolDao implements SchoolDao{
         for(int i = 0; i < json.getJSONObject("result").getJSONArray("records").length(); i++) {
             String schoolName, schoolDescription;
             float lat = 0, long_ = 0;
-            String type = null, postalCode = null;
+            SCHOOL_TYPE type = null;
+            String postalCode = null;
             JSONObject myjson = (JSONObject) json.getJSONObject("result").getJSONArray("records").get(i);
             postalCode = myjson.getString("postal_code");
             schoolName = myjson.getString("school_name");
-            type = myjson.getString("mainlevel_code");
+            try {
+                type = SCHOOL_TYPE.fromString(myjson.getString("mainlevel_code"));
+            } catch (IllegalArgumentException e){
+                e.printStackTrace();
+            }
             schoolDescription = "tel:  " + myjson.getString("telephone_no") + " email:   " + myjson.getString("email_address") + " nearby bus:  " +
                     myjson.getString("bus_desc") + " ethos: " +
                     myjson.getString("philosophy_culture_ethos");
-
-
-
             Thread.sleep(5000);
             JSONObject postalJson = null;
             StringBuilder result = new StringBuilder();
@@ -166,32 +170,26 @@ public class CronSchoolDao implements SchoolDao{
                 System.out.println(err);
             }
 
-//
             lat = (float) postalJson.getDouble("latt");
             long_ = (float) postalJson.getDouble("longt");
 
             UUID newId = UUID.randomUUID();
             School a = new School(newId, schoolName, lat, long_, schoolDescription, type);
-            if(type == "PRIMARY"){
-                primaryList.add(a);
+            switch (type){
+                case PRIMARY:
+                    primaryList.add(a);
+                    break;
+                case SECONDASRY:
+                    secondaryList.add(a);
+                    break;
+                case MIXEDLEVEL:
+                    mixedList.add(a);
+                    break;
+                case JC:
+                    jcList.add(a);
+                    break;
             }
-            else if(type == "SECONDARY"){
-                secondaryList.add(a);
-            }
-            else if(type == "MIXED LEVEL"){
-                mixedList.add(a);
-            }
-            else{
-                jcList.add(a);
-            }
-
         }
-
-
-
-
-
-
 
     }
 
