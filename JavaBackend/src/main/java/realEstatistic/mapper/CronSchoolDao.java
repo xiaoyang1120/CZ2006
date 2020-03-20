@@ -13,11 +13,8 @@ import realEstatistic.model.School;
 
 import java.io.*;
 import java.net.URL;
-import java.net.URLConnection;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 @Primary
@@ -131,9 +128,25 @@ public class CronSchoolDao implements SchoolDao{
     public static void CronFetch() throws IOException, JSONException, ParseException, InterruptedException {
         System.setProperty("http.agent", "Mozilla/5.0");
         JSONObject json =  readJsonFromUrl("https://data.gov.sg/api/action/datastore_search?resource_id=ede26d32-01af-4228-b1ed-f05c45a1d8ee&limit=10000");
+
+
+        Map m1 = new HashMap();
+
+        File file = new File("./src/main/java/realEstatistic/downloads/SG.txt");
+        Scanner sc = new Scanner(file);
+        String a = null;
+
+        while (sc.hasNextLine()){
+            a = sc.nextLine();
+            m1.put(a.split("\t")[1], a.split("\t\t\t\t\t\t\t")[1]);
+        }
+
+
+
         for(int i = 0; i < json.getJSONObject("result").getJSONArray("records").length(); i++) {
             String schoolName, schoolDescription;
-            float lat = 0, long_ = 0;
+            float lat = 0;
+            float long_ = 0;
             SCHOOL_TYPE type = null;
             String postalCode = null;
             JSONObject myjson = (JSONObject) json.getJSONObject("result").getJSONArray("records").get(i);
@@ -147,53 +160,32 @@ public class CronSchoolDao implements SchoolDao{
             schoolDescription = "tel:  " + myjson.getString("telephone_no") + " email:   " + myjson.getString("email_address") + " nearby bus:  " +
                     myjson.getString("bus_desc") + " ethos: " +
                     myjson.getString("philosophy_culture_ethos");
-            Thread.sleep(5000);
-            JSONObject postalJson = null;
-            StringBuilder result = new StringBuilder();
-            String line;
 
-            URLConnection urlConnection = new URL("https://geocode.xyz/" + postalCode + "?json=1").openConnection();
-
-            urlConnection.addRequestProperty("User-Agent", "Mozilla/5.0");
-
-
-            try (InputStream is = new URL("https://geocode.xyz/" + postalCode + "?json=1").openStream();
-                 BufferedReader br = new BufferedReader(new InputStreamReader(is))) {
-
-                while ((line = br.readLine()) != null) {
-                    result.append(line);
-                }
-
+            if(postalCode.length()==5){
+                postalCode = "0" + postalCode;
             }
-
-            try {
-                postalJson = new JSONObject(result.toString());
-            } catch (JSONException err) {
-                System.out.println(err);
-            }
-
-            lat = (float) postalJson.getDouble("latt");
-            long_ = (float) postalJson.getDouble("longt");
+            lat = Float.parseFloat(m1.get(postalCode).toString().split("\t")[0]);
+            long_ = Float.parseFloat(m1.get(postalCode).toString().split("\t")[1]);
 
             UUID newId = UUID.randomUUID();
-            School a = new School(newId, schoolName, lat, long_, schoolDescription, type);
+            School s = new School(newId, schoolName, lat, long_, schoolDescription, type);
             switch (type){
                 case PRIMARY:
-                    primaryList.add(a);
+                    primaryList.add(s);
                     break;
                 case SECONDASRY:
-                    secondaryList.add(a);
+                    secondaryList.add(s);
                     break;
                 case MIXEDLEVEL:
-                    mixedList.add(a);
+                    mixedList.add(s);
                     break;
                 case JC:
-                    jcList.add(a);
+                    jcList.add(s);
                     break;
+                    default:
+                        break;
             }
-        }
-
-    }
+        }}
 
 
 }

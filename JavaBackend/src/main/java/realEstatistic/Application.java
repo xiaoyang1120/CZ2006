@@ -10,7 +10,6 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.xml.sax.SAXException;
-import realEstatistic.mapper.CronMRTDao;
 
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
@@ -27,7 +26,7 @@ public class Application implements CommandLineRunner{
 	}
 
 	public void run(String... args) throws Exception {
-		CronMRTDao.mrtListGenerator();
+		//CronSchoolDao.CronFetch();
 	}
 
 }
