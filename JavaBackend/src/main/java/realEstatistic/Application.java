@@ -6,6 +6,7 @@ import org.json.JSONException;
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.xml.sax.SAXException;
@@ -22,13 +23,11 @@ public class Application implements CommandLineRunner{
 
 	@Autowired
 	public static void main(String[] args) throws ParserConfigurationException, SAXException, DocumentException, IOException, JSONException, ParseException, InterruptedException {
-		//SpringApplication.run(Application.class, args);
-		CronMRTDao.mrtListGenerator();
-
+		SpringApplication.run(Application.class, args);
 	}
 
 	public void run(String... args) throws Exception {
-
+		CronMRTDao.mrtListGenerator();
 	}
 
 }
