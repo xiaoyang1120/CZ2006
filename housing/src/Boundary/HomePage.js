@@ -1,15 +1,23 @@
 import React, {Component} from 'react'
+import NavBar from "../Components/NavBar"
 
 class HomePage extends Component {
-    #isLogin = false
-    callLoginUI(){}
-    chooseCriteria(){}
-    aboutUs(){}
-    nextPage(){}
-    back(){}
+  constructor(){
+    super()
+    this.state={
+      isLoggedin: true
+    }
+  }
+    // callLoginUI(){}
+    // chooseCriteria(){}
+    // aboutUs(){}
+    // nextPage(){}
+    // back(){}
     render() {
         return (
-            <div></div>
+            <div>
+                <NavBar isLoggedin={this.state.isLoggedin}/>
+            </div>
         )
     }
 }
