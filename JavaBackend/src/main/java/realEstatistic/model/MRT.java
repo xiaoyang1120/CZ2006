@@ -2,11 +2,9 @@ package realEstatistic.model;
 
 import java.util.UUID;
 
-public class MRT {
+public class MRT extends Facility{
     private UUID MRTStationId;
     private String MRTName;
-    private float lat;
-    private float long_;
 
     public UUID getMRTStationId() {
         return MRTStationId;
@@ -24,16 +22,8 @@ public class MRT {
         this.MRTName = MRTName;
     }
 
-    public float getLat() {
-        return lat;
-    }
-
     public void setLat(float lat) {
         this.lat = lat;
-    }
-
-    public float getLong_() {
-        return long_;
     }
 
     public void setLong_(float long_) {

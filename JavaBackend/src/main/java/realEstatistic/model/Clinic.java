@@ -2,11 +2,9 @@ package realEstatistic.model;
 
 import java.util.UUID;
 
-public class Clinic {
+public class Clinic extends Facility{
     private UUID clinicId;
     private String clinicName;
-    private float lat;
-    private float long_;
     private String description;
 
     public UUID getClinicId() {
@@ -25,16 +23,8 @@ public class Clinic {
         this.clinicName = clinicName;
     }
 
-    public float getLat() {
-        return lat;
-    }
-
     public void setLat(float lat) {
         this.lat = lat;
-    }
-
-    public float getLong_() {
-        return long_;
     }
 
     public void setLong_(float long_) {

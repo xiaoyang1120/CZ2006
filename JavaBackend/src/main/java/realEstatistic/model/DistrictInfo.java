@@ -118,4 +118,12 @@ public class DistrictInfo {
     public void setNumOfEWaste(int numOfEWaste) {
         this.numOfEWaste = numOfEWaste;
     }
+
+    public int getNumOfMRT() {
+        return numOfMRT;
+    }
+
+    public void setNumOfMRT(int numOfMRT) {
+        this.numOfMRT = numOfMRT;
+    }
 }

@@ -13,6 +13,7 @@
         <result property="numOfClinic" column="clinic"/>
         <result property="numOfSupermarket" column="supermarket"/>
         <result property="numOfHawkerCentre" column="hawkerCenter"/>
+        <result property="numOfEWaste" column="eWaste"/>
         <result property="numOfPremiumBus" column="primaryBus"/>
         <result property="numOfMRT" column="mrt"/>
     </resultMap>
@@ -42,6 +43,13 @@
         update districtInfo
         set
             mixedSchool =#{num}
+        where districtId =#{id}
+    </update>
+
+    <update id="updatePark" parameterType="map">
+        update districtInfo
+        set
+            park =#{num}
         where districtId =#{id}
     </update>
 

@@ -2,11 +2,9 @@ package realEstatistic.model;
 
 import java.util.UUID;
 
-public class HawkerCentre {
+public class HawkerCentre extends Facility {
     private UUID hawkerCentreId;
     private String hawkerCentreName;
-    private float lat;
-    private float long_;
     private String description;
 
     public UUID getHawkerCentreId() {
@@ -25,16 +23,8 @@ public class HawkerCentre {
         this.hawkerCentreName = hawkerCentreName;
     }
 
-    public float getLat() {
-        return lat;
-    }
-
     public void setLat(float lat) {
         this.lat = lat;
-    }
-
-    public float getLong_() {
-        return long_;
     }
 
     public void setLong_(float long_) {

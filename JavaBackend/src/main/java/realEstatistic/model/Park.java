@@ -2,11 +2,9 @@ package realEstatistic.model;
 
 import java.util.UUID;
 
-public class Park {
+public class Park extends Facility{
     private UUID parkId;
     private String parkName;
-    private float lat;
-    private float long_;
     private String description;
 
     public Park(UUID parkId, String parkName, float lat, float long_, String description) {
@@ -32,16 +30,8 @@ public class Park {
         this.parkName = parkName;
     }
 
-    public float getLat() {
-        return lat;
-    }
-
     public void setLat(float lat) {
         this.lat = lat;
-    }
-
-    public float getLong_() {
-        return long_;
     }
 
     public void setLong_(float long_) {
