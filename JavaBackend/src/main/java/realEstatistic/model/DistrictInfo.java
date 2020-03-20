@@ -14,8 +14,9 @@ public class DistrictInfo {
     private int numOfClinic;
     private int numOfPremiumBus;
     private int numOfEWaste;
+    private int numOfMRT;
 
-    public DistrictInfo(UUID districtId, int numOfPrimary, int numOfSecondary, int numOfJc, int numOfMixed, int numOfPark, int numOfSupermarket, int numOfHawkerCentre, int numOfClinic, int numOfPremiumBus, int numOfEWaste) {
+    public DistrictInfo(UUID districtId, int numOfPrimary, int numOfSecondary, int numOfJc, int numOfMixed, int numOfPark, int numOfSupermarket, int numOfHawkerCentre, int numOfClinic, int numOfPremiumBus, int numOfEWaste, int numOfMRT) {
         this.districtId = districtId;
         this.numOfPrimary = numOfPrimary;
         this.numOfSecondary = numOfSecondary;
@@ -27,6 +28,7 @@ public class DistrictInfo {
         this.numOfClinic = numOfClinic;
         this.numOfPremiumBus = numOfPremiumBus;
         this.numOfEWaste = numOfEWaste;
+        this.numOfMRT = numOfMRT;
     }
 
     public UUID getDistrictId() {

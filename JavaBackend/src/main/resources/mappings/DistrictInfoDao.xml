@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="realEstatistic.mapper.DistrictInfoDao">
+    <resultMap id="districtInfoMap" type="realEstatistic.model.DistrictInfo">
+        <result property="districtId" column="districtId"/>
+        <result property="numOfPrimary" column="primarySchool"/>
+        <result property="numOfSecondary" column="secondarySchool"/>
+        <result property="numOfJc" column="juniorCollege"/>
+        <result property="numOfMixed" column="mixedCollege"/>
+        <result property="numOfPark" column="park"/>
+        <result property="numOfClinic" column="clinic"/>
+        <result property="numOfSupermarket" column="supermarket"/>
+        <result property="numOfHawkerCentre" column="hawkerCenter"/>
+        <result property="numOfPremiumBus" column="primaryBus"/>
+        <result property="numOfMRT" column="mrt"/>
+    </resultMap>
+
+    <update id="updatePrimarySchool" parameterType="map">
+        update districtInfo
+        set
+            primarySchool =#{num}
+        where districtId =#{id}
+    </update>
+
+    <update id="updateSecondarySchool" parameterType="map">
+        update districtInfo
+        set
+            secondarySchool =#{num}
+        where districtId =#{id}
+    </update>
+
+    <update id="updateJuniorCollege" parameterType="map">
+        update districtInfo
+        set
+            juniorCollege =#{num}
+        where districtId =#{id}
+    </update>
+
+    <update id="updateMixedSchool" parameterType="map">
+        update districtInfo
+        set
+            mixedSchool =#{num}
+        where districtId =#{id}
+    </update>
+
+    <update id="updateClinic" parameterType="map">
+        update districtInfo
+        set
+            clinic =#{num}
+        where districtId =#{id}
+    </update>
+
+    <update id="updateHawkerCenter" parameterType="map">
+        update districtInfo
+        set
+            hawkerCenter =#{num}
+        where districtId =#{id}
+    </update>
+
+    <update id="updatePremiumBus" parameterType="map">
+        update districtInfo
+        set
+            primaryBus =#{num}
+        where districtId =#{id}
+    </update>
+
+    <update id="updateEWaste" parameterType="map">
+        update districtInfo
+        set
+            eWaste =#{num}
+        where districtId =#{id}
+    </update>
+
+    <update id="updateSupermarket" parameterType="map">
+        update districtInfo
+        set
+            supermarket =#{num}
+        where districtId =#{id}
+    </update>
+
+    <update id="updateMRT" parameterType="map">
+        update districtInfo
+        set
+            mrt =#{num}
+        where districtId =#{id}
+    </update>
+
+    <select id="getAllInfo" resultMap="districtInfoMap">
+        select *
+        from districtInfo
+    </select>
+</mapper>
