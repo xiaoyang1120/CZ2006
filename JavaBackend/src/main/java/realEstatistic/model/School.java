@@ -12,7 +12,7 @@ public class School {
     private float lat;
     private float long_;
     private String description;
-    private Type type;
+    private String type;
 
     public UUID getSchoolId() {
         return schoolId;
@@ -54,15 +54,15 @@ public class School {
         this.description = description;
     }
 
-    public Type getType() {
+    public String getType() {
         return type;
     }
 
-    public void setType(Type type) {
+    public void setType(String type) {
         this.type = type;
     }
 
-    public School(UUID schoolId, String schoolName, float lat, float long_, String description, Type type) {
+    public School(UUID schoolId, String schoolName, float lat, float long_, String description, String type) {
         this.schoolId = schoolId;
         this.schoolName = schoolName;
         this.lat = lat;

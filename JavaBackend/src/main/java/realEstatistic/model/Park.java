@@ -9,7 +9,7 @@ public class Park {
     private float long_;
     private String description;
 
-    public Park(UUID parkId, String parkName, float lat, String description) {
+    public Park(UUID parkId, String parkName, float lat, float long_, String description) {
         this.parkId = parkId;
         this.parkName = parkName;
         this.lat = lat;

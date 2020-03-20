@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Lazy;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import realEstatistic.model.Supermarket;
+import realEstatistic.model.HawkerCentre;
 import realEstatistic.util.Unzipper;
 
 import java.io.File;
@@ -23,20 +23,20 @@ import java.util.UUID;
 @Component
 @EnableScheduling
 @Lazy(value = false)
-public class CronSupermarketDao implements SupermarketDao{
+public class CronHawkerCentreDao implements HawkerCentreDao{
 
-    private static List<Supermarket> supermarketList = new ArrayList<Supermarket>();
+    private static List<HawkerCentre> hawkerCentreList = new ArrayList<HawkerCentre>();
     private static String downloadDir = "./src/main/java/realEstatistic/downloads";
 
     @Override
-    public List<Supermarket> getAllSupermarket() {
-        return supermarketList;
+    public List<HawkerCentre> getAllHawkerCentre() {
+        return hawkerCentreList;
     }
 
     @Override
-    public List<Supermarket> getSupermarketByLocation(float startLat, float endLat, float startLon, float endLon) {
-        ArrayList<Supermarket> filteredList = new ArrayList<Supermarket>();
-        for(Supermarket s : supermarketList){
+    public List<HawkerCentre> getHawkerCentreByLocation(float startLat, float endLat, float startLon, float endLon) {
+        ArrayList<HawkerCentre> filteredList = new ArrayList<HawkerCentre>();
+        for(HawkerCentre s : hawkerCentreList){
             float lat = s.getLat();
             float lon = s.getLong_();
             if (lat >= startLat && lat <= endLat && lon >= startLon && lon <= endLon){
@@ -48,10 +48,10 @@ public class CronSupermarketDao implements SupermarketDao{
 
     @Scheduled(cron = "* 0 0 * * *")
     public static void CronFetch(){
-        String url = "https://data.gov.sg/dataset/11bb7b0b-ea38-4981-9f1f-660ad88409aa/download";
-        String fileName = "supermarkets.zip";
+        String url = "https://data.gov.sg/dataset/aeaf4704-5be1-4b33-993d-c70d8dcc943e/download";
+        String fileName = "HawkerCentre.zip";
         try {
-            System.out.println("ready to download supermarket.zip");
+            System.out.println("ready to download HawkerCentre.zip");
             System.setProperty("http.agent", "Monzilla/5.0");
             URL dataSource = new URL(url);
             File dir = new File(downloadDir);
@@ -61,24 +61,23 @@ public class CronSupermarketDao implements SupermarketDao{
             FileUtils.copyURLToFile(dataSource, new File(dir+"/"+fileName));
             Unzipper.unzip(downloadDir+"/" + fileName, downloadDir);
             System.out.println("download finished");
-            supermarketListGenerator();
+            hawkerCentreListGenerator();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void supermarketListGenerator() {
-        String unzippedFileName = "supermarkets-kml.kml";
+    private static void hawkerCentreListGenerator(){
+        String unzippedFileName = "hawker-centres-kml.kml";
         //read downloadDir + "/" + unzippedFileName, update supermarketList here
-
         SAXReader reader = new SAXReader();
         Document document = null;
-        try {
+        try {//read file
             document = reader.read(downloadDir + "/" + unzippedFileName);
         } catch (DocumentException e) {
             e.printStackTrace();
         }
-        Element root = document.getRootElement();
+        Element root = document.getRootElement();//kml
         Iterator<Element> child = root.elementIterator();
         root = child.next();//document
 
@@ -89,10 +88,9 @@ public class CronSupermarketDao implements SupermarketDao{
         //we want: attrib in Placemark
         child = root.elementIterator();
         Element e = child.next();
-
         while(child.hasNext()){
             e = child.next();
-            String supermarketName = null, supermarketDescription = null;
+            String hawkerCentreName = null, hawkerCentreDescription = null;
             float lat = 0, long_= 0;
             Element temp;
 
@@ -101,8 +99,8 @@ public class CronSupermarketDao implements SupermarketDao{
             while(tempIter.hasNext()){
                 temp = tempIter.next();
                 if(temp.getName() == "description"){
-                    supermarketName = temp.getStringValue().split("<td>")[1].split("</td>")[0];
-                    supermarketDescription = (temp.getStringValue().split("<td>")[3]).split("</td>")[0];
+                    hawkerCentreName = temp.getStringValue().split("<td>")[20].split("</td>")[0];
+                    hawkerCentreDescription = "number of food stores: " + (temp.getStringValue().split("<td>")[8]).split("</td>")[0];
                 }
 
                 if(temp.getName() == "Point"){
@@ -110,13 +108,16 @@ public class CronSupermarketDao implements SupermarketDao{
                     long_ = Float.parseFloat(coorStr.split(",")[0]);
                     lat = Float.parseFloat(temp.getStringValue().split(",")[1]);
                 }
-
-
             }
             UUID newId = UUID.randomUUID();
-            Supermarket a = new Supermarket(newId, supermarketName, lat, long_, supermarketDescription);
-            supermarketList.add(a);
+            HawkerCentre a = new HawkerCentre(newId, hawkerCentreName, lat, long_, hawkerCentreDescription);
+            hawkerCentreList.add(a);
+            //气死👴了 有的number of food stores真的是0
+//            System.out.println(hawkerCentreDescription);
+//            System.out.println(hawkerCentreName);
+//            System.out.println();
         }
     }
 
 }
+
