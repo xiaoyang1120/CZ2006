@@ -47,7 +47,7 @@ public class CronClinicDao implements ClinicDao{
         return filteredList;
     }
 
-    @Scheduled(cron = "* 0 0 * * *")
+    @Scheduled(cron = "0 10 17 * * *")
     public static void CronFetch(){
         String url = "https://data.gov.sg/dataset/31e92629-980d-4672-af33-cec147c18102/download";
         String fileName = "clinics.zip";

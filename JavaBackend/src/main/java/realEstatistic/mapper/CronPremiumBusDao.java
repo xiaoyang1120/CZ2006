@@ -65,7 +65,7 @@ public class CronPremiumBusDao implements PremiumBusDao{
 
 
 
-    @Scheduled(cron = "* 0 0 * * *")
+    @Scheduled(cron = "0 10 17 * * *")
     public static void CronFetch() throws IOException, JSONException {
         System.setProperty("http.agent", "Mozilla/5.0");
         JSONObject json =  readJsonFromUrl("https://data.gov.sg/api/action/datastore_search?resource_id=7670be81-ca96-49ba-9215-caf1f218954b&limit=10000");
@@ -82,12 +82,6 @@ public class CronPremiumBusDao implements PremiumBusDao{
             PremiumBus a = new PremiumBus(newId, premiumBusName, lat, long_, premiumBusDescription);
             premiumBusList.add(a);
         }
-
-
-
-
-
-
 
     }
 

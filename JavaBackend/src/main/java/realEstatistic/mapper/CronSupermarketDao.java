@@ -47,7 +47,7 @@ public class CronSupermarketDao implements SupermarketDao{
         return filteredList;
     }
 
-    @Scheduled(cron = "* 0 0 * * *")
+    @Scheduled(cron = "0 10 17 * * *")
     public static void CronFetch(){
         String url = "https://data.gov.sg/dataset/11bb7b0b-ea38-4981-9f1f-660ad88409aa/download";
         String fileName = "supermarkets.zip";

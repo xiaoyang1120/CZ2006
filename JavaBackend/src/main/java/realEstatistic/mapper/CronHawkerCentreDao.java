@@ -47,7 +47,7 @@ public class CronHawkerCentreDao implements HawkerCentreDao{
         return filteredList;
     }
 
-    @Scheduled(cron = "* 0 0 * * *")
+    @Scheduled(cron = "0 10 17 * * *")
     public static void CronFetch(){
         String url = "https://data.gov.sg/dataset/aeaf4704-5be1-4b33-993d-c70d8dcc943e/download";
         String fileName = "HawkerCentre.zip";

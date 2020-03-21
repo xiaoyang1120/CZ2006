@@ -47,7 +47,7 @@ public class CronParkDao implements ParkDao{
         return filteredList;
     }
 
-    @Scheduled(cron = "* 0 0 * * *")
+    @Scheduled(cron = "0 10 17 * * *")
     public static void CronFetch(){
         String url = "https://data.gov.sg/dataset/f3005537-b958-479c-9ba9-d2adffeb9c73/download";
         String fileName = "parks.zip";

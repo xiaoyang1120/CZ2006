@@ -3,6 +3,7 @@ package realEstatistic.mapper;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import realEstatistic.model.MRT;
 
@@ -24,7 +25,9 @@ public class CronMRTDao implements MRTDao{
 
     @Override
     public List<MRT> getAllMRT() throws IOException {
-        mrtListGenerator();
+        if (mrtList.size() == 0){
+            mrtListGenerator();
+        }
         return mrtList;
     }
 

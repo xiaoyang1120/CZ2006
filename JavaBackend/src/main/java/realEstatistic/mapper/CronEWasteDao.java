@@ -47,7 +47,7 @@ public class CronEWasteDao implements EWasteDao{
         return filteredList;
     }
 
-    @Scheduled(cron = "* 0 0 * * *")
+    @Scheduled(cron = "0 10 17 * * *")
     public static void CronFetch(){
         String url = "https://data.gov.sg/dataset/fcc50758-b469-4980-a0b1-00321da6aa09/download";
         String fileName = "eWaste.zip";

@@ -49,22 +49,34 @@ public class GovDataService {
         this.districtDao = districtDao;
     }
 
-    @Scheduled(cron = "* 0 1 * * *")
+    @Scheduled(cron = "0 11 17 * * *")
     public void updateDistrictInfoDao(){
         // one hour after the rest cron fetch
         //TODO will it be better to change it to DAO and let each dao to call it after they finished?
         this.districtIdList = districtDao.getAllDistrict();
+        System.out.println("+++++++++++++++updateClinicInfo++++++++++");
         updateClinicInfo();
+        System.out.println("+++++++++++++++updateEWasteInfo++++++++++");
         updateEWasteInfo();
+        System.out.println("+++++++++++++++updateHawkerCentre++++++++++");
         updateHawkerCentre();
+        System.out.println("+++++++++++++++updateMRT++++++++++");
         updateMRT();
+        System.out.println("+++++++++++++++updatePark++++++++++");
         updatePark();
+        System.out.println("+++++++++++++++updatePremiumBus++++++++++");
         updatePremiumBus();
+        System.out.println("+++++++++++++++updateSupermarket++++++++++");
         updateSupermarket();
+        System.out.println("+++++++++++++++updatePrimary++++++++++");
         updatePrimary();
+        System.out.println("+++++++++++++++updateSecondary++++++++++");
         updateSecondary();
+        System.out.println("+++++++++++++++updateJC++++++++++");
         updateJC();
+        System.out.println("+++++++++++++++updateMixed++++++++++");
         updateMixed();
+        System.out.println("+++++++++++++++End++++++++++");
     }
 
     private void updateEWasteInfo(){
