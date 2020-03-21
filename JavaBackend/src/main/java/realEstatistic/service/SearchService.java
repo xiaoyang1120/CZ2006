@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import realEstatistic.mapper.DistrictInfoDao;
 import realEstatistic.mapper.OptionDao;
 import realEstatistic.model.Criteria;
-
+import realEstatistic.model.DistrictInfo;
 import java.util.List;
 
 @Service
@@ -25,15 +25,16 @@ public class SearchService {
         return optionDao.getAllOptions();
     }
 
-//    public List<Criteria> getSortedDistrictByCriteria(int [] selectedCriteriaId){
-//        for(int i:selectedCriteriaId){
-//            switch(i){
-//                case 0://need a map
-//                    districtInfoDao.getNumOfJc();//???
-//                    break;
-//            }
-//        }
-//    }
+    public List<Criteria> getSortedDistrictByCriteria(int [] selectedCriteriaId){
+        List<DistrictInfo> districts=districtInfoDao.getAllInfo();
+        for(int i:selectedCriteriaId){
+            switch(i){
+                case 0://need a map
+
+                    break;
+            }
+        }
+    }
 
 
     }
