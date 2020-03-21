@@ -81,7 +81,6 @@ public class CronPremiumBusDao implements PremiumBusDao{
             UUID newId = UUID.randomUUID();
             PremiumBus a = new PremiumBus(newId, premiumBusName, lat, long_, premiumBusDescription);
             premiumBusList.add(a);
-
         }
 
 

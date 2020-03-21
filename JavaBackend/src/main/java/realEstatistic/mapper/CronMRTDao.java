@@ -21,9 +21,6 @@ public class CronMRTDao implements MRTDao{
 
     private static List<MRT> mrtList = new ArrayList<MRT>();
 
-    public static void CronFetch() {
-    }
-    //private static String downloadDir = "./src/main/java/realEstatistic/downloads";
 
     @Override
     public List<MRT> getAllMRT() throws IOException {

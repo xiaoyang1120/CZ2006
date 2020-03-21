@@ -107,7 +107,7 @@ public class CronParkDao implements ParkDao{
                 if(temp.getName() == "Point"){
                     String coorStr = temp.getStringValue().replaceAll("\\<[^\\]]+\\>", "");
                     long_ = Float.parseFloat(coorStr.split(",")[0]);
-                    lat = Float.parseFloat(temp.getStringValue().split(",")[1]);
+                    lat = Float.parseFloat(temp.getStringValue().split(",")[1].split(",")[0]);
                 }
             }
             UUID newId = UUID.randomUUID();
