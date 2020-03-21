@@ -5,7 +5,7 @@ import java.util.UUID;
 import realEstatistic.mapper.DistrictDao;
 
 public class DistrictFullInfo extends DistrictInfo{
-    private List<Integer> districtRange;
+    private List<Float> districtRange;
     private String Name;
     private String Description;
     public DistrictFullInfo(UUID districtId, int numOfPrimary, int numOfSecondary, int numOfJc, int numOfMixed, int numOfPark, int numOfSupermarket, int numOfHawkerCentre, int numOfClinic, int numOfPremiumBus, int numOfEWaste, int numOfMRT, List<Float> districtRange, String Name, String Description) {
