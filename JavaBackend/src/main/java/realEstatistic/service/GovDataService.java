@@ -6,9 +6,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import realEstatistic.mapper.*;
-import realEstatistic.model.Clinic;
-import realEstatistic.model.District;
-import realEstatistic.model.Facility;
+import realEstatistic.model.*;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,32 +19,34 @@ import java.util.UUID;
 public class GovDataService {
     private DistrictDao districtDao;
     private DistrictInfoDao districtInfoDao;
+    private OptionDao optionDao;
     private ClinicDao clinicDao;
-    private EWasteDao EWasteDao;
-    private HawkerCentreDao HawkerCentreDao;
-    private MRTDao MRTDao;
-    private ParkDao ParkDao;
-    private PremiumBusDao PremiumBusDao;
-    private SchoolDao SchoolDao;
-    private SupermarketDao SupermarketDao;
+    private EWasteDao eWasteDao;
+    private HawkerCentreDao hawkerCentreDao;
+    private MRTDao mrtDao;
+    private ParkDao parkDao;
+    private PremiumBusDao premiumBusDao;
+    private SchoolDao schoolDao;
+    private SupermarketDao supermarketDao;
     private List<District> districtIdList;
 
     @Autowired
     public GovDataService(DistrictDao districtDao, DistrictInfoDao districtInfoDao, ClinicDao cronClinicDao,
-                          CronEWasteDao cronEWasteDao,
+                          CronEWasteDao cronEWasteDao, OptionDao optionDao,
                           CronHawkerCentreDao cronHawkerCentreDao, CronMRTDao cronMRTDao, CronParkDao cronParkDao,
                           CronPremiumBusDao cronPremiumBusDao,
                           CronSchoolDao cronSchoolDao, CronSupermarketDao cronSupermarketDao) {
         this.districtInfoDao = districtInfoDao;
         this.clinicDao = cronClinicDao;
-        this.EWasteDao = cronEWasteDao;
-        this.HawkerCentreDao = cronHawkerCentreDao;
-        this.MRTDao = cronMRTDao;
-        this.ParkDao = cronParkDao;
-        this.PremiumBusDao = cronPremiumBusDao;
-        this.SchoolDao = cronSchoolDao;
-        this.SupermarketDao = cronSupermarketDao;
+        this.eWasteDao = cronEWasteDao;
+        this.hawkerCentreDao = cronHawkerCentreDao;
+        this.mrtDao = cronMRTDao;
+        this.parkDao = cronParkDao;
+        this.premiumBusDao = cronPremiumBusDao;
+        this.schoolDao = cronSchoolDao;
+        this.supermarketDao = cronSupermarketDao;
         this.districtDao = districtDao;
+        this.optionDao = optionDao;
     }
 
     @Scheduled(cron = "0 11 17 * * *")
@@ -80,20 +80,20 @@ public class GovDataService {
     }
 
     private void updateEWasteInfo(){
-        for (Map.Entry<UUID,Integer> entry : mapFacility(EWasteDao.getAllEWaste()).entrySet()){
+        for (Map.Entry<UUID,Integer> entry : mapFacility(eWasteDao.getAllEWaste()).entrySet()){
             districtInfoDao.updateEWaste(entry.getKey(), entry.getValue());
         }
     }
 
     private void updateHawkerCentre(){
-        for (Map.Entry<UUID,Integer> entry : mapFacility(HawkerCentreDao.getAllHawkerCentre()).entrySet()){
+        for (Map.Entry<UUID,Integer> entry : mapFacility(hawkerCentreDao.getAllHawkerCentre()).entrySet()){
             districtInfoDao.updateHawkerCenter(entry.getKey(), entry.getValue());
         }
     }
 
     private void updateMRT(){
         try {
-            for (Map.Entry<UUID,Integer> entry : mapFacility(MRTDao.getAllMRT()).entrySet()){
+            for (Map.Entry<UUID,Integer> entry : mapFacility(mrtDao.getAllMRT()).entrySet()){
                 districtInfoDao.updateMRT(entry.getKey(), entry.getValue());
             }
         } catch (Exception e){
@@ -102,7 +102,7 @@ public class GovDataService {
     }
 
     private void updatePark(){
-        for (Map.Entry<UUID,Integer> entry : mapFacility(ParkDao.getAllPark()).entrySet()){
+        for (Map.Entry<UUID,Integer> entry : mapFacility(parkDao.getAllPark()).entrySet()){
             districtInfoDao.updatePark(entry.getKey(), entry.getValue());
         }
     }
@@ -114,37 +114,37 @@ public class GovDataService {
     }
 
     private void updatePremiumBus(){
-        for (Map.Entry<UUID,Integer> entry : mapFacility(PremiumBusDao.getAllPremiumBus()).entrySet()){
+        for (Map.Entry<UUID,Integer> entry : mapFacility(premiumBusDao.getAllPremiumBus()).entrySet()){
             districtInfoDao.updatePremiumBus(entry.getKey(), entry.getValue());
         }
     }
 
     private void updateSupermarket(){
-        for (Map.Entry<UUID,Integer> entry : mapFacility(SupermarketDao.getAllSupermarket()).entrySet()){
+        for (Map.Entry<UUID,Integer> entry : mapFacility(supermarketDao.getAllSupermarket()).entrySet()){
             districtInfoDao.updateSupermarket(entry.getKey(), entry.getValue());
         }
     }
 
     private void updatePrimary(){
-        for (Map.Entry<UUID,Integer> entry : mapFacility(SchoolDao.getAllPrimary()).entrySet()){
+        for (Map.Entry<UUID,Integer> entry : mapFacility(schoolDao.getAllPrimary()).entrySet()){
             districtInfoDao.updatePrimarySchool(entry.getKey(), entry.getValue());
         }
     }
 
     private void updateSecondary(){
-        for (Map.Entry<UUID,Integer> entry : mapFacility(SchoolDao.getAllSecondary()).entrySet()){
+        for (Map.Entry<UUID,Integer> entry : mapFacility(schoolDao.getAllSecondary()).entrySet()){
             districtInfoDao.updateSecondarySchool(entry.getKey(), entry.getValue());
         }
     }
 
     private void updateJC(){
-        for (Map.Entry<UUID,Integer> entry : mapFacility(SchoolDao.getAllJc()).entrySet()){
+        for (Map.Entry<UUID,Integer> entry : mapFacility(schoolDao.getAllJc()).entrySet()){
             districtInfoDao.updateJuniorCollege(entry.getKey(), entry.getValue());
         }
     }
 
     private void updateMixed(){
-        for (Map.Entry<UUID,Integer> entry : mapFacility(SchoolDao.getAllMixed()).entrySet()){
+        for (Map.Entry<UUID,Integer> entry : mapFacility(schoolDao.getAllMixed()).entrySet()){
             districtInfoDao.updateMixedSchool(entry.getKey(), entry.getValue());
         }
     }
@@ -172,7 +172,39 @@ public class GovDataService {
         }
         System.out.println("lat: " + lat + "lon: " + lon + " is not in any district!");
         return null;
-    };
+    }
 
-
+    public List<? extends Facility> getFacilityByDistrict(UUID districtId, FACILITY_TYPE facilityType){
+        District district = districtDao.getDistrictById(districtId);
+        float startLat = district.getLatStart();
+        float endLat = district.getLatEnd();
+        float startLon = district.getLongStart();
+        float endLon = district.getLongEnd();
+        switch (facilityType) {
+            case PARK:
+                return parkDao.getParkByLocation(startLat, endLat, startLon, endLon);
+            case PRIMARY_SCHOOL:
+                return schoolDao.getPrimaryByLocation(startLat, endLat, startLon, endLon);
+            case SECONDARY_SCHOOL:
+                return schoolDao.getSecondaryByLocation(startLat, endLat, startLon, endLon);
+            case JUNIOR_COLLEGE:
+                return schoolDao.getJcByLocation(startLat, endLat, startLon, endLon);
+            case HAWKER_CENTER:
+                return hawkerCentreDao.getHawkerCentreByLocation(startLat, endLat, startLon, endLon);
+            case MIXED_SCHOOL:
+                return schoolDao.getMixedByLocation(startLat, endLat, startLon, endLon);
+            case SUPERMARKET:
+                return supermarketDao.getSupermarketByLocation(startLat, endLat, startLon, endLon);
+            case PREMIUM_BUS:
+                return premiumBusDao.getPremiumBusByLocation(startLat, endLat, startLon, endLon);
+            case E_WASTE:
+                return eWasteDao.getEWasteByLocation(startLat, endLat, startLon, endLon);
+            case CLINIC:
+                return clinicDao.getClinicByLocation(startLat, endLat, startLon, endLon);
+            case MRT:
+                return mrtDao.getMRTByLocation(startLat, endLat, startLon, endLon);
+            default:
+                return null;
+        }
+    }
 }

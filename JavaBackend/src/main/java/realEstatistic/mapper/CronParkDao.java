@@ -71,7 +71,7 @@ public class CronParkDao implements ParkDao{
     private static void parkListGenerator(){
         String unzippedFileName = "parks-kml.kml";
         //read downloadDir + "/" + unzippedFileName, update supermarketList here
-        SAXReader reader = new SAXReader();
+        SAXReader reader = new SAXReader(); //TODO solve this duplicate code issue
         Document document = null;
         try {//read file
             document = reader.read(downloadDir + "/" + unzippedFileName);
