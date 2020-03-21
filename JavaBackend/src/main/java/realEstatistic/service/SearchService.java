@@ -40,7 +40,7 @@ public class SearchService {
 //                    List<int> score=new Arrays.asList(1,2,3);
                     int temp = 0;
                     List<Integer> listPS = Stream.of(1, 3, 5).collect(Collectors.toList());
-                    while (temp <= listPS.size()) {
+                    while (temp < listPS.size()) {
                         if (info.getNumOfPrimary() < listPS.get(temp)) {
                             score += temp;
                         }
