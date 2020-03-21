@@ -1,15 +1,15 @@
 import React, {Component} from 'react'
 
 class NavBar extends Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.state={
 
     }
   }
   render() {
     let logStatusDisplay;
-    if (this.props.isLoggedIn == true){//some problem with this. How to inherit from Homepage?
+    if (this.props.isLoggedin){//can inherit from Homepage now
       logStatusDisplay = "You are logged in!"
     } else {
       logStatusDisplay = "You haven't logged in yet."
