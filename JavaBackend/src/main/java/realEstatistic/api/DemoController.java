@@ -4,8 +4,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import realEstatistic.model.DemoModel;
 import realEstatistic.model.District;
+import realEstatistic.model.FACILITY_TYPE;
+import realEstatistic.model.Facility;
 import realEstatistic.service.DemoModelService;
 import realEstatistic.service.DistrictService;
+import realEstatistic.service.GovDataService;
 
 import java.util.List;
 import java.util.UUID;
@@ -15,11 +18,13 @@ import java.util.UUID;
 public class DemoController {
     private DemoModelService demoModelService;
     private DistrictService districtService;
+    private GovDataService govDataService;
 
     @Autowired
-    public DemoController(DemoModelService demoModelService, DistrictService districtService) {
+    public DemoController(DemoModelService demoModelService, DistrictService districtService, GovDataService govDataService) {
         this.demoModelService = demoModelService;
         this.districtService = districtService;
+        this.govDataService = govDataService;
     }
 
 
@@ -44,10 +49,10 @@ public class DemoController {
     }
 
     @GetMapping(path = "/test")
-    public District demoApi() {
-        UUID test = UUID.fromString("643f139e-924c-4094-a8e5-8c1cb766d19d");
-        districtService.iniDistrict();
-        return demoModelService.test(test);
+    public List<? extends Facility> testApi(@RequestParam("id") String id) {
+        UUID uuid = UUID.fromString(id);
+        FACILITY_TYPE type = FACILITY_TYPE.PARK;
+        return govDataService.getFacilityByDistrict(uuid, type);
     }
 
 }
