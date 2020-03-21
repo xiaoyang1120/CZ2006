@@ -54,7 +54,7 @@ public class SearchService {
                 case PREMIUM_BUS:
                     List<Integer> listSS = Stream.of(1, 3, 5).collect(Collectors.toList());
                     temp = 0;
-                    while (temp <= listSS.size()) {
+                    while (temp < listSS.size()) {
                         if (info.getNumOfSecondary() < listSS.get(temp)) {
                             score += temp;
                         }
@@ -65,7 +65,7 @@ public class SearchService {
                 case MRT:
                     List<Integer> listMRT = Stream.of(1, 2, 3, 4, 5).collect(Collectors.toList());
                     temp = 0;
-                    while (temp <= listMRT.size()) {
+                    while (temp < listMRT.size()) {
                         if (info.getNumOfSecondary() < listMRT.get(temp)) {
                             score += temp;
                         }
@@ -77,7 +77,7 @@ public class SearchService {
                 case HAWKER_CENTER:
                     List<Integer> listHC = Stream.of(1, 3, 5, 10).collect(Collectors.toList());
                     temp = 0;
-                    while (temp <= listHC.size()) {
+                    while (temp < listHC.size()) {
                         if (info.getNumOfSecondary() < listHC.get(temp)) {
                             score += temp;
                         }
@@ -87,7 +87,7 @@ public class SearchService {
                 case PARK:
                     List<Integer> listP = Stream.of(1, 2, 3).collect(Collectors.toList());
                     temp = 0;
-                    while (temp <= listP.size()) {
+                    while (temp < listP.size()) {
                         if (info.getNumOfSecondary() < listP.get(temp)) {
                             score += temp;
                         }
@@ -97,7 +97,7 @@ public class SearchService {
                 case CLINIC:
                     List<Integer> listC = Stream.of(1, 2, 5).collect(Collectors.toList());
                     temp = 0;
-                    while (temp <= listC.size()) {
+                    while (temp < listC.size()) {
                         if (info.getNumOfSecondary() < listC.get(temp)) {
                             score += temp;
                         }
@@ -107,7 +107,7 @@ public class SearchService {
                 case E_WASTE:
                     List<Integer> listEW = Stream.of(1).collect(Collectors.toList());
                     temp = 0;
-                    while (temp <= listEW.size()) {
+                    while (temp < listEW.size()) {
                         if (info.getNumOfSecondary() < listEW.get(temp)) {
                             score += temp;
                         }
@@ -131,7 +131,11 @@ public class SearchService {
         list.sort((o1, o2) -> Integer.compare(o1.getValue() - o2.getValue(), 0));
         List<UUID> keys = new ArrayList<>();
         for (Map.Entry<UUID, Integer> en : result.entrySet()) {
-            if (keys.size()<k){
+            if (k>0){
+                k-=1;
+                continue;
+            }
+            if (keys.size()<10){
                 keys.add(en.getKey());}
             else{
                 break;
