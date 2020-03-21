@@ -43,8 +43,12 @@ public class SearchService {
                     while (temp < listPS.size()) {
                         if (info.getNumOfPrimary() < listPS.get(temp)) {
                             score += temp;
+                            break;
                         }
                         temp += 1;
+                    }
+                    if (temp==listPS.size()){
+                        score += temp;
                     }
                     break;
                 case SECONDARY_SCHOOL:
@@ -57,8 +61,12 @@ public class SearchService {
                     while (temp < listSS.size()) {
                         if (info.getNumOfSecondary() < listSS.get(temp)) {
                             score += temp;
+                            break;
                         }
                         temp += 1;
+                    }
+                    if (temp==listSS.size()){
+                        score += temp;
                     }
                     break;
 
@@ -68,8 +76,12 @@ public class SearchService {
                     while (temp < listMRT.size()) {
                         if (info.getNumOfSecondary() < listMRT.get(temp)) {
                             score += temp;
+                            break;
                         }
                         temp += 1;
+                    }
+                    if (temp==listMRT.size()){
+                        score += temp;
                     }
                     break;
 
@@ -80,8 +92,12 @@ public class SearchService {
                     while (temp < listHC.size()) {
                         if (info.getNumOfSecondary() < listHC.get(temp)) {
                             score += temp;
+                            break;
                         }
                         temp += 1;
+                    }
+                    if (temp==listHC.size()){
+                        score += temp;
                     }
                     break;
                 case PARK:
@@ -90,8 +106,12 @@ public class SearchService {
                     while (temp < listP.size()) {
                         if (info.getNumOfSecondary() < listP.get(temp)) {
                             score += temp;
+                            break;
                         }
                         temp += 1;
+                    }
+                    if (temp==listP.size()){
+                        score += temp;
                     }
                     break;
                 case CLINIC:
@@ -100,8 +120,12 @@ public class SearchService {
                     while (temp < listC.size()) {
                         if (info.getNumOfSecondary() < listC.get(temp)) {
                             score += temp;
+                            break;
                         }
                         temp += 1;
+                    }
+                    if (temp==listC.size()){
+                        score += temp;
                     }
                     break;
                 case E_WASTE:
@@ -110,13 +134,16 @@ public class SearchService {
                     while (temp < listEW.size()) {
                         if (info.getNumOfSecondary() < listEW.get(temp)) {
                             score += temp;
+                            break;
                         }
                         temp += 1;
                     }
-
+                    if (temp==listEW.size()){
+                        score += temp;
+                    }
                     break;
             }
-        return 0;
+        return score;
     }
 
 
@@ -128,9 +155,9 @@ public class SearchService {
             result.put(i.getDistrictId(),getScore(i,facility_types));
         }
         List<Map.Entry<UUID, Integer>> list = new ArrayList<>(result.entrySet());
-        list.sort((o1, o2) -> Integer.compare(o1.getValue() - o2.getValue(), 0));
+        list.sort((o1, o2) -> Integer.compare(o2.getValue() - o1.getValue(), 0));
         List<UUID> keys = new ArrayList<>();
-        for (Map.Entry<UUID, Integer> en : result.entrySet()) {
+        for (Map.Entry<UUID, Integer> en : list) {
             if (k>0){
                 k-=1;
                 continue;
@@ -156,6 +183,7 @@ public class SearchService {
                 Dresults.add(temp);
             }
         }
+
         return Dresults;
 
     }
