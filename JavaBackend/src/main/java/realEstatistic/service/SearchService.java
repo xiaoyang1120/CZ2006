@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import realEstatistic.mapper.DistrictInfoDao;
 import realEstatistic.model.FACILITY_TYPE;
 import realEstatistic.util.EnumStringlizer;
-
+import realEstatistic.model.DistrictInfo;
 import java.util.List;
 
 @Service
@@ -22,4 +22,17 @@ public class SearchService {
     }
 
 }
+    public List<Criteria> getSortedDistrictByCriteria(int [] selectedCriteriaId){
+        List<DistrictInfo> districts=districtInfoDao.getAllInfo();
+        for(int i:selectedCriteriaId){
+            switch(i){
+                case 0://need a map
+
+                    break;
+            }
+        }
+    }
+
+
+    }
 
