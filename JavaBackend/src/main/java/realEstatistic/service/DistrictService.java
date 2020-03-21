@@ -15,7 +15,7 @@ public class DistrictService {
     public DistrictService(DistrictDao districtDao) {
         this.districtDao = districtDao;
     }
-
+    public District getDistrictById(UUID id){return this.districtDao.getDistrictById(id);}
     public void iniDistrict(){
         double maxLat = 1.470104;
         double minLat = 1.239169;

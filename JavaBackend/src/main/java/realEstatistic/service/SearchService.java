@@ -3,9 +3,12 @@ package realEstatistic.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import realEstatistic.mapper.DistrictInfoDao;
+import realEstatistic.mapper.DistrictDao;
+import realEstatistic.model.District;
 import realEstatistic.model.FACILITY_TYPE;
 import realEstatistic.util.EnumStringlizer;
 import realEstatistic.model.DistrictInfo;
+import realEstatistic.model.DistrictFullInfo;
 
 import java.util.*;
 import java.util.function.Function;
@@ -15,13 +18,18 @@ import java.util.function.ToLongFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+
+
+
 @Service
 public class SearchService {
     private DistrictInfoDao districtInfoDao;
+    private DistrictDao districtDao;
 
     @Autowired
-    public SearchService(DistrictInfoDao districtInfoDao) {
+    public SearchService(DistrictInfoDao districtInfoDao,DistrictDao districtDao) {
         this.districtInfoDao = districtInfoDao;
+        this.districtDao = districtDao;
     }
 
     public static String[] getAllAvailableCriteria() {
@@ -118,7 +126,7 @@ public class SearchService {
     }
 
 
-    public List<DistrictInfo> getSortedDistrictByCriteria(FACILITY_TYPE[] facility_types,int k) {
+    public List<DistrictFullInfo> getSortedDistrictByCriteria(FACILITY_TYPE[] facility_types,int k) {
 
         List<DistrictInfo> districts = districtInfoDao.getAllInfo();
         Map<UUID, Integer> result = new HashMap<UUID, Integer>();
@@ -145,10 +153,20 @@ public class SearchService {
                 break;
             }
         }
-        List<DistrictInfo> Dresults = new ArrayList<>();
+        List<DistrictFullInfo> Dresults = new ArrayList<>();
         for (DistrictInfo i : districts) {
             if (keys.contains(i.getDistrictId())){
-                Dresults.add(i);
+                DistrictService ser=new DistrictService(this.districtDao);
+                District districtT=ser.getDistrictById(i.getDistrictId());
+                List<Float> districtRange=new ArrayList();
+                districtRange.add(districtT.getLatEnd());
+                districtRange.add(districtT.getLatStart());
+                districtRange.add(districtT.getLongEnd());
+                districtRange.add(districtT.getLongStart());
+                String name=districtT.getDistrictName();
+                String description=districtT.getDistrictDescription();
+                DistrictFullInfo temp= new DistrictFullInfo(i.getDistrictId(), i.getNumOfPrimary(), i.getNumOfSecondary(), i.getNumOfJc(), i.getNumOfMixed() , i.getNumOfPark() , i.getNumOfSupermarket(), i.getNumOfHawkerCentre() ,i.getNumOfClinic(),i.getNumOfPremiumBus(), i.getNumOfEWaste() , i.getNumOfMRT() , districtRange, name, description);
+                Dresults.add(temp);
             }
         }
         return Dresults;
