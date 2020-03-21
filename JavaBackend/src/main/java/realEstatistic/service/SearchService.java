@@ -20,12 +20,12 @@ import java.util.stream.Stream;
 @Service
 public class SearchService {
     private DistrictInfoDao districtInfoDao;
-    private DistrictDao districtDao;
+    private DistrictService districtService;
 
     @Autowired
-    public SearchService(DistrictInfoDao districtInfoDao,DistrictDao districtDao) {
+    public SearchService(DistrictInfoDao districtInfoDao,DistrictService districtService) {
         this.districtInfoDao = districtInfoDao;
-        this.districtDao = districtDao;
+        this.districtService = districtService;
     }
 
     public static String[] getAllAvailableCriteria() {
@@ -144,8 +144,7 @@ public class SearchService {
         List<DistrictFullInfo> Dresults = new ArrayList<>();
         for (DistrictInfo i : districts) {
             if (keys.contains(i.getDistrictId())){
-                DistrictService ser=new DistrictService(this.districtDao);
-                District districtT=ser.getDistrictById(i.getDistrictId());
+                District districtT=districtService.getDistrictById(i.getDistrictId());
                 List<Float> districtRange=new ArrayList<>();
                 districtRange.add(districtT.getLatEnd());
                 districtRange.add(districtT.getLatStart());
