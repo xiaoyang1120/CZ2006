@@ -100,8 +100,8 @@ public class CronParkDao implements ParkDao{
             while(tempIter.hasNext()){
                 temp = tempIter.next();
                 if(temp.getName() == "description"){
-                    parkName = temp.getStringValue().split("<td>")[2].split("</td>")[0];
-                    parkDescription = (temp.getStringValue().split("<td>")[3]).split("</td>")[0];
+                    parkName = temp.getStringValue().split("<td>")[7].split("</td>")[0];
+                    parkDescription = (temp.getStringValue().split("<td>")[10]).split("</td>")[0];
                 }
 
                 if(temp.getName() == "Point"){
