@@ -113,10 +113,6 @@ public class CronHawkerCentreDao implements HawkerCentreDao{
             UUID newId = UUID.randomUUID();
             HawkerCentre a = new HawkerCentre(newId, hawkerCentreName, lat, long_, hawkerCentreDescription);
             hawkerCentreList.add(a);
-            //气死👴了 有的number of food stores真的是0
-//            System.out.println(hawkerCentreDescription);
-//            System.out.println(hawkerCentreName);
-//            System.out.println();
         }
     }
 

@@ -113,9 +113,6 @@ public class CronEWasteDao implements EWasteDao{
             UUID newId = UUID.randomUUID();
             EWaste a = new EWaste(newId, eWasteName, lat, long_, eWasteDescription);
             eWasteList.add(a);
-//            System.out.println(eWasteDescription);
-//            System.out.println(eWasteName);
-//            System.out.println();
         }
     }
 

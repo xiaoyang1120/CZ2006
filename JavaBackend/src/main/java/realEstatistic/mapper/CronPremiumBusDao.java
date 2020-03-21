@@ -14,6 +14,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 @Primary
 @Component
@@ -77,14 +78,10 @@ public class CronPremiumBusDao implements PremiumBusDao{
             long_ = (float) myjson.getDouble("y_coord");
             premiumBusName = myjson.getString("bus_stop_desc_txt");
             premiumBusDescription = myjson.getString("op_hr_1_txt") + "  " + myjson.getString("op_hr_2_txt") + "  " + myjson.getString("fare_txt") + "  " + myjson.getString("orig_dest_txt");
-//            UUID newId = UUID.randomUUID();
-//            PremiumBus a = new PremiumBus(newId, premiumBusName, lat, long_, premiumBusDescription);
-//            premiumBusList.add(a);
-            System.out.println(premiumBusDescription);
-            System.out.println(premiumBusName);
-            System.out.println(lat);
-            System.out.println(long_);
-            System.out.println();
+            UUID newId = UUID.randomUUID();
+            PremiumBus a = new PremiumBus(newId, premiumBusName, lat, long_, premiumBusDescription);
+            premiumBusList.add(a);
+
         }
 
 

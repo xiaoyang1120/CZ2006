@@ -113,9 +113,6 @@ public class CronClinicDao implements ClinicDao{
             UUID newId = UUID.randomUUID();
             Clinic a = new Clinic(newId, clinicName, lat, long_, clinicDescription);
             clinicList.add(a);
-//            System.out.println(clinicDescription);
-//            System.out.println(clinicName);
-//            System.out.println();
         }
     }
 

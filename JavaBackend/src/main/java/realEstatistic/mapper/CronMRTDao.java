@@ -61,9 +61,6 @@ public class CronMRTDao implements MRTDao{
             UUID newId = UUID.randomUUID();
             MRT a = new MRT(newId, stopName, lat, long_);
             mrtList.add(a);
-//            System.out.println(stopName);
-//            System.out.println(long_);
-//            System.out.println();
         }
 
 
