@@ -13,7 +13,6 @@ public class DistrictFullInfo extends DistrictInfo{
         this.districtRange=districtRange;
         this.Name=Name;
         this.Description=Description;
-
     }
 
 }
