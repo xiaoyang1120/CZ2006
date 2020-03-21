@@ -113,7 +113,6 @@ public class CronParkDao implements ParkDao{
             UUID newId = UUID.randomUUID();
             Park a = new Park(newId, parkName, lat, long_, parkDescription);
             parkList.add(a);
-
         }
     }
 

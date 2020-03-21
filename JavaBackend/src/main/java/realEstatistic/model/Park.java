@@ -11,6 +11,7 @@ public class Park extends Facility{
         this.parkId = parkId;
         this.parkName = parkName;
         this.lat = lat;
+        this.long_ = long_;
         this.description = description;
     }
 
