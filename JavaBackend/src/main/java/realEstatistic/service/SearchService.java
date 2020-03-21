@@ -169,20 +169,23 @@ public class SearchService {
             }
         }
         List<DistrictFullInfo> Dresults = new ArrayList<>();
-        for (DistrictInfo i : districts) {
-            if (keys.contains(i.getDistrictId())){
-                District districtT=districtService.getDistrictById(i.getDistrictId());
-                List<Float> districtRange=new ArrayList<>();
-                districtRange.add(districtT.getLatEnd());
-                districtRange.add(districtT.getLatStart());
-                districtRange.add(districtT.getLongEnd());
-                districtRange.add(districtT.getLongStart());
-                String name=districtT.getDistrictName();
-                String description=districtT.getDistrictDescription();
-                DistrictFullInfo temp= new DistrictFullInfo(i.getDistrictId(), i.getNumOfPrimary(), i.getNumOfSecondary(), i.getNumOfJc(), i.getNumOfMixed() , i.getNumOfPark() , i.getNumOfSupermarket(), i.getNumOfHawkerCentre() ,i.getNumOfClinic(),i.getNumOfPremiumBus(), i.getNumOfEWaste() , i.getNumOfMRT() , districtRange, name, description);
-                Dresults.add(temp);
+        for (UUID j: keys){
+            for (DistrictInfo i : districts) {
+                if (i.getDistrictId()==j){
+                    District districtT=districtService.getDistrictById(i.getDistrictId());
+                    List<Float> districtRange=new ArrayList<>();
+                    districtRange.add(districtT.getLatEnd());
+                    districtRange.add(districtT.getLatStart());
+                    districtRange.add(districtT.getLongEnd());
+                    districtRange.add(districtT.getLongStart());
+                    String name=districtT.getDistrictName();
+                    String description=districtT.getDistrictDescription();
+                    DistrictFullInfo temp= new DistrictFullInfo(i.getDistrictId(), i.getNumOfPrimary(), i.getNumOfSecondary(), i.getNumOfJc(), i.getNumOfMixed() , i.getNumOfPark() , i.getNumOfSupermarket(), i.getNumOfHawkerCentre() ,i.getNumOfClinic(),i.getNumOfPremiumBus(), i.getNumOfEWaste() , i.getNumOfMRT() , districtRange, name, description);
+                    Dresults.add(temp);
+                }
             }
         }
+
 
         return Dresults;
 
