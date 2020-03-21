@@ -21,11 +21,11 @@ public class DemoController {
     private SearchService searchService;
 
     @Autowired
-    public DemoController(DemoModelService demoModelService, DistrictService districtService, GovDataService govDataService,SearchService searchService) {
+    public DemoController(DemoModelService demoModelService, DistrictService districtService, GovDataService govDataService, SearchService searchService) {
         this.demoModelService = demoModelService;
         this.districtService = districtService;
         this.govDataService = govDataService;
-        this.searchService=searchService;
+        this.searchService = searchService;
     }
 
     @GetMapping("/search/{id}")
@@ -65,6 +65,11 @@ public class DemoController {
     @GetMapping(path = "/getAllCri")
     public String[] testOfCriteria(){
         return SearchService.getAllAvailableCriteria();
+    }
+
+    @PostMapping(path = "/search")
+    public List<DistrictFullInfo> search(@RequestParam("offset") int offset, @RequestBody FACILITY_TYPE[] t){
+        return searchService.getSortedDistrictByCriteria(t, offset);
     }
 
 }

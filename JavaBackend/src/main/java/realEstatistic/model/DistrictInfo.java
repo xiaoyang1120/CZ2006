@@ -16,6 +16,9 @@ public class DistrictInfo {
     private int numOfEWaste;
     private int numOfMRT;
 
+    public DistrictInfo() {
+    }
+
     public DistrictInfo(UUID districtId, int numOfPrimary, int numOfSecondary, int numOfJc, int numOfMixed, int numOfPark, int numOfSupermarket, int numOfHawkerCentre, int numOfClinic, int numOfPremiumBus, int numOfEWaste, int numOfMRT) {
         this.districtId = districtId;
         this.numOfPrimary = numOfPrimary;

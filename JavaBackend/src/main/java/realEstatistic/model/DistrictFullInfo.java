@@ -14,5 +14,4 @@ public class DistrictFullInfo extends DistrictInfo{
         this.Name=Name;
         this.Description=Description;
     }
-
 }
