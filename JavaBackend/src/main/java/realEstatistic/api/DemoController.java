@@ -9,6 +9,7 @@ import realEstatistic.model.Facility;
 import realEstatistic.service.DemoModelService;
 import realEstatistic.service.DistrictService;
 import realEstatistic.service.GovDataService;
+import realEstatistic.service.SearchService;
 
 import java.util.List;
 import java.util.UUID;
@@ -53,6 +54,11 @@ public class DemoController {
         UUID uuid = UUID.fromString(id);
         FACILITY_TYPE type = FACILITY_TYPE.PARK;
         return govDataService.getFacilityByDistrict(uuid, type);
+    }
+
+    @GetMapping(path = "/getAllCri")
+    public String[] testOfCriteria(){
+        return SearchService.getAllAvailableCriteria();
     }
 
 }

@@ -19,7 +19,6 @@ import java.util.UUID;
 public class GovDataService {
     private DistrictDao districtDao;
     private DistrictInfoDao districtInfoDao;
-    private OptionDao optionDao;
     private ClinicDao clinicDao;
     private EWasteDao eWasteDao;
     private HawkerCentreDao hawkerCentreDao;
@@ -32,7 +31,7 @@ public class GovDataService {
 
     @Autowired
     public GovDataService(DistrictDao districtDao, DistrictInfoDao districtInfoDao, ClinicDao cronClinicDao,
-                          CronEWasteDao cronEWasteDao, OptionDao optionDao,
+                          CronEWasteDao cronEWasteDao,
                           CronHawkerCentreDao cronHawkerCentreDao, CronMRTDao cronMRTDao, CronParkDao cronParkDao,
                           CronPremiumBusDao cronPremiumBusDao,
                           CronSchoolDao cronSchoolDao, CronSupermarketDao cronSupermarketDao) {
@@ -46,7 +45,6 @@ public class GovDataService {
         this.schoolDao = cronSchoolDao;
         this.supermarketDao = cronSupermarketDao;
         this.districtDao = districtDao;
-        this.optionDao = optionDao;
     }
 
     @Scheduled(cron = "0 11 17 * * *")
