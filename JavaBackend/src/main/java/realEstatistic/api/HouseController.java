@@ -1,11 +1,15 @@
 package realEstatistic.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import realEstatistic.model.House;
 import realEstatistic.service.HouseService;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @RequestMapping("api/house")
@@ -14,67 +18,87 @@ public class HouseController {
     private HouseService houseService;
 
     @Autowired
-    public HouseController(HouseService hosueService) {
+    public HouseController(HouseService houseService) {
         this.houseService = houseService;
     }
 
-
-    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
-    public class BadRequestException extends RuntimeException {
+    @GetMapping(path = "/getHouseById")
+    public House getHouseById(@RequestParam("houseId") String houseId, HttpServletResponse response) throws IOException {
+        try{
+            UUID houseUUID = UUID.fromString(houseId);
+            House h =  houseService.getHouseById(houseUUID);
+            if (h == null){
+                response.sendError(400, "The house does not exist!");
+            }
+            else{return h;}
+        }catch(IllegalArgumentException e){
+           response.sendError(400, "Please enter a correct uuid!");
+        }
+        return null;
     }
 
-    @GetMapping(path = "/search")
-    public House getHouseById(@RequestParam("id") String houseId) {
+    @PostMapping(path = "/addToFavourite")
+    public void addHouseToFavourite(@RequestBody String email, String houseId, HttpServletResponse response) throws IOException {
         try{
-            System.out.println(houseId);
             UUID houseUUID = UUID.fromString(houseId);
-            return houseService.getHouseById(houseUUID);
-        }catch(Exception e){
+            House h =  houseService.getHouseById(houseUUID);
+            if (h == null){
+                response.sendError(400, "The house does not exist!");
+            }
+            houseService.addHouseToFavourite(email, houseUUID);
+        }catch(IllegalArgumentException e){
+            response.sendError(400, "Please enter a correct uuid!");
+        } catch (IOException e) {
             e.printStackTrace();
-            throw new BadRequestException();
         }
     }
 
+    @PostMapping("/postHouse")
+    public Map<String, Object> postHouse(@RequestBody House house, HttpServletResponse httpResponse) throws IOException {
+        Map<String, Object> response = new HashMap<>();
+        houseService.AddHouse(house);
+        response.put("status", "Added successfully");
+        response.put("UUID", house.getHouseId());
+        return response;
+    }
 
+    @PostMapping("/editHouse")
+    public Map<String, Object> editHouse(@RequestBody Map<String, String> json, HttpServletResponse httpResponse) throws IOException {
+        House house = new House();
+        try{
+            UUID houseId = UUID.fromString(json.get("houseId"));
+            house.setHouseId(houseId);
+            UUID districtId = UUID.fromString(json.get("districtId"));
+            house.setDistrictId(districtId);
+            UUID ownerId = UUID.fromString(json.get("ownerId"));
+            house.setOwnerId(ownerId);
+            boolean isAvailable = Boolean.parseBoolean(json.get("isAvailable"));
+            house.setAvalable(isAvailable);
+        }catch (IllegalArgumentException e){
+            httpResponse.sendError(400, "Please enter a correct uuid!");
+        }
 
-//    @GetMapping("/search/{id}")
-//    public List<DistrictFullInfo> getIt(@PathVariable Integer id){
-//        FACILITY_TYPE[] t= {FACILITY_TYPE.CLINIC,FACILITY_TYPE.HAWKER_CENTER};
-//
-//        return searchService.getSortedDistrictByCriteria(t,2);
-//    }
-//
-//    @GetMapping("/get/{id}")
-//    public DemoModel get(@PathVariable Integer id){
-//        return demoModelService.getOne(id);
-//    }
-//
-//    @GetMapping("getAll")
-//    public List<DemoModel> getAll(){
-//        return demoModelService.getAll();
-//    }
-//
-//    @PostMapping("/add")
-//    public Boolean add(@RequestBody DemoModel user){
-//        return demoModelService.add(user);
-//    }
-//
-//    @GetMapping(path = "{msg}")
-//    public String demoApi(@PathVariable("msg") String msg) {
-//        return msg;
-//    }
-//
-//
-//
-//    @GetMapping(path = "/getAllCri")
-//    public String[] testOfCriteria(){
-//        return SearchService.getAllAvailableCriteria();
-//    }
-//
-//    @PostMapping(path = "/search")
-//    public List<DistrictFullInfo> search(@RequestParam("offset") int offset, @RequestBody FACILITY_TYPE[] t){
-//        return searchService.getSortedDistrictByCriteria(t, offset);
-//    }
+        house.setHouseDescription(json.get("houseDescription"));
+        house.setImage(json.get("image"));
+        house.setVenue(json.get("venue"));
+        // problem: string.tolower()!= "true" gives false, how to set criteria?
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", "successful");
+        houseService.editHouse(house);
+        return response;
+    }
 
+    @GetMapping(path = "/getHouseByDistrictId")
+    public List<House> getHouseByDistrictId(@RequestParam("districtId") String districtId, HttpServletResponse response) throws IOException {
+
+        try{
+            UUID districtUUID = UUID.fromString(districtId);
+            List<House> houseList = houseService.getAllHouseByDistrictId(districtUUID);
+            return houseList;
+        }catch (IllegalArgumentException e){
+            response.sendError(400, "Please enter a correct UUID!");
+        }
+        return null;
+    }
 }
 

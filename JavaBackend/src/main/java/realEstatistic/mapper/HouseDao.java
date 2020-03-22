@@ -13,7 +13,7 @@ import java.util.UUID;
 public interface HouseDao {
     void addHouse(House house);
     void editHouse(House house);
-    List<House> getHouseByDistrictID(@Param("districtId") UUID districtId);
+    List<House> getHouseByDistrictId(@Param("districtId") UUID districtId);
     House getHouseById(@Param("houseId") UUID houseId);
     void addHouseToFavourite(@Param("email") String email, @Param("houseId") UUID houseId);
     List<House> getFavouriteByUserId(@Param("userId") UUID userId);

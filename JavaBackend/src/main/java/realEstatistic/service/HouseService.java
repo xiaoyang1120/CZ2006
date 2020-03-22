@@ -34,13 +34,12 @@ public class HouseService {
     }
 
     public List<House> getAllHouseByDistrictId(UUID districtId){
-        return houseDao.getHouseByDistrictID(districtId);
+        return houseDao.getHouseByDistrictId(districtId);
     }
 
     public House getHouseById(UUID houseId){
         return houseDao.getHouseById(houseId);
     }
-
     public void addHouseToFavourite(String email, UUID houseId){
         houseDao.addHouseToFavourite(email, houseId);
     }

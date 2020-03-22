@@ -30,6 +30,9 @@ public class House {
         this.districtId = districtId;
     }
 
+    public House() {
+    }
+
     public UUID getHouseId() {
         return houseId;
     }
