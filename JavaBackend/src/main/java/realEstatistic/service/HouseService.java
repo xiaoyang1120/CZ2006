@@ -17,8 +17,8 @@ public class HouseService {
     private UserDao userDao;
 
     @Autowired
-    public HouseService(HouseDao hosueDao, DistrictDao districtDao, UserDao userDao) {
-        this.houseDao = hosueDao;
+    public HouseService(HouseDao houseDao, DistrictDao districtDao, UserDao userDao) {
+        this.houseDao = houseDao;
         this.districtDao = districtDao;
         this.userDao = userDao;
     }
