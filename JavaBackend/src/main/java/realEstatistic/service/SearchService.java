@@ -180,7 +180,6 @@ public class SearchService {
                     districtRange.add(districtT.getLongStart());
                     String name=districtT.getDistrictName();
                     String description=districtT.getDistrictDescription();
-                    System.out.println(name);
                     DistrictFullInfo temp= new DistrictFullInfo(i.getDistrictId(), i.getNumOfPrimary(), i.getNumOfSecondary(), i.getNumOfJc(), i.getNumOfMixed() , i.getNumOfPark() , i.getNumOfSupermarket(), i.getNumOfHawkerCentre() ,i.getNumOfClinic(),i.getNumOfPremiumBus(), i.getNumOfEWaste() , i.getNumOfMRT() , districtRange, name, description);
                     Dresults.add(temp);
                 }
