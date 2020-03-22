@@ -16,7 +16,7 @@ class HomePage extends Component {
     render() {
         return (
             <div>
-                <NavBar isLoggedin={this.state.isLoggedin}/>
+               <h1>This is my homepage.</h1>
             </div>
         )
     }
