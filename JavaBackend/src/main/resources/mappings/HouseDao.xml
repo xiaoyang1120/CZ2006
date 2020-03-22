@@ -9,7 +9,7 @@
         <result property="houseDescription" column="houseDescription"/>
         <result property="ownerId" column="ownerId"/>
         <result property="isAvailable" column="isAvailable"/>
-        <result property="venue" column="venue"/>
+        <result property="venue" column="houseVenue"/>
         <result property="districtId" column="districtId"/>
     </resultMap>
 
