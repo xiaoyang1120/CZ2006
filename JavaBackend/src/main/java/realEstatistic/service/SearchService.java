@@ -52,10 +52,6 @@ public class SearchService {
                     }
                     break;
                 case SECONDARY_SCHOOL:
-                case JUNIOR_COLLEGE:
-                case MIXED_SCHOOL:
-                case SUPERMARKET:
-                case PREMIUM_BUS:
                     List<Integer> listSS = Stream.of(1, 3, 5).collect(Collectors.toList());
                     temp = 0;
                     while (temp < listSS.size()) {
@@ -69,12 +65,68 @@ public class SearchService {
                         score += temp;
                     }
                     break;
+                case JUNIOR_COLLEGE:
+                    List<Integer> listJC = Stream.of(1, 3, 5).collect(Collectors.toList());
+                    temp = 0;
+                    while (temp < listJC.size()) {
+                        if (info.getNumOfJc()< listJC.get(temp)) {
+                            score += temp;
+                            break;
+                        }
+                        temp += 1;
+                    }
+                    if (temp==listJC.size()){
+                        score += temp;
+                    }
+                    break;
+                case MIXED_SCHOOL:
+                    List<Integer> listMS = Stream.of(1, 3, 5).collect(Collectors.toList());
+                    temp = 0;
+                    while (temp < listMS.size()) {
+                        if (info.getNumOfMixed() < listMS.get(temp)) {
+                            score += temp;
+                            break;
+                        }
+                        temp += 1;
+                    }
+                    if (temp==listMS.size()){
+                        score += temp;
+                    }
+                    break;
+                case SUPERMARKET:
+                    List<Integer> listS = Stream.of(1, 3, 5).collect(Collectors.toList());
+                    temp = 0;
+                    while (temp < listS.size()) {
+                        if (info.getNumOfSupermarket() < listS.get(temp)) {
+                            score += temp;
+                            break;
+                        }
+                        temp += 1;
+                    }
+                    if (temp==listS.size()){
+                        score += temp;
+                    }
+                    break;
+                case PREMIUM_BUS:
+                    List<Integer> listPB = Stream.of(1, 3, 5).collect(Collectors.toList());
+                    temp = 0;
+                    while (temp < listPB.size()) {
+                        if (info.getNumOfPremiumBus() < listPB.get(temp)) {
+                            score += temp;
+                            break;
+                        }
+                        temp += 1;
+                    }
+                    if (temp==listPB.size()){
+                        score += temp;
+                    }
+                    break;
 
                 case MRT:
                     List<Integer> listMRT = Stream.of(1, 2, 3, 4, 5).collect(Collectors.toList());
                     temp = 0;
                     while (temp < listMRT.size()) {
-                        if (info.getNumOfSecondary() < listMRT.get(temp)) {
+                        if (info.getNumOfMRT() < listMRT.get(temp)) {
                             score += temp;
                             break;
                         }
@@ -90,7 +142,7 @@ public class SearchService {
                     List<Integer> listHC = Stream.of(1, 3, 5, 10).collect(Collectors.toList());
                     temp = 0;
                     while (temp < listHC.size()) {
-                        if (info.getNumOfSecondary() < listHC.get(temp)) {
+                        if (info.getNumOfHawkerCentre() < listHC.get(temp)) {
                             score += temp;
                             break;
                         }
@@ -104,7 +156,7 @@ public class SearchService {
                     List<Integer> listP = Stream.of(1, 2, 3).collect(Collectors.toList());
                     temp = 0;
                     while (temp < listP.size()) {
-                        if (info.getNumOfSecondary() < listP.get(temp)) {
+                        if (info.getNumOfPark() < listP.get(temp)) {
                             score += temp;
                             break;
                         }
@@ -118,7 +170,7 @@ public class SearchService {
                     List<Integer> listC = Stream.of(1, 2, 5).collect(Collectors.toList());
                     temp = 0;
                     while (temp < listC.size()) {
-                        if (info.getNumOfSecondary() < listC.get(temp)) {
+                        if (info.getNumOfClinic()< listC.get(temp)) {
                             score += temp;
                             break;
                         }
@@ -132,7 +184,7 @@ public class SearchService {
                     List<Integer> listEW = Stream.of(1).collect(Collectors.toList());
                     temp = 0;
                     while (temp < listEW.size()) {
-                        if (info.getNumOfSecondary() < listEW.get(temp)) {
+                        if (info.getNumOfEWaste() < listEW.get(temp)) {
                             score += temp;
                             break;
                         }
