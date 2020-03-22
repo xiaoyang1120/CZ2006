@@ -34,7 +34,9 @@ public class SearchService {
 
     private int getScore(DistrictInfo info, FACILITY_TYPE[] facility_types){
         int score = 0;
-        for (FACILITY_TYPE i:facility_types)
+        int index=0;
+        for (FACILITY_TYPE i:facility_types){
+            index+=1;
             switch (i) {
                 case PRIMARY_SCHOOL:
 //                    List<int> score=new Arrays.asList(1,2,3);
@@ -42,12 +44,18 @@ public class SearchService {
                     List<Integer> listPS = Stream.of(1, 3, 5).collect(Collectors.toList());
                     while (temp < listPS.size()) {
                         if (info.getNumOfPrimary() < listPS.get(temp)) {
+                            if (index<=3){
+                                temp*=2;
+                            }
                             score += temp;
                             break;
                         }
                         temp += 1;
                     }
                     if (temp==listPS.size()){
+                        if (index<=3){
+                            temp*=2;
+                        }
                         score += temp;
                     }
                     break;
@@ -56,12 +64,18 @@ public class SearchService {
                     temp = 0;
                     while (temp < listSS.size()) {
                         if (info.getNumOfSecondary() < listSS.get(temp)) {
+                            if (index<=3){
+                                temp*=2;
+                            }
                             score += temp;
                             break;
                         }
                         temp += 1;
                     }
                     if (temp==listSS.size()){
+                        if (index<=3){
+                            temp*=2;
+                        }
                         score += temp;
                     }
                     break;
@@ -70,12 +84,18 @@ public class SearchService {
                     temp = 0;
                     while (temp < listJC.size()) {
                         if (info.getNumOfJc()< listJC.get(temp)) {
+                            if (index<=3){
+                                temp*=2;
+                            }
                             score += temp;
                             break;
                         }
                         temp += 1;
                     }
                     if (temp==listJC.size()){
+                        if (index<=3){
+                            temp*=2;
+                        }
                         score += temp;
                     }
                     break;
@@ -84,12 +104,18 @@ public class SearchService {
                     temp = 0;
                     while (temp < listMS.size()) {
                         if (info.getNumOfMixed() < listMS.get(temp)) {
+                            if (index<=3){
+                                temp*=2;
+                            }
                             score += temp;
                             break;
                         }
                         temp += 1;
                     }
                     if (temp==listMS.size()){
+                        if (index<=3){
+                            temp*=2;
+                        }
                         score += temp;
                     }
                     break;
@@ -98,12 +124,18 @@ public class SearchService {
                     temp = 0;
                     while (temp < listS.size()) {
                         if (info.getNumOfSupermarket() < listS.get(temp)) {
+                            if (index<=3){
+                                temp*=2;
+                            }
                             score += temp;
                             break;
                         }
                         temp += 1;
                     }
                     if (temp==listS.size()){
+                        if (index<=3){
+                            temp*=2;
+                        }
                         score += temp;
                     }
                     break;
@@ -112,12 +144,18 @@ public class SearchService {
                     temp = 0;
                     while (temp < listPB.size()) {
                         if (info.getNumOfPremiumBus() < listPB.get(temp)) {
+                            if (index<=3){
+                                temp*=2;
+                            }
                             score += temp;
                             break;
                         }
                         temp += 1;
                     }
                     if (temp==listPB.size()){
+                        if (index<=3){
+                            temp*=2;
+                        }
                         score += temp;
                     }
                     break;
@@ -127,12 +165,18 @@ public class SearchService {
                     temp = 0;
                     while (temp < listMRT.size()) {
                         if (info.getNumOfMRT() < listMRT.get(temp)) {
+                            if (index<=3){
+                                temp*=2;
+                            }
                             score += temp;
                             break;
                         }
                         temp += 1;
                     }
                     if (temp==listMRT.size()){
+                        if (index<=3){
+                            temp*=2;
+                        }
                         score += temp;
                     }
                     break;
@@ -143,12 +187,18 @@ public class SearchService {
                     temp = 0;
                     while (temp < listHC.size()) {
                         if (info.getNumOfHawkerCentre() < listHC.get(temp)) {
+                            if (index<=3){
+                                temp*=2;
+                            }
                             score += temp;
                             break;
                         }
                         temp += 1;
                     }
                     if (temp==listHC.size()){
+                        if (index<=3){
+                            temp*=2;
+                        }
                         score += temp;
                     }
                     break;
@@ -157,12 +207,18 @@ public class SearchService {
                     temp = 0;
                     while (temp < listP.size()) {
                         if (info.getNumOfPark() < listP.get(temp)) {
+                            if (index<=3){
+                                temp*=2;
+                            }
                             score += temp;
                             break;
                         }
                         temp += 1;
                     }
                     if (temp==listP.size()){
+                        if (index<=3){
+                            temp*=2;
+                        }
                         score += temp;
                     }
                     break;
@@ -171,12 +227,18 @@ public class SearchService {
                     temp = 0;
                     while (temp < listC.size()) {
                         if (info.getNumOfClinic()< listC.get(temp)) {
+                            if (index<=3){
+                                temp*=2;
+                            }
                             score += temp;
                             break;
                         }
                         temp += 1;
                     }
                     if (temp==listC.size()){
+                        if (index<=3){
+                            temp*=2;
+                        }
                         score += temp;
                     }
                     break;
@@ -185,16 +247,24 @@ public class SearchService {
                     temp = 0;
                     while (temp < listEW.size()) {
                         if (info.getNumOfEWaste() < listEW.get(temp)) {
+                            if (index<=3){
+                                temp*=2;
+                            }
                             score += temp;
                             break;
                         }
                         temp += 1;
                     }
                     if (temp==listEW.size()){
+                        if (index<=3){
+                            temp*=2;
+                        }
                         score += temp;
                     }
                     break;
             }
+        }
+
         return score;
     }
 
