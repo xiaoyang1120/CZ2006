@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
 
 const Navbar = () => {
   const [state, setState] = useState({
+    isLogin: false,
     right: false
   });
 
@@ -43,40 +44,46 @@ const Navbar = () => {
     </Box>
   );
 
-  return (
-    <>
-      <Box component="nav">
-        <AppBar position="static">
-          <Toolbar>
-            <PinDropIcon edge="start" />
-            <Typography variant="h6" className={classes.title}>
-              RealEstatistics
-            </Typography>
-            <Button color="inherit" className={classes.menuButton}>
-              <Link to="/">Home</Link>
-            </Button>
-            <Button color="inherit" className={classes.menuButton}>
-              <Link to="/profile">Username</Link>
-            </Button>
-            <Button
+  return <div>
+    <Box component="nav">
+      <AppBar position="static">
+        <Toolbar>
+          <PinDropIcon edge="start"/>
+          <Typography variant="h6" className={classes.title}>
+            RealEstatistics
+          </Typography>
+          <Button color="inherit" className={classes.menuButton}>
+            <Link to="/">Home</Link>
+          </Button>
+
+          {
+            state.isLogin ?
+                <Button color="inherit" className={classes.menuButton}>
+                  <Link to="/profile">Username</Link>
+                </Button> :
+                <Button color="inherit" className={classes.menuButton}>
+                  <Link to="/login">Log in</Link>
+                </Button>
+          }
+          
+          <Button
               onClick={toggleSlider("right", true)}
               color="inherit"
               className={classes.menuButton}
-            >
-              About us
-            </Button>
-            <MobilRightMenuSlider
+          >
+            About us
+          </Button>
+          <MobilRightMenuSlider
               anchor="right"
               open={state.right}
               onClose={toggleSlider("right", false)}
-            >
-              {sideList("right")}
-            </MobilRightMenuSlider>
-          </Toolbar>
-        </AppBar>
-      </Box>
-    </>
-  );
+          >
+            {sideList("right")}
+          </MobilRightMenuSlider>
+        </Toolbar>
+      </AppBar>
+    </Box>
+  </div>;
 };
 
 export default Navbar;
