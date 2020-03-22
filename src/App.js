@@ -1,6 +1,6 @@
 import React from "react";
-import Navbar from "./components/navbar";
-import ProfilePage from "./ProfilePage";
+import Navbar from "./Components/navbar";
+import ProfilePage from "./Boundary/ProfilePage";
 import HomePage from "./HomePage";
 import "./App.css";
 import { CSSTransition, TransitionGroup } from "react-transition-group";

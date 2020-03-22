@@ -1,5 +1,5 @@
 import React from "react";
-import ProfileMenu from "./components/profileMenu";
+import ProfileMenu from "../Components/profileMenu";
 import { CSSTransition, TransitionGroup } from "react-transition-group";
 const ProfilePage = () => {
   return (
