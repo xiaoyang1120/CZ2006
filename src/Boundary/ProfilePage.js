@@ -8,7 +8,6 @@ import {
   Avatar,
   Divider,
   List,
-  Box,
   ListItemIcon
 } from "@material-ui/core";
 
@@ -20,11 +19,6 @@ import Favorite from "../Components/Favorite";
 
 //css styles
 const useStyles = makeStyles(theme => ({
-  menuContainer: {
-    width: 230,
-    //background: "#3F51B5",
-    height: "100%"
-  },
   avatar: {
     display: "block",
     margin: "1rem auto",
@@ -56,7 +50,7 @@ const ProfileMenu = () => {
   return (
     <Grid container>
       <Grid item xs={2}>
-        <Box className={classes.menuContainer} component="div">
+        <Paper style={{ background: "#211e55" }} component="div">
           <Avatar className={classes.avatar} src={avatar} alt="Liu Yanli" />
           <Divider />
           <List>
@@ -72,7 +66,7 @@ const ProfileMenu = () => {
               </ListItem>
             ))}
           </List>
-        </Box>
+        </Paper>
       </Grid>
       <Grid item xs={10}>
         <Paper style={{ padding: 20, marginTop: 10, marginBotton: 10 }}>

@@ -3,6 +3,8 @@ import { Typography, Box, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Typed from "react-typed";
 import Particles from "react-particles-js";
+import CloudUploadIcon from "@material-ui/icons/CloudUpload";
+import SearchIcon from "@material-ui/icons/Search";
 const useStyles = makeStyles(theme => ({
   title: {
     color: "white"
@@ -11,15 +13,12 @@ const useStyles = makeStyles(theme => ({
     color: "white"
   },
   typedContainer: {
-    position: "absolute",
-    top: "50%",
-    left: "50%",
-    transform: "translate(-50%, -50%)",
+    position: "static",
     width: "100vw",
     textAlign: "center"
   },
   particlesCanva: {
-    //position: "absolute"
+    position: "absolute"
   }
 }));
 /*class HomePage extends Component {
@@ -39,19 +38,9 @@ const useStyles = makeStyles(theme => ({
 const HomePage = () => {
   const classes = useStyles();
   return (
-    <>
-      <Box className={classes.typedContainer}>
-        <Typography className={classes.title} variant="h2">
-          <Typed strings={["Search For Your Idea Home with Us."]} typeSpeed={60} />
-        </Typography>
-        <br />
-        <Typography className={classes.subtitle}>
-          We provide the most real and latest statistics from the SG government
-          official website to find your idea house.
-        </Typography>
-      </Box>
+    <div>
       <Particles
-        canvasClassName={classes.particlesCanvas}
+        canvasClassName={classes.particlesCanva}
         params={{
           particles: {
             number: {
@@ -80,7 +69,61 @@ const HomePage = () => {
           }
         }}
       />
-    </>
+      <Box className={classes.typedContainer}>
+        <br />
+        <br />
+        <br />
+        <Typography className={classes.title} variant="h2">
+          <Typed
+            strings={["Search For Your Idea Home with Us."]}
+            typeSpeed={60}
+          />
+        </Typography>
+        <br />
+        <Typography className={classes.subtitle}>
+          We provide the most real and latest statistics from the SG government
+          official website to find your idea house.
+        </Typography>
+        <br />
+        <br />
+        <br />
+        <br />
+        <Button
+          variant="contained"
+          size="large"
+          color="primary"
+          className={classes.margin}
+          startIcon={<SearchIcon />}
+        >
+          Choose Your Criteria
+        </Button>
+        <br />
+        <br />
+        <br />
+        <br />
+        <Typography className={classes.title} variant="h2">
+          <Typed strings={["Have a House for Sale?"]} typeSpeed={60} />
+        </Typography>
+        <br />
+        <Typography className={classes.subtitle}>
+          Post information of your house for sale here. It is more likely you
+          will find a satisfactory client!
+        </Typography>
+        <br />
+        <br />
+        <br />
+        <br />
+        <Button
+          variant="contained"
+          size="large"
+          color="primary"
+          className={classes.margin}
+          startIcon={<CloudUploadIcon />}
+        >
+          post new house info
+        </Button>
+      </Box>
+    </div>
   );
 };
 

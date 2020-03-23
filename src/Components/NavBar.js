@@ -54,17 +54,25 @@ const Navbar = () => {
             <Typography variant="h6" className={classes.title}>
               RealEstatistics
             </Typography>
-            <Button color="inherit" className={classes.menuButton}>
-              <Link to="/">Home</Link>
+            <Button color="inherit" className={classes.menuButton} href="/">
+              Home
             </Button>
 
             {state.isLogin ? (
-              <Button color="inherit" className={classes.menuButton}>
-                <Link to="/profile">Username</Link>
+              <Button
+                color="inherit"
+                className={classes.menuButton}
+                href="/profile"
+              >
+                Username
               </Button>
             ) : (
-              <Button color="inherit" className={classes.menuButton}>
-                <Link to="/login">Log in</Link>
+              <Button
+                color="inherit"
+                className={classes.menuButton}
+                href="/login"
+              >
+                login
               </Button>
             )}
 
