@@ -1,40 +1,39 @@
 package realEstatistic.api;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import realEstatistic.model.District;
 import realEstatistic.model.FACILITY_TYPE;
 import realEstatistic.model.Facility;
 import realEstatistic.service.DistrictService;
 import realEstatistic.service.GovDataService;
-import realEstatistic.service.SearchService;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
-@RequestMapping("api/dis")// or use "district" to clear ambiguity?
+@RequestMapping("api/district")// or use "district" to clear ambiguity?
 @RestController
 public class DistrictController {
 
-    private SearchService searchService;
     private DistrictService districtService;
     private GovDataService govDataService;
 
     @Autowired
-    public DistrictController(SearchService searchService, DistrictService districtService, GovDataService govDataService) {
-        this.searchService = searchService;
+    public DistrictController(DistrictService districtService, GovDataService govDataService) {
         this.districtService = districtService;
         this.govDataService = govDataService;
     }
 
+    @GetMapping("/get_all")
+    public List<District> getAllDistrict(){
+        return districtService.getAllDistrict();
+    }
 
-    @GetMapping("/detail")
-    public District getDistrictDetails(@RequestParam("id") String districtId, HttpServletResponse response) throws IOException {
+
+    @GetMapping("/{id}/detail")
+    public District getDistrictDetails(@PathVariable("id") String districtId, HttpServletResponse response) throws IOException {
         try{
             UUID districtUUID = UUID.fromString(districtId);
             District d = districtService.getDistrictById(districtUUID);
@@ -48,8 +47,8 @@ public class DistrictController {
         return null;
     }
 
-    @GetMapping("/facility")
-    public List<? extends Facility> getFacility(@RequestParam("id") String districtId, @RequestParam("type") FACILITY_TYPE facilityType, HttpServletResponse response) throws IOException {
+    @GetMapping("/{id}/get_facility_list")
+    public List<? extends Facility> getFacility(@PathVariable("id") String districtId, @RequestParam("type") FACILITY_TYPE facilityType, HttpServletResponse response) throws IOException {
         try{
             UUID districtUUID = UUID.fromString(districtId);
             District d = districtService.getDistrictById(districtUUID);

@@ -24,7 +24,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/login")
+    @PostMapping("/log_in")
     public Map<String, Object> login (@RequestBody User user, HttpServletResponse httpResponse) throws IOException {
         Map<String, Object> response = new HashMap<>();
         UUID id = userService.validatePassword(user);
@@ -40,7 +40,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/signUp")
+    @PostMapping("/sign_up")
     public Map<String, Object> signUp(@RequestBody User user, HttpServletResponse httpResponse) throws IOException {
         Map<String, Object> response = new HashMap<>();
         UUID id = userService.AddNewUser(user);
@@ -56,7 +56,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/changePwd")
+    @PostMapping("/change_password")
     public Map<String, Object> changPwd(@RequestBody Map<String, String> json, HttpServletResponse httpResponse) throws IOException {
         User user = new User();
         user.setEmail(json.get("email"));
@@ -73,13 +73,13 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getFavourites{userId}")
-    public List<House> getFavourites(@PathVariable("userId") UUID userId){
+    @GetMapping("/{id}/get_fav")
+    public List<House> getFavourites(@PathVariable("id") UUID userId){
         return userService.getFavourites(userId);
     }
 
-    @GetMapping("/getPostedHouse{userId}")
-    public List<House> getPostedHouse(@PathVariable("userId") UUID userId){
+    @GetMapping("/{id}/get_posted")
+    public List<House> getPostedHouse(@PathVariable("id") UUID userId){
         return userService.getPostedHouses(userId);
     }
 }

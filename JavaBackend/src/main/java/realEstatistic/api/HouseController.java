@@ -22,8 +22,8 @@ public class HouseController {
         this.houseService = houseService;
     }
 
-    @GetMapping(path = "/hid")
-    public House getHouseById(@RequestParam("id") String houseId, HttpServletResponse response) throws IOException {
+    @GetMapping(path = "{id}/get")
+    public House getHouseById(@PathVariable("id") String houseId, HttpServletResponse response) throws IOException {
         try{
             UUID houseUUID = UUID.fromString(houseId);
             House h =  houseService.getHouseById(houseUUID);
@@ -37,8 +37,8 @@ public class HouseController {
         return null;
     }
 
-    @PostMapping(path = "/fav")
-    public void addHouseToFavourite(@RequestBody String email, String houseId, HttpServletResponse response) throws IOException {
+    @GetMapping(path = "{id}/add_to_fav")
+    public String addHouseToFavourite(@RequestParam("email") String email, @PathVariable("id") String houseId, HttpServletResponse response) throws IOException {
         try{
             UUID houseUUID = UUID.fromString(houseId);
             House h =  houseService.getHouseById(houseUUID);
@@ -46,14 +46,16 @@ public class HouseController {
                 response.sendError(400, "The house does not exist!");
             }
             houseService.addHouseToFavourite(email, houseUUID);
+            return "OK";
         }catch(IllegalArgumentException e){
             response.sendError(400, "Please enter a correct uuid!");
-        } catch (IOException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
+        return "Failed";
     }
 
-    @PostMapping("/post")
+    @PostMapping("/add")
     public Map<String, Object> postHouse(@RequestBody House house, HttpServletResponse httpResponse) throws IOException {
         Map<String, Object> response = new HashMap<>();
         houseService.AddHouse(house);
@@ -62,11 +64,11 @@ public class HouseController {
         return response;
     }
 
-    @PostMapping("/edit")
-    public Map<String, Object> editHouse(@RequestBody Map<String, String> json, HttpServletResponse httpResponse) throws IOException {
+    @PostMapping("{id}/update")
+    public Map<String, Object> editHouse(@PathVariable("id") String id, @RequestBody Map<String, String> json, HttpServletResponse httpResponse) throws IOException {
         House house = new House();
         try{
-            UUID houseId = UUID.fromString(json.get("houseId"));
+            UUID houseId = UUID.fromString(id);
             house.setHouseId(houseId);
             UUID districtId = UUID.fromString(json.get("districtId"));
             house.setDistrictId(districtId);
@@ -81,20 +83,19 @@ public class HouseController {
         house.setHouseDescription(json.get("houseDescription"));
         house.setImage(json.get("image"));
         house.setVenue(json.get("venue"));
-        // problem: string.tolower()!= "true" gives false, how to set criteria?
+        //FIXME problem: string.tolower()!= "true" gives false, how to set criteria?
         Map<String, Object> response = new HashMap<>();
         response.put("status", "successful");
         houseService.editHouse(house);
         return response;
     }
 
-    @GetMapping(path = "/did")
-    public List<House> getHouseByDistrictId(@RequestParam("id") String districtId, HttpServletResponse response) throws IOException {
+    @GetMapping(path = "/get_list")
+    public List<House> getHouseByDistrictId(@RequestParam("district_id") String districtId, HttpServletResponse response) throws IOException {
 
         try{
             UUID districtUUID = UUID.fromString(districtId);
-            List<House> houseList = houseService.getAllHouseByDistrictId(districtUUID);
-            return houseList;
+            return houseService.getAllHouseByDistrictId(districtUUID);
         }catch (IllegalArgumentException e){
             response.sendError(400, "Please enter a correct UUID!");
         }

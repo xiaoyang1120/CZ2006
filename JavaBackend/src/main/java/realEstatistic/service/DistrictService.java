@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import realEstatistic.mapper.DistrictDao;
 import realEstatistic.model.District;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -15,6 +16,7 @@ public class DistrictService {
     public DistrictService(DistrictDao districtDao) {
         this.districtDao = districtDao;
     }
+    public List<District> getAllDistrict(){return districtDao.getAllDistrict();}
     public District getDistrictById(UUID id){return this.districtDao.getDistrictById(id);}
     public void iniDistrict(){
         double maxLat = 1.470104;

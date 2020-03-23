@@ -83,7 +83,7 @@
     </select>
 
     <select id="getFavouriteByUserId" parameterType="java.util.UUID" resultMap="houseMap">
-        select houseId,
+        select favourite.houseId,
                houseImage,
                houseVenue,
                houseDescription,

@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import realEstatistic.model.DistrictFullInfo;
 import realEstatistic.model.FACILITY_TYPE;
-import realEstatistic.service.DistrictService;
 import realEstatistic.service.SearchService;
 
 import java.util.List;
@@ -14,21 +13,19 @@ import java.util.List;
 @RestController
 public class CriteriaMatchingController {
     private SearchService searchService;
-    private DistrictService districtService;
 
     @Autowired
-    public CriteriaMatchingController(SearchService searchService, DistrictService districtService) {
+    public CriteriaMatchingController(SearchService searchService) {
         this.searchService = searchService;
-        this.districtService = districtService;
     }
 
 
-    @PostMapping(path = "/all")
+    @GetMapping(path = "/get_all")
     public String[] getAllUserCriteria(){
         return searchService.getAllAvailableCriteria();
     }
 
-    @PostMapping(path = "/rank")
+    @PostMapping(path = "/get_districts")
     public List<DistrictFullInfo> search(@RequestParam("offset") int offset, @RequestBody FACILITY_TYPE[] t){
         return searchService.getSortedDistrictByCriteria(t, offset);
     }
