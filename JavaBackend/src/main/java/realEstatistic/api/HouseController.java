@@ -22,8 +22,8 @@ public class HouseController {
         this.houseService = houseService;
     }
 
-    @GetMapping(path = "/getHouseById")
-    public House getHouseById(@RequestParam("houseId") String houseId, HttpServletResponse response) throws IOException {
+    @GetMapping(path = "/hid")
+    public House getHouseById(@RequestParam("id") String houseId, HttpServletResponse response) throws IOException {
         try{
             UUID houseUUID = UUID.fromString(houseId);
             House h =  houseService.getHouseById(houseUUID);
@@ -37,7 +37,7 @@ public class HouseController {
         return null;
     }
 
-    @PostMapping(path = "/addToFavourite")
+    @PostMapping(path = "/fav")
     public void addHouseToFavourite(@RequestBody String email, String houseId, HttpServletResponse response) throws IOException {
         try{
             UUID houseUUID = UUID.fromString(houseId);
@@ -53,7 +53,7 @@ public class HouseController {
         }
     }
 
-    @PostMapping("/postHouse")
+    @PostMapping("/post")
     public Map<String, Object> postHouse(@RequestBody House house, HttpServletResponse httpResponse) throws IOException {
         Map<String, Object> response = new HashMap<>();
         houseService.AddHouse(house);
@@ -62,7 +62,7 @@ public class HouseController {
         return response;
     }
 
-    @PostMapping("/editHouse")
+    @PostMapping("/edit")
     public Map<String, Object> editHouse(@RequestBody Map<String, String> json, HttpServletResponse httpResponse) throws IOException {
         House house = new House();
         try{
@@ -88,8 +88,8 @@ public class HouseController {
         return response;
     }
 
-    @GetMapping(path = "/getHouseByDistrictId")
-    public List<House> getHouseByDistrictId(@RequestParam("districtId") String districtId, HttpServletResponse response) throws IOException {
+    @GetMapping(path = "/did")
+    public List<House> getHouseByDistrictId(@RequestParam("id") String districtId, HttpServletResponse response) throws IOException {
 
         try{
             UUID districtUUID = UUID.fromString(districtId);

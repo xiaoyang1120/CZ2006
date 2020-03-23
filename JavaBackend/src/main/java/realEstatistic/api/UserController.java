@@ -31,7 +31,7 @@ public class UserController {
         if (id == null){
 //            response.put("status", "Forbidden");
 //            return response;
-            httpResponse.sendError(403, "wrong password");
+            httpResponse.sendError(403, "invalid credential");
             return null;
         } else {
             response.put("status", "Pass");
