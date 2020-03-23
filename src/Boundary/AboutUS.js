@@ -1,16 +1,11 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 
-class AboutUS {
-    showInfo(){}
-    back(){}
+const AboutUS = () => {
+  return (
+    <div>
+      <h1>About Us</h1>
+    </div>
+  );
+};
 
-    render() {
-        return (
-            <div>
-
-            </div>
-        );
-    }
-}
-
-export default AboutUS
+export default AboutUS;

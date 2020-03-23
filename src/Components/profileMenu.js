@@ -16,13 +16,14 @@ import LoyaltyIcon from "@material-ui/icons/Loyalty";
 import HouseIcon from "@material-ui/icons/House";
 import avatar from "../avatar.png";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import Favorite from "./Favorite";
 
 //css styles
 const useStyles = makeStyles(theme => ({
   menuContainer: {
-    width: 250,
-    background: "#4E4F97",
-    height: 700
+    width: 230,
+    background: "#3F51B5",
+    height: "100%"
   },
   avatar: {
     display: "block",
@@ -54,7 +55,7 @@ const ProfileMenu = () => {
   const classes = useStyles();
   return (
     <Grid container>
-      <Grid item sm>
+      <Grid item xs={2}>
         <Box className={classes.menuContainer} component="div">
           <Avatar className={classes.avatar} src={avatar} alt="Liu Yanli" />
           <Divider />
@@ -73,9 +74,9 @@ const ProfileMenu = () => {
           </List>
         </Box>
       </Grid>
-      <Grid item sm>
+      <Grid item xs={10}>
         <Paper style={{ padding: 20, marginTop: 10, marginBotton: 10 }}>
-          left panal
+          <Favorite />
         </Paper>
       </Grid>
     </Grid>

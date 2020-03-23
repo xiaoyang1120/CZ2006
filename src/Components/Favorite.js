@@ -1,43 +1,44 @@
-/*import React, { Component } from "react";
+import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
-import * as contentful from "contentful";
-import HouseCard from "./components/HouseCard";
-const SPACE_ID = "";
-const ACCESS_TOKEN = "";
-
-const client = contentful.createClient({
-  space: SPACE_ID,
-  accessToken: ACCESS_TOKEN
-});
-class Favorite extends Component {
+import HouseCard from "../Boundary/HouseCard";
+import { makeStyles } from "@material-ui/core/styles";
+import Container from "@material-ui/core/Container";
+/*class Favorite extends Component {
   state = {
-    favHouse: []
+    favHouse: [1, 2, 3, 4, 5, 6, 7]
   };
   constructor() {
     super();
     this.getFavHouses();
   }
-  getFavHouses = () => {};
+  getFavHouses = () => {};*/
 
-  render() {
-    return (
-      <div>
-        {this.state.favHouse ? (
-          <div>
-            <Grid container spacing={24} style={{ padding: 24 }}>
-              {this.state.favHouse.map(currentHouse => (
-                <Grid item xs={12} sm={6} lg={4} xl={3}>
-                  <HouseCard house={currentHouse} />
-                </Grid>
-              ))}
-            </Grid>
-          </div>
-        ) : (
-          "No Houses found"
-        )}
-      </div>
-    );
+const favHouse = [1, 2, 3, 4, 5, 6, 7];
+
+const useStyles = makeStyles(theme => ({
+  cardGrid: {
+    paddingTop: theme.spacing(8),
+    paddingBottom: theme.spacing(8)
   }
-}
+}));
 
-export default Favorite;*/
+export default function Favorite(props) {
+  const classes = useStyles();
+  return (
+    <div>
+      {favHouse ? (
+        <Container className={classes.cardGrid} maxWidth="md">
+          <Grid container spacing={4}>
+            {favHouse.map(card => (
+              <Grid item key={card} xs={12} sm={6} md={4}>
+                <HouseCard />
+              </Grid>
+            ))}
+          </Grid>
+        </Container>
+      ) : (
+        "No Houses found"
+      )}
+    </div>
+  );
+}

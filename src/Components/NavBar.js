@@ -4,6 +4,7 @@ import MobilRightMenuSlider from "@material-ui/core/Drawer";
 import PinDropIcon from "@material-ui/icons/PinDrop";
 import { AppBar, Toolbar, Button, Typography, Box } from "@material-ui/core";
 import { Link } from "react-router-dom";
+import AboutUS from "../Boundary/AboutUS";
 //css styles
 const useStyles = makeStyles(theme => ({
   menuSliderContainer: {
@@ -40,50 +41,52 @@ const Navbar = () => {
       component="div"
       onClick={toggleSlider(Slider, false)}
     >
-      <Typography>About Us</Typography>
+      <AboutUS />
     </Box>
   );
 
-  return <div>
-    <Box component="nav">
-      <AppBar position="static">
-        <Toolbar>
-          <PinDropIcon edge="start"/>
-          <Typography variant="h6" className={classes.title}>
-            RealEstatistics
-          </Typography>
-          <Button color="inherit" className={classes.menuButton}>
-            <Link to="/">Home</Link>
-          </Button>
+  return (
+    <div>
+      <Box component="nav">
+        <AppBar position="static">
+          <Toolbar>
+            <PinDropIcon edge="start" />
+            <Typography variant="h6" className={classes.title}>
+              RealEstatistics
+            </Typography>
+            <Button color="inherit" className={classes.menuButton}>
+              <Link to="/">Home</Link>
+            </Button>
 
-          {
-            state.isLogin ?
-                <Button color="inherit" className={classes.menuButton}>
-                  <Link to="/profile">Username</Link>
-                </Button> :
-                <Button color="inherit" className={classes.menuButton}>
-                  <Link to="/login">Log in</Link>
-                </Button>
-          }
-          
-          <Button
+            {state.isLogin ? (
+              <Button color="inherit" className={classes.menuButton}>
+                <Link to="/profile">Username</Link>
+              </Button>
+            ) : (
+              <Button color="inherit" className={classes.menuButton}>
+                <Link to="/login">Log in</Link>
+              </Button>
+            )}
+
+            <Button
               onClick={toggleSlider("right", true)}
               color="inherit"
               className={classes.menuButton}
-          >
-            About us
-          </Button>
-          <MobilRightMenuSlider
+            >
+              About Us
+            </Button>
+            <MobilRightMenuSlider
               anchor="right"
               open={state.right}
               onClose={toggleSlider("right", false)}
-          >
-            {sideList("right")}
-          </MobilRightMenuSlider>
-        </Toolbar>
-      </AppBar>
-    </Box>
-  </div>;
+            >
+              {sideList("right")}
+            </MobilRightMenuSlider>
+          </Toolbar>
+        </AppBar>
+      </Box>
+    </div>
+  );
 };
 
 export default Navbar;
