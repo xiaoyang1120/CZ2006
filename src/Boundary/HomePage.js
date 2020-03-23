@@ -12,8 +12,8 @@ const useStyles = makeStyles(theme => ({
   },
   typedContainer: {
     position: "absolute",
-    top: "30%",
-    left: "35%",
+    top: "50%",
+    left: "50%",
     transform: "translate(-50%, -50%)",
     width: "100vw",
     textAlign: "center"
@@ -42,7 +42,7 @@ const HomePage = () => {
     <>
       <Box className={classes.typedContainer}>
         <Typography className={classes.title} variant="h2">
-          <Typed strings={["Search Your Idea Home with Us."]} typeSpeed={60} />
+          <Typed strings={["Search For Your Idea Home with Us."]} typeSpeed={60} />
         </Typography>
         <br />
         <Typography className={classes.subtitle}>
@@ -51,7 +51,7 @@ const HomePage = () => {
         </Typography>
       </Box>
       <Particles
-        canvasClassName={classes.particlesCanva}
+        canvasClassName={classes.particlesCanvas}
         params={{
           particles: {
             number: {

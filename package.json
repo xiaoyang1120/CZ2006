@@ -15,7 +15,8 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-transition-group": "^4.3.0",
-    "react-typed": "^1.2.0"
+    "react-typed": "^1.2.0",
+    "clsx": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -37,5 +38,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@material-ui/icons": "^4.9.1"
   }
 }
