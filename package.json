@@ -16,7 +16,8 @@
     "react-scripts": "3.4.1",
     "react-transition-group": "^4.3.0",
     "react-typed": "^1.2.0",
-    "clsx": "latest"
+    "clsx": "latest",
+    "axios": "latest"
   },
   "scripts": {
     "start": "react-scripts start",
