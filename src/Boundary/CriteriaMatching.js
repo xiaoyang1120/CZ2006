@@ -34,32 +34,33 @@ export default function PrimaryCriteriaMatching() {
     checkedC: false,
     checkedD: true,
     checkedE: true,
-    checkedF: false
+    checkedF: false,
+    checkedG: false,
     //checkedCriterion:["A", "D", "E"]
   });
 
   const handleChange = event => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
-  const handleClick = (event) => {
+  const onSubmit = (event) => {
     //TODO: store the choices to datafile
     //TODO: jump to secondary criterion page
-        // event.preventDefault();
-        // let arr = [];
-        // for (var key in state) {
-        //   if(state[key] === true) {
-        //     arr.push(key);
-        //   }
-        // }
-        // let data = {
-        //   check: arr.toString()
-        // };
+        event.preventDefault();
+        let arr = [];
+        for (var key in state) {
+          if(state[key] === true) {
+            arr.push(key);
+          }
+        }
+        let data = {
+          primaryCriteria: arr.toString()
+        };
         // axios.post('http://localhost:3000/checks/add', data)
         //       .then(res => console.log(res.data));
       }
 
-  const {checkedA, checkedB, checkedC, checkedD, checkedE, checkedF} = state;
-  const error = [checkedA, checkedB, checkedC, checkedD, checkedE, checkedF].filter(v => v).length !== 3;
+  const {checkedA, checkedB, checkedC, checkedD, checkedE, checkedF, checkedG} = state;
+  const error = [checkedA, checkedB, checkedC, checkedD, checkedE, checkedF, checkedG].filter(v => v).length !== 3;
 
   return (
     <div className={classes.root}>
@@ -105,7 +106,7 @@ export default function PrimaryCriteriaMatching() {
             label="Cri6"
           />
           <FormControlLabel
-            control={<Checkbox name="checkedF"
+            control={<Checkbox name="checkedG"
                       icon={<FavoriteBorder />} checkedIcon={<Favorite />}
                       checked={state.checkedG} onChange={handleChange} />}
             label="Cri7"
@@ -115,7 +116,7 @@ export default function PrimaryCriteriaMatching() {
         <br />
         <Button
           disabled={error? true: false}
-          onClick={handleClick}
+          onClick={onSubmit}
           href="/"
         >
           Next step
