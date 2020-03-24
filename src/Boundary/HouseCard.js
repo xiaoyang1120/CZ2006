@@ -1,24 +1,3 @@
-/*class HouseCard extends Component {
-    #name
-    #address
-    #description
-
-    constructor(name, address, description) {
-        super();
-        this.#name = name
-        this.#address = address
-        this.#description = description
-    }
-
-    render() {
-        return (
-            <div>
-
-            </div>
-        );
-    }
-}
-export default HouseCard*/
 import React from "react";
 import Button from "@material-ui/core/Button";
 import Card from "@material-ui/core/Card";
@@ -49,20 +28,17 @@ export default function HouseCard(props) {
     <Card className={classes.card}>
       <CardMedia
         className={classes.cardMedia}
-        image="https://source.unsplash.com/random"
+        image={props.image} /*"https://source.unsplash.com/random"*/
         title="Image title"
       />
       <CardContent className={classes.cardContent}>
         <Typography gutterBottom variant="h5" component="h2">
-          House Name
+          {props.name}
         </Typography>
         <Typography gutterBottom variant="h6" component="h2">
-          Location
+          Location: {props.districtName}
         </Typography>
-        <Typography>
-          This is a house card. You can use this section for the house
-          description.
-        </Typography>
+        <Typography>{props.description}</Typography>
       </CardContent>
       <CardActions>
         <Button size="small" color="primary">
@@ -75,3 +51,25 @@ export default function HouseCard(props) {
     </Card>
   );
 }
+
+/*class HouseCard extends Component {
+    #name
+    #address
+    #description
+
+    constructor(name, address, description) {
+        super();
+        this.#name = name
+        this.#address = address
+        this.#description = description
+    }
+
+    render() {
+        return (
+            <div>
+
+            </div>
+        );
+    }
+}
+export default HouseCard*/

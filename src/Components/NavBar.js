@@ -1,101 +1,100 @@
-import React, {useState} from "react";
-import {makeStyles} from "@material-ui/core/styles";
+import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
 import MobilRightMenuSlider from "@material-ui/core/Drawer";
 import PinDropIcon from "@material-ui/icons/PinDrop";
-import {AppBar, Toolbar, Button, Typography, Box} from "@material-ui/core";
+import { AppBar, Toolbar, Button, Typography, Box } from "@material-ui/core";
 import AboutUS from "../Boundary/AboutUS";
-
 //css styles
-const useStyles = makeStyles(theme => ({
-    menuSliderContainer: {
-        width: 400,
-        background: "inherit",
-        height: "100%"
-    },
-    root: {
-        flexGrow: 1
-    },
-    menuButton: {
-        marginRight: theme.spacing(2)
-    },
-    title: {
-        flexGrow: 1
-    }
-}));
+const styles = theme => ({
+  menuSliderContainer: {
+    width: 400,
+    background: "inherit",
+    height: "100%"
+  },
+  root: {
+    flexGrow: 1
+  },
+  menuButton: {
+    marginRight: theme.spacing(2)
+  },
+  title: {
+    flexGrow: 1
+  }
+});
 
-const Navbar = (props) => {
-    const [state, setState] = useState({
-        isLogin: false,
-        right: false
-    });
-
-    const toggleSlider = (slider, open) => () => {
-        setState({...state, [slider]: open});
+class Navbar extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isLogin: false,
+      right: false
     };
-
-    const classes = useStyles();
-
+  }
+  toggleSlider = (slider, open) => () => {
+    this.setState({ [slider]: open });
+  };
+  render() {
     const sideList = Slider => (
-        <Box
-            className={classes.menuSliderContainer}
-            component="div"
-            onClick={toggleSlider(Slider, false)}
-        >
-            <AboutUS/>
-        </Box>
+      <Box
+        className={classes.menuSliderContainer}
+        component="div"
+        onClick={this.toggleSlider(Slider, false)}
+      >
+        <AboutUS />
+      </Box>
     );
-
+    const { classes } = this.props;
     return (
-        <div>
-            <Box component="nav">
-                <AppBar position="static">
-                    <Toolbar>
-                        <PinDropIcon edge="start"/>
-                        <Typography variant="h6" className={classes.title}>
-                            RealEstatistics
-                        </Typography>
-                        <Button color="inherit" className={classes.menuButton}
-                                href={props.isLoggedIn === "LOGGED_IN" ? "/user/" : "/"}>
-                            Home
-                        </Button>
+      <div>
+        <Box component="nav">
+          <AppBar position="static">
+            <Toolbar>
+              <PinDropIcon edge="start" />
+              <Typography variant="h6" className={classes.title}>
+                RealEstatistics
+              </Typography>
+              <Button color="inherit" className={classes.menuButton} href="/">
+                Home
+              </Button>
 
-                        {props.isLoggedIn === "LOGGED_IN" ? (
-                            <Button
-                                color="inherit"
-                                className={classes.menuButton}
-                                href="/user/profile"
-                            >
-                                Username
-                            </Button>
-                        ) : (
-                            <Button
-                                color="inherit"
-                                className={classes.menuButton}
-                                href="/login"
-                            >
-                                login
-                            </Button>
-                        )}
+              {this.state.isLogin ? (
+                <Button
+                  color="inherit"
+                  className={classes.menuButton}
+                  href="/profile"
+                >
+                  Username
+                </Button>
+              ) : (
+                <Button
+                  color="inherit"
+                  className={classes.menuButton}
+                  href="/login"
+                >
+                  login
+                </Button>
+              )}
 
-                        <Button
-                            onClick={toggleSlider("right", true)}
-                            color="inherit"
-                            className={classes.menuButton}
-                        >
-                            About Us
-                        </Button>
-                        <MobilRightMenuSlider
-                            anchor="right"
-                            open={state.right}
-                            onClose={toggleSlider("right", false)}
-                        >
-                            {sideList("right")}
-                        </MobilRightMenuSlider>
-                    </Toolbar>
-                </AppBar>
-            </Box>
-        </div>
+              <Button
+                onClick={this.toggleSlider("right", true)}
+                color="inherit"
+                className={classes.menuButton}
+              >
+                About Us
+              </Button>
+              <MobilRightMenuSlider
+                anchor="right"
+                open={this.state.right}
+                onClose={this.toggleSlider("right", false)}
+              >
+                {sideList("right")}
+              </MobilRightMenuSlider>
+            </Toolbar>
+          </AppBar>
+        </Box>
+      </div>
     );
-};
+  }
+}
 
-export default Navbar;
+export default withStyles(styles)(Navbar);
