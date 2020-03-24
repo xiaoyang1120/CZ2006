@@ -1,5 +1,5 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { Component } from "react";
+import { withStyles } from "@material-ui/core/styles";
 import {
   Grid,
   Paper,
@@ -18,7 +18,7 @@ import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Favorite from "../Components/Favorite";
 
 //css styles
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   avatar: {
     display: "block",
     margin: "1rem auto",
@@ -28,7 +28,7 @@ const useStyles = makeStyles(theme => ({
   listItem: {
     color: "white"
   }
-}));
+});
 
 const menuItems = [
   {
@@ -45,35 +45,69 @@ const menuItems = [
   }
 ];
 
-const ProfileMenu = () => {
-  const classes = useStyles();
-  return (
-    <Grid container>
-      <Grid item xs={2}>
-        <Paper style={{ background: "#211e55" }} component="div">
-          <Avatar className={classes.avatar} src={avatar} alt="Liu Yanli" />
-          <Divider />
-          <List>
-            {menuItems.map((lsItem, key) => (
-              <ListItem button key={key}>
+class ProfileMenu extends Component {
+  constructor() {
+    super();
+    this.state = {
+      isLogin: true,
+      favPage: true
+    };
+    this.handleFavHouse = this.handleFavHouse.bind(this);
+    this.handleSaleHouse = this.handleSaleHouse.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleFavHouse() {
+    this.setState({ favPage: true });
+  }
+  handleSaleHouse() {
+    this.setState({ favPage: false });
+  }
+  handleLogout() {
+    //this.setState({ isLogin: false });
+    console.log("log out");
+  }
+  render() {
+    const { classes } = this.props;
+    return (
+      <Grid container>
+        <Grid item xs={2}>
+          <Paper style={{ background: "#211e55" }} component="div">
+            <Avatar className={classes.avatar} src={avatar} alt="Liu Yanli" />
+            <Divider />
+            <List>
+              <ListItem button onClick={this.handleFavHouse}>
                 <ListItemIcon className={classes.listItem}>
-                  {lsItem.listIcon}
+                  <LoyaltyIcon />
+                </ListItemIcon>
+                <ListItemText className={classes.listItem} primary="Favorite" />
+              </ListItem>
+              <ListItem button onClick={this.handleSaleHouse}>
+                <ListItemIcon className={classes.listItem}>
+                  <HouseIcon />
                 </ListItemIcon>
                 <ListItemText
                   className={classes.listItem}
-                  primary={lsItem.listText}
+                  primary="House on Sale"
                 />
               </ListItem>
-            ))}
-          </List>
-        </Paper>
+              <ListItem button onClick={this.handleLogout}>
+                <ListItemIcon className={classes.listItem}>
+                  <ExitToAppIcon />
+                </ListItemIcon>
+                <ListItemText className={classes.listItem} primary="Log Out" />
+              </ListItem>
+              ))}
+            </List>
+          </Paper>
+        </Grid>
+        <Grid item xs={10}>
+          <Paper style={{ padding: 20, marginTop: 10, marginBotton: 10 }}>
+            {this.state.favPage ? <Favorite /> : "It is empty now!"}
+          </Paper>
+        </Grid>
       </Grid>
-      <Grid item xs={10}>
-        <Paper style={{ padding: 20, marginTop: 10, marginBotton: 10 }}>
-          <Favorite />
-        </Paper>
-      </Grid>
-    </Grid>
-  );
-};
-export default ProfileMenu;
+    );
+  }
+}
+export default withStyles(styles)(ProfileMenu);

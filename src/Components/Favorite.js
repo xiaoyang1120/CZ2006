@@ -3,17 +3,33 @@ import Grid from "@material-ui/core/Grid";
 import HouseCard from "../Boundary/HouseCard";
 import { makeStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-/*class Favorite extends Component {
-  state = {
-    favHouse: [1, 2, 3, 4, 5, 6, 7]
-  };
-  constructor() {
-    super();
-    this.getFavHouses();
+import { Typography } from "@material-ui/core";
+const favHouse = [
+  {
+    houseID: "Hall 11",
+    image: "https://source.unsplash.com/random",
+    houseDescription: "This is a good house",
+    districtID: "Jurong East"
+  },
+  {
+    houseID: "Hall 2",
+    image: "https://source.unsplash.com/random",
+    houseDescription: "This is a normal hosue",
+    districtID: "Bedok"
+  },
+  {
+    houseID: "Tamarind Hall",
+    image: "https://source.unsplash.com/random",
+    houseDescription: "This is a normal hosue",
+    districtID: "NTU"
+  },
+  {
+    houseID: "Hall 3",
+    image: "https://source.unsplash.com/random",
+    houseDescription: "This is a amazing hosue",
+    districtID: "NTU"
   }
-  getFavHouses = () => {};*/
-
-const favHouse = [1, 2, 3, 4, 5, 6, 7];
+];
 
 const useStyles = makeStyles(theme => ({
   cardGrid: {
@@ -28,10 +44,17 @@ export default function Favorite(props) {
     <div>
       {favHouse ? (
         <Container className={classes.cardGrid} maxWidth="md">
+          <Typography variant="h3">FavoriteHouse</Typography>
+          <br />
           <Grid container spacing={4}>
-            {favHouse.map(card => (
-              <Grid item key={card} xs={12} sm={6} md={4}>
-                <HouseCard />
+            {favHouse.map(favHouse => (
+              <Grid item key={favHouse.houseID} xs={12} sm={6} md={4}>
+                <HouseCard
+                  name={favHouse.houseID}
+                  image={favHouse.image}
+                  districtName={favHouse.districtID}
+                  description={favHouse.houseDescription}
+                />
               </Grid>
             ))}
           </Grid>
@@ -42,3 +65,13 @@ export default function Favorite(props) {
     </div>
   );
 }
+
+/*class Favorite extends Component {
+  state = {
+    favHouse: [1, 2, 3, 4, 5, 6, 7]
+  };
+  constructor() {
+    super();
+    this.getFavHouses();
+  }
+  getFavHouses = () => {};*/
