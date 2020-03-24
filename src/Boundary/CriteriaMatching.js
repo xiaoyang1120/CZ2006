@@ -10,6 +10,7 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import axios from 'axios';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -40,11 +41,22 @@ export default function PrimaryCriteriaMatching() {
   const handleChange = event => {
     setState({ ...state, [event.target.name]: event.target.checked });
   };
-  const handleClick = event => {
+  const handleClick = (event) => {
     //TODO: store the choices to datafile
     //TODO: jump to secondary criterion page
-
-  }
+        // event.preventDefault();
+        // let arr = [];
+        // for (var key in state) {
+        //   if(state[key] === true) {
+        //     arr.push(key);
+        //   }
+        // }
+        // let data = {
+        //   check: arr.toString()
+        // };
+        // axios.post('http://localhost:3000/checks/add', data)
+        //       .then(res => console.log(res.data));
+      }
 
   const {checkedA, checkedB, checkedC, checkedD, checkedE, checkedF} = state;
   const error = [checkedA, checkedB, checkedC, checkedD, checkedE, checkedF].filter(v => v).length !== 3;
@@ -73,10 +85,7 @@ export default function PrimaryCriteriaMatching() {
             label="Cri3"
           />
         </FormGroup>
-        <FormHelperText />
-      </FormControl>
-      <FormControl required error={error} component="fieldset" className={classes.formControl}>
-          <FormGroup>
+        <FormGroup>
           <FormControlLabel
             control={<Checkbox name="checkedD"
                       icon={<FavoriteBorder />} checkedIcon={<Favorite />}
@@ -103,15 +112,16 @@ export default function PrimaryCriteriaMatching() {
           />
         </FormGroup>
         <FormHelperText />
+        <br />
+        <Button
+          disabled={error? true: false}
+          onClick={handleClick}
+          href="/"
+        >
+          Next step
+        </Button>
       </FormControl>
-      <br />
-      <Button
-        disabled={error? true: false}
-        onClick={handleClick}
-        href="/"
-      >
-        Next step
-      </Button>
+
     </div>
   );
 }
