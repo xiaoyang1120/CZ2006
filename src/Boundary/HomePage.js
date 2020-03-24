@@ -5,6 +5,7 @@ import Typed from "react-typed";
 import Particles from "react-particles-js";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import SearchIcon from "@material-ui/icons/Search";
+import { Link } from "react-router-dom";
 const useStyles = makeStyles(theme => ({
   title: {
     color: "white"
@@ -94,6 +95,7 @@ const HomePage = () => {
           color="primary"
           className={classes.margin}
           startIcon={<SearchIcon />}
+          href="/criteria"
         >
           Choose Your Criteria
         </Button>
