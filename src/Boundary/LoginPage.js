@@ -74,7 +74,7 @@ const LoginPage = (props) => {
                 {withCredentials: true}
             )
             .then(response => {
-                if (response.data.logged_in) {
+                if (response.data.status === "Pass") {
                     handleSuccessfulAuth(response.data.UUID);
                 }
             })
