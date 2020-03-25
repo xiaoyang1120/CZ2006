@@ -72,7 +72,7 @@ const LoginPage = (props) => {
             .then(response => {
                 if (response.data.status === "Pass") {
                     props.handleLogin(response.data.UUID);
-                    props.history.push("/user/");
+                    props.history.push("/");
                 }
             })
             .catch(error => {

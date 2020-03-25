@@ -61,7 +61,7 @@ class Navbar extends Component {
                 <Button
                   color="inherit"
                   className={classes.menuButton}
-                  href="/user/profile"
+                  href="/profile"
                 >
                   Username
                 </Button>

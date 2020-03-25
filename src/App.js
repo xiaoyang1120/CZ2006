@@ -5,7 +5,7 @@ import HomePage from "./Boundary/HomePage";
 import "./App.css";
 // import {CSSTransition, TransitionGroup} from "react-transition-group";
 
-import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
+import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import LoginPage from "./Boundary/LoginPage";
 import CriteriaMatching from "./Boundary/CriteriaMatching"
 
@@ -41,6 +41,7 @@ class App extends React.Component {
     }
 
     render() {
+        const loginStatus = this.state.loggedInStatus
         return (
             <Router>
                 <div>
@@ -52,13 +53,14 @@ class App extends React.Component {
                                        {...props}
                                        handleLogin={this.handleLogin}
                                        handleLogout={this.handleLogout}
-                                       loggedInStatus={this.state.loggedInStatus}
+                                       loggedInStatus={loginStatus}
                                    />
                                )}/>
-                        <Route path="/user/" exact component={HomePage}/>
-                        <Route path="/user/profile" exact component={ProfilePage}/>
-                        <Route path="/criteria" exact component={CriteriaMatching}/>
-
+                        <Route path={loginStatus ? "/profile" : "/login"}
+                               exact component={ProfilePage}/>
+                        <Route path={loginStatus ? "/criteria" : "/login"}
+                               exact component={CriteriaMatching}/>
+                        <Redirect from="/*" to="/login"/>
                     </Switch>
                 </div>
             </Router>
