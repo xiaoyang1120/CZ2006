@@ -16,7 +16,7 @@ import HouseIcon from "@material-ui/icons/House";
 import avatar from "../avatar.png";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Favorite from "../Components/Favorite";
-
+import OnSale from "../Components/OnSale";
 //css styles
 const styles = theme => ({
   avatar: {
@@ -30,22 +30,7 @@ const styles = theme => ({
   }
 });
 
-const menuItems = [
-  {
-    listIcon: <LoyaltyIcon />,
-    listText: "Favorite"
-  },
-  {
-    listIcon: <HouseIcon />,
-    listText: "House on Sale"
-  },
-  {
-    listIcon: <ExitToAppIcon />,
-    listText: "Log Out"
-  }
-];
-
-class ProfileMenu extends Component {
+class ProfilePage extends Component {
   constructor() {
     super();
     this.state = {
@@ -97,17 +82,16 @@ class ProfileMenu extends Component {
                 </ListItemIcon>
                 <ListItemText className={classes.listItem} primary="Log Out" />
               </ListItem>
-              ))}
             </List>
           </Paper>
         </Grid>
         <Grid item xs={10}>
           <Paper style={{ padding: 20, marginTop: 10, marginBotton: 10 }}>
-            {this.state.favPage ? <Favorite /> : "It is empty now!"}
+            {this.state.favPage ? <Favorite /> : <OnSale />}
           </Paper>
         </Grid>
       </Grid>
     );
   }
 }
-export default withStyles(styles)(ProfileMenu);
+export default withStyles(styles)(ProfilePage);

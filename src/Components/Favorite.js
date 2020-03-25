@@ -1,77 +1,108 @@
 import React, { Component } from "react";
 import Grid from "@material-ui/core/Grid";
 import HouseCard from "../Boundary/HouseCard";
-import { makeStyles } from "@material-ui/core/styles";
+import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Typography } from "@material-ui/core";
-const favHouse = [
-  {
-    houseID: "Hall 11",
-    image: "https://source.unsplash.com/random",
-    houseDescription: "This is a good house",
-    districtID: "Jurong East"
-  },
-  {
-    houseID: "Hall 2",
-    image: "https://source.unsplash.com/random",
-    houseDescription: "This is a normal hosue",
-    districtID: "Bedok"
-  },
-  {
-    houseID: "Tamarind Hall",
-    image: "https://source.unsplash.com/random",
-    houseDescription: "This is a normal hosue",
-    districtID: "NTU"
-  },
-  {
-    houseID: "Hall 3",
-    image: "https://source.unsplash.com/random",
-    houseDescription: "This is a amazing hosue",
-    districtID: "NTU"
-  }
-];
+import { Typography, Button } from "@material-ui/core";
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   cardGrid: {
     paddingTop: theme.spacing(8),
     paddingBottom: theme.spacing(8)
   }
-}));
-
-export default function Favorite(props) {
-  const classes = useStyles();
-  return (
-    <div>
-      {favHouse ? (
-        <Container className={classes.cardGrid} maxWidth="md">
-          <Typography variant="h3">FavoriteHouse</Typography>
-          <br />
-          <Grid container spacing={4}>
-            {favHouse.map(favHouse => (
-              <Grid item key={favHouse.houseID} xs={12} sm={6} md={4}>
-                <HouseCard
-                  name={favHouse.houseID}
-                  image={favHouse.image}
-                  districtName={favHouse.districtID}
-                  description={favHouse.houseDescription}
-                />
-              </Grid>
-            ))}
-          </Grid>
-        </Container>
-      ) : (
-        "No Houses found"
-      )}
-    </div>
-  );
-}
-
-/*class Favorite extends Component {
-  state = {
-    favHouse: [1, 2, 3, 4, 5, 6, 7]
-  };
+});
+class Favorite extends Component {
   constructor() {
     super();
-    this.getFavHouses();
+
+    this.state = {
+      isLoading: false,
+      favHouse: [
+        {
+          houseID: "Hall 11",
+          image: "https://source.unsplash.com/random",
+          houseDescription: "This is a good house",
+          districtID: "Jurong East",
+          status: true
+        },
+        {
+          houseID: "Hall 2",
+          image: "https://source.unsplash.com/random",
+          houseDescription: "This is a normal hosue",
+          districtID: "Bedok",
+          status: true
+        },
+        {
+          houseID: "Tamarind Hall",
+          image: "https://source.unsplash.com/random",
+          houseDescription: "This is a normal hosue",
+          districtID: "NTU",
+          status: true
+        },
+        {
+          houseID: "Hall 3",
+          image: "https://source.unsplash.com/random",
+          houseDescription: "This is a amazing hosue",
+          districtID: "NTU",
+          status: false
+        }
+      ]
+    };
+    this.Remove = this.Remove.bind(this);
   }
-  getFavHouses = () => {};*/
+
+  componentDidMount() {
+    /*this.setState({ isLoading: true });
+    fetch(
+      "http://localhost:8080/api/user/015819ef-f799-4431-84ea-960413b583c4/get_fav"
+    )
+      .then(response => response.json())
+      .then(data => this.setState({ isLoading: false, favHouse: data }));*/
+  }
+  Remove(id) {
+    console.log("Remove!" + id);
+    /*this.setState(preState => {
+      for (let i = 0; i < this.state.favHouse.length; i++) {
+        if (this.state.favHouse[i].houseID == id) {
+          this.state.favHouse[i].Remove();
+        }
+      }
+      return this.state.favHouse;
+    });*/
+  }
+  render() {
+    const { classes } = this.props;
+    return (
+      <div>
+        {this.state.favHouse ? (
+          <Container className={classes.cardGrid} maxWidth="md">
+            <Typography variant="h3">FavoriteHouse</Typography>
+            <br />
+            {this.state.isLoading ? (
+              "Loading..."
+            ) : (
+              <Grid container spacing={4}>
+                {this.state.favHouse.map(favHouse => (
+                  <Grid item key={favHouse.houseID} xs={12} sm={6} md={4}>
+                    <HouseCard
+                      name={favHouse.houseID}
+                      image={favHouse.image}
+                      districtName={favHouse.districtID}
+                      description={favHouse.houseDescription}
+                      status={favHouse.status}
+                      buttonName="Remove from Fav."
+                      handleClick={this.Remove}
+                    />
+                  </Grid>
+                ))}
+              </Grid>
+            )}
+          </Container>
+        ) : (
+          "No Houses found"
+        )}
+      </div>
+    );
+  }
+}
+export default withStyles(styles)(Favorite);

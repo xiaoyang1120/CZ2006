@@ -7,6 +7,11 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 
 const useStyles = makeStyles(theme => ({
   card: {
@@ -24,6 +29,15 @@ const useStyles = makeStyles(theme => ({
 
 export default function HouseCard(props) {
   const classes = useStyles();
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <Card className={classes.card}>
       <CardMedia
@@ -38,38 +52,44 @@ export default function HouseCard(props) {
         <Typography gutterBottom variant="h6" component="h2">
           Location: {props.districtName}
         </Typography>
+        <Typography gutterBottom variant="h6" component="h2">
+          Status: {props.status == true ? "Available" : "Not Available"}
+        </Typography>
         <Typography>{props.description}</Typography>
       </CardContent>
       <CardActions>
-        <Button size="small" color="primary">
-          View
+        <Button
+          size="small"
+          color="primary"
+          onClick={handleClickOpen /*event => props.handleClick(props.name)*/}
+        >
+          {props.buttonName}
         </Button>
-        <Button size="small" color="primary">
-          Remove
-        </Button>
+        <Dialog
+          open={open}
+          onClose={handleClose}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Alert!"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              Are you sure to make the change?
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button
+              onClick={event => props.handleClick(props.name)}
+              color="primary"
+            >
+              Confirm
+            </Button>
+            <Button onClick={handleClose} color="primary" autoFocus>
+              Cancle
+            </Button>
+          </DialogActions>
+        </Dialog>
       </CardActions>
     </Card>
   );
 }
-
-/*class HouseCard extends Component {
-    #name
-    #address
-    #description
-
-    constructor(name, address, description) {
-        super();
-        this.#name = name
-        this.#address = address
-        this.#description = description
-    }
-
-    render() {
-        return (
-            <div>
-
-            </div>
-        );
-    }
-}
-export default HouseCard*/
