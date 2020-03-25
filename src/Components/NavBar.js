@@ -53,7 +53,7 @@ class Navbar extends Component {
               <Typography variant="h6" className={classes.title}>
                 RealEstatistics
               </Typography>
-              <Button color="inherit" className={classes.menuButton} href={this.state.isLogin ? "/user/" : "/"}>
+              <Button color="inherit" className={classes.menuButton} href="/">
                 Home
               </Button>
 
