@@ -64,68 +64,71 @@ export default function PrimaryCriteriaMatching() {
   const error = [checkedA, checkedB, checkedC, checkedD, checkedE, checkedF, checkedG].filter(v => v).length !== 3;
 
   return (
-    <div className={classes.root}>
-      <Navbar />
-      <FormControl required error={error} component="fieldset" className={classes.formControl}>
-        <FormLabel className={classes.headerFont} component="legend">Choose 3 primary criterion</FormLabel>
-        <FormGroup>
-          <FormControlLabel
-            control={<Checkbox name="checkedA"
-                      icon={<FavoriteBorder />} checkedIcon={<Favorite />}
-                      checked={state.checkedA} onChange={handleChange} />}
-            label="Cri1"
-          />
-          <FormControlLabel
-            control={<Checkbox name="checkedB"
-                      icon={<FavoriteBorder />} checkedIcon={<Favorite />}
-                      checked={state.checkedB} onChange={handleChange} />}
-            label="Cri2"
-          />
-          <FormControlLabel
-            control={<Checkbox name="checkedC"
-                      icon={<FavoriteBorder />} checkedIcon={<Favorite />}
-                      checked={state.checkedC} onChange={handleChange} />}
-            label="Cri3"
-          />
-        </FormGroup>
-        <FormGroup>
-          <FormControlLabel
-            control={<Checkbox name="checkedD"
-                      icon={<FavoriteBorder />} checkedIcon={<Favorite />}
-                      checked={state.checkedD} onChange={handleChange} />}
-            label="Cri4"
-          />
-          <FormControlLabel
-            control={<Checkbox name="checkedE"
-                      icon={<FavoriteBorder />} checkedIcon={<Favorite />}
-                      checked={state.checkedE} onChange={handleChange} />}
-            label="Cri5"
-          />
-          <FormControlLabel
-            control={<Checkbox name="checkedF"
-                      icon={<FavoriteBorder />} checkedIcon={<Favorite />}
-                      checked={state.checkedF} onChange={handleChange} />}
-            label="Cri6"
-          />
-          <FormControlLabel
-            control={<Checkbox name="checkedG"
-                      icon={<FavoriteBorder />} checkedIcon={<Favorite />}
-                      checked={state.checkedG} onChange={handleChange} />}
-            label="Cri7"
-          />
-        </FormGroup>
-        <FormHelperText />
-        <br />
-        <Button
-          disabled={error? true: false}
-          onClick={onSubmit}
-          href="/"
-        >
-          Next step
-        </Button>
-      </FormControl>
+      <div>
+        <Navbar />
+        <div className={classes.root}>
+          <FormControl required error={error} component="fieldset" className={classes.formControl}>
+            <FormLabel className={classes.headerFont} component="legend">Choose 3 primary criterion</FormLabel>
+            <FormGroup>
+              <FormControlLabel
+                  control={<Checkbox name="checkedA"
+                                     icon={<FavoriteBorder />} checkedIcon={<Favorite />}
+                                     checked={state.checkedA} onChange={handleChange} />}
+                  label="Cri1"
+              />
+              <FormControlLabel
+                  control={<Checkbox name="checkedB"
+                                     icon={<FavoriteBorder />} checkedIcon={<Favorite />}
+                                     checked={state.checkedB} onChange={handleChange} />}
+                  label="Cri2"
+              />
+              <FormControlLabel
+                  control={<Checkbox name="checkedC"
+                                     icon={<FavoriteBorder />} checkedIcon={<Favorite />}
+                                     checked={state.checkedC} onChange={handleChange} />}
+                  label="Cri3"
+              />
+            </FormGroup>
+            <FormGroup>
+              <FormControlLabel
+                  control={<Checkbox name="checkedD"
+                                     icon={<FavoriteBorder />} checkedIcon={<Favorite />}
+                                     checked={state.checkedD} onChange={handleChange} />}
+                  label="Cri4"
+              />
+              <FormControlLabel
+                  control={<Checkbox name="checkedE"
+                                     icon={<FavoriteBorder />} checkedIcon={<Favorite />}
+                                     checked={state.checkedE} onChange={handleChange} />}
+                  label="Cri5"
+              />
+              <FormControlLabel
+                  control={<Checkbox name="checkedF"
+                                     icon={<FavoriteBorder />} checkedIcon={<Favorite />}
+                                     checked={state.checkedF} onChange={handleChange} />}
+                  label="Cri6"
+              />
+              <FormControlLabel
+                  control={<Checkbox name="checkedG"
+                                     icon={<FavoriteBorder />} checkedIcon={<Favorite />}
+                                     checked={state.checkedG} onChange={handleChange} />}
+                  label="Cri7"
+              />
+            </FormGroup>
+            <FormHelperText />
+            <br />
+            <Button
+                disabled={error? true: false}
+                onClick={onSubmit}
+                href="/"
+            >
+              Next step
+            </Button>
+          </FormControl>
 
-    </div>
+        </div>
+      </div>
+
   );
 }
 // import { green } from '@material-ui/core/colors';
