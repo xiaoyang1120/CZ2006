@@ -59,7 +59,7 @@ const LoginPage = (props) => {
         event.preventDefault();
     };
 
-    const handleSubmit = (event) => {
+    const handleLoginSubmit = (event) => {
         axios
             .post(
                 "http://localhost:8080/api/user/log_in",
@@ -76,14 +76,59 @@ const LoginPage = (props) => {
                 }
             })
             .catch(error => {
-                alert("Login Error!")
+                alert("Login Error: " + error)
             });
         event.preventDefault();
     }
 
+    const isSinglePwd = (s) => {
+        if (s.length < 6) {
+            return 0;
+        }
+        let ls = 0;
+        if (s.match(/([a-z])+/)) {
+            ls++;
+        }
+        if (s.match(/([0-9])+/)) {
+            ls++;
+        }
+        if (s.match(/([A-Z])+/)) {
+            ls++;
+        }
+        if (s.match(/[^a-zA-Z0-9]+/)) {
+            ls++;
+        }
+        return ls;
+    }
+
+    const handleSignUpSubmit = (event) => {
+        if (isSinglePwd(values.password) < 3) {
+            alert("Password is too simple!")
+        } else {
+            axios.post(
+                "http://localhost:8080/api/user/sign_up",
+                {
+                    email: values.email,
+                    password: values.password
+                }, {
+                    withCredentials: true
+                }
+            ).then(response => {
+                if (response.data.status === "Pass") {
+                    alert("Sign up success!")
+                }
+            }).catch(
+                error => {
+                    alert("Sign up error: " + error)
+                }
+            )
+        }
+        event.preventDefault()
+    }
+
     return (
         <div>
-            <Navbar />
+            <Navbar/>
             <Particles
                 canvasClassName={classes.particlesCanva}
                 params={{
@@ -168,7 +213,7 @@ const LoginPage = (props) => {
                             variant="contained"
                             color="primary"
                             style={{marginBottom: "10px", marginRight: "20px"}}
-                            onClick={handleSubmit}
+                            onClick={handleLoginSubmit}
                         >
                             Log in
                         </Button>
@@ -176,6 +221,7 @@ const LoginPage = (props) => {
                             variant="contained"
                             color="primary"
                             style={{marginBottom: "10px", marginLeft: "20px"}}
+                            onClick={handleSignUpSubmit}
                         >
                             Sign up
                         </Button>
