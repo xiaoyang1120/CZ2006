@@ -23,11 +23,11 @@ const styles = theme => ({
 });
 
 class Navbar extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
-      isLogin: false,
-      right: false
+      right: false,
+	  isLogin: props.isLoggedIn === "LOGGED_IN"
     };
   }
   toggleSlider = (slider, open) => () => {
@@ -53,7 +53,7 @@ class Navbar extends Component {
               <Typography variant="h6" className={classes.title}>
                 RealEstatistics
               </Typography>
-              <Button color="inherit" className={classes.menuButton} href="/">
+              <Button color="inherit" className={classes.menuButton} href={this.state.isLogin ? "/user/" : "/"}>
                 Home
               </Button>
 
@@ -61,7 +61,7 @@ class Navbar extends Component {
                 <Button
                   color="inherit"
                   className={classes.menuButton}
-                  href="/profile"
+                  href="/user/profile"
                 >
                   Username
                 </Button>

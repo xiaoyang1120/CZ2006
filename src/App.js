@@ -8,49 +8,18 @@ import "./App.css";
 import {BrowserRouter as Router, Switch, Route} from "react-router-dom";
 import LoginPage from "./Boundary/LoginPage";
 import CriteriaMatching from "./Boundary/CriteriaMatching"
-// import axios from "axios";
 
 class App extends React.Component {
     constructor() {
         super();
 
         this.state = {
-            loggedInStatus: "NOT_LOGGED_IN",
-            uid: ""
+            loggedInStatus: sessionStorage.getItem("loggedInStatus"),
+            uid: sessionStorage.getItem("uid")
         };
 
         this.handleLogin = this.handleLogin.bind(this);
         this.handleLogout = this.handleLogout.bind(this);
-    }
-
-    checkLoginStatus() {
-        console.log("checkLoginStatus")
-        // axios
-        //     .get("http://localhost:8080/api/user/log_in", {withCredentials: true})
-        //     .then(response => {
-        //       if (
-        //           response.logged_in &&
-        //           this.state.loggedInStatus === "NOT_LOGGED_IN"
-        //       ) {
-        //         this.setState({
-        //           loggedInStatus: "LOGGED_IN",
-        //         });
-        //       } else if (
-        //           !response.logged_in &
-        //           (this.state.loggedInStatus === "LOGGED_IN")
-        //       ) {
-        //         this.setState({
-        //           loggedInStatus: "NOT_LOGGED_IN",
-        //         });
-        //       }
-        //     })
-        //     .catch(error => {
-        //       console.log("check login error", error);
-        //     });
-    }
-
-    componentDidMount() {
-        this.checkLoginStatus();
     }
 
     handleLogout() {
@@ -58,6 +27,8 @@ class App extends React.Component {
             loggedInStatus: "NOT_LOGGED_IN",
             uid: ""
         });
+        sessionStorage.setItem("loggedInStatus", "NOT_LOGGED_IN")
+        sessionStorage.setItem("uid", null)
     }
 
     handleLogin(id) {
@@ -65,6 +36,8 @@ class App extends React.Component {
             loggedInStatus: "LOGGED_IN",
             uid: id
         });
+        sessionStorage.setItem("loggedInStatus", "LOGGED_IN")
+        sessionStorage.setItem("uid", id)
     }
 
     render() {
@@ -83,7 +56,7 @@ class App extends React.Component {
                                        loggedInStatus={this.state.loggedInStatus}
                                    />
                                )}/>
-                        <Route path={"/user/"} exact component={HomePage}/>
+                        <Route path="/user/" exact component={HomePage}/>
                         <Route path="/user/profile" exact component={ProfilePage}/>
                         <Route path="/criteria" exact component={CriteriaMatching}/>
 
