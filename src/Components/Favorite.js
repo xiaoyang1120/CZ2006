@@ -3,7 +3,7 @@ import Grid from "@material-ui/core/Grid";
 import HouseCard from "../Boundary/HouseCard";
 import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
-import { Typography, Button } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
 
 const styles = theme => ({
   cardGrid: {
@@ -61,14 +61,13 @@ class Favorite extends Component {
   }
   Remove(id) {
     console.log("Remove!" + id);
-    /*this.setState(preState => {
-      for (let i = 0; i < this.state.favHouse.length; i++) {
-        if (this.state.favHouse[i].houseID == id) {
-          this.state.favHouse[i].Remove();
-        }
+    let newFavhouse = [];
+    for (let i = 0; i < this.state.favHouse.length; i++) {
+      if (this.state.favHouse[i].houseID != id) {
+        newFavhouse.push(this.state.favHouse[i]);
       }
-      return this.state.favHouse;
-    });*/
+    }
+    this.setState({ favHouse: newFavhouse });
   }
   render() {
     const { classes } = this.props;

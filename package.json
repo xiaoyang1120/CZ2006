@@ -10,7 +10,6 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "clsx": "latest",
-    "contentful": "^7.14.0",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-particles-js": "^2.7.1",

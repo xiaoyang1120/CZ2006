@@ -71,7 +71,7 @@ export default function HouseCard(props) {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Alert!"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{"ATTENSION!"}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               Are you sure to make the change?
@@ -79,7 +79,10 @@ export default function HouseCard(props) {
           </DialogContent>
           <DialogActions>
             <Button
-              onClick={event => props.handleClick(props.name)}
+              onClick={event => {
+                handleClose();
+                props.handleClick(props.name);
+              }}
               color="primary"
             >
               Confirm
