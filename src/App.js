@@ -47,6 +47,7 @@ class App extends React.Component {
                 <div>
                     <Switch>
                         <Route path={"/"} exact component={HomePage}/>
+
                         <Route exact path="/login"
                                render={props => (
                                    <LoginPage
@@ -55,7 +56,7 @@ class App extends React.Component {
                                        loggedInStatus={loginStatus}
                                    />
                                )}/>
-                        <Route path={loginStatus ? "/profile" : "/login"}
+                        <Route path={"/profile"}
                                render={
                                    props => (
                                        <ProfilePage
@@ -64,9 +65,29 @@ class App extends React.Component {
                                        />
                                    )
                                }/>
-                        <Route path={loginStatus ? "/criteria" : "/login"}
+                        <Route path={"/criteria"}
                                exact component={CriteriaMatching}/>
-                        <Redirect from="/*" to="/login"/>
+
+                        {/*<Route exact path="/login"*/}
+                        {/*       render={props => (*/}
+                        {/*           <LoginPage*/}
+                        {/*               {...props}*/}
+                        {/*               handleLogin={this.handleLogin}*/}
+                        {/*               loggedInStatus={loginStatus}*/}
+                        {/*           />*/}
+                        {/*       )}/>*/}
+                        {/*<Route path={loginStatus ? "/profile" : "/login"}*/}
+                        {/*       render={*/}
+                        {/*           props => (*/}
+                        {/*               <ProfilePage*/}
+                        {/*                   {...props}*/}
+                        {/*                   handleLogout={this.handleLogout}*/}
+                        {/*               />*/}
+                        {/*           )*/}
+                        {/*       }/>*/}
+                        {/*<Route path={loginStatus ? "/criteria" : "/login"}*/}
+                        {/*       exact component={CriteriaMatching}/>*/}
+                        {/*<Redirect from="/*" to="/login"/>*/}
                     </Switch>
                 </div>
             </Router>
