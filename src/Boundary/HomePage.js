@@ -6,6 +6,7 @@ import Particles from "react-particles-js";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import SearchIcon from "@material-ui/icons/Search";
 import { Link } from "react-router-dom";
+import Navbar from "../Components/NavBar";
 const useStyles = makeStyles(theme => ({
   title: {
     color: "white"
@@ -40,6 +41,7 @@ const HomePage = () => {
   const classes = useStyles();
   return (
     <div>
+      <Navbar />
       <Particles
         canvasClassName={classes.particlesCanva}
         params={{

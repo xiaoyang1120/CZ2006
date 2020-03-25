@@ -17,6 +17,7 @@ import avatar from "../avatar.png";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Favorite from "../Components/Favorite";
 import OnSale from "../Components/OnSale";
+import Navbar from "../Components/NavBar";
 //css styles
 const styles = theme => ({
   avatar: {
@@ -55,42 +56,46 @@ class ProfilePage extends Component {
   render() {
     const { classes } = this.props;
     return (
-      <Grid container>
-        <Grid item xs={2}>
-          <Paper style={{ background: "#211e55" }} component="div">
-            <Avatar className={classes.avatar} src={avatar} alt="Liu Yanli" />
-            <Divider />
-            <List>
-              <ListItem button onClick={this.handleFavHouse}>
-                <ListItemIcon className={classes.listItem}>
-                  <LoyaltyIcon />
-                </ListItemIcon>
-                <ListItemText className={classes.listItem} primary="Favorite" />
-              </ListItem>
-              <ListItem button onClick={this.handleSaleHouse}>
-                <ListItemIcon className={classes.listItem}>
-                  <HouseIcon />
-                </ListItemIcon>
-                <ListItemText
-                  className={classes.listItem}
-                  primary="House on Sale"
-                />
-              </ListItem>
-              <ListItem button onClick={this.handleLogout}>
-                <ListItemIcon className={classes.listItem}>
-                  <ExitToAppIcon />
-                </ListItemIcon>
-                <ListItemText className={classes.listItem} primary="Log Out" />
-              </ListItem>
-            </List>
-          </Paper>
-        </Grid>
-        <Grid item xs={10}>
-          <Paper style={{ padding: 20, marginTop: 10, marginBotton: 10 }}>
-            {this.state.favPage ? <Favorite /> : <OnSale />}
-          </Paper>
-        </Grid>
-      </Grid>
+        <div>
+          <Navbar />
+          <Grid container>
+            <Grid item xs={2}>
+              <Paper style={{ background: "#211e55" }} component="div">
+                <Avatar className={classes.avatar} src={avatar} alt="Liu Yanli" />
+                <Divider />
+                <List>
+                  <ListItem button onClick={this.handleFavHouse}>
+                    <ListItemIcon className={classes.listItem}>
+                      <LoyaltyIcon />
+                    </ListItemIcon>
+                    <ListItemText className={classes.listItem} primary="Favorite" />
+                  </ListItem>
+                  <ListItem button onClick={this.handleSaleHouse}>
+                    <ListItemIcon className={classes.listItem}>
+                      <HouseIcon />
+                    </ListItemIcon>
+                    <ListItemText
+                        className={classes.listItem}
+                        primary="House on Sale"
+                    />
+                  </ListItem>
+                  <ListItem button onClick={this.handleLogout}>
+                    <ListItemIcon className={classes.listItem}>
+                      <ExitToAppIcon />
+                    </ListItemIcon>
+                    <ListItemText className={classes.listItem} primary="Log Out" />
+                  </ListItem>
+                </List>
+              </Paper>
+            </Grid>
+            <Grid item xs={10}>
+              <Paper style={{ padding: 20, marginTop: 10, marginBotton: 10 }}>
+                {this.state.favPage ? <Favorite /> : <OnSale />}
+              </Paper>
+            </Grid>
+          </Grid>
+        </div>
+
     );
   }
 }

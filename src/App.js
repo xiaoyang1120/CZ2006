@@ -44,7 +44,6 @@ class App extends React.Component {
         return (
             <Router>
                 <div>
-                    <Navbar isLoggedIn={this.state.loggedInStatus}/>
                     <Switch>
                         <Route path={"/"} exact component={HomePage}/>
                         <Route exact path="/login"

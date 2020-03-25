@@ -53,7 +53,7 @@ export default function HouseCard(props) {
           Location: {props.districtName}
         </Typography>
         <Typography gutterBottom variant="h6" component="h2">
-          Status: {props.status == true ? "Available" : "Not Available"}
+          Status: {props.status ? "Available" : "Not Available"}
         </Typography>
         <Typography>{props.description}</Typography>
       </CardContent>

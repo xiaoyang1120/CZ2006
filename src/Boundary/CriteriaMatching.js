@@ -11,6 +11,7 @@ import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import axios from 'axios';
+import Navbar from "../Components/NavBar";
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -64,6 +65,7 @@ export default function PrimaryCriteriaMatching() {
 
   return (
     <div className={classes.root}>
+      <Navbar />
       <FormControl required error={error} component="fieldset" className={classes.formControl}>
         <FormLabel className={classes.headerFont} component="legend">Choose 3 primary criterion</FormLabel>
         <FormGroup>

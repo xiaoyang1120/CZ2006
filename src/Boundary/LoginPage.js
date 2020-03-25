@@ -10,6 +10,7 @@ import OutlinedInput from "@material-ui/core/OutlinedInput";
 import clsx from "clsx";
 import axios from "axios";
 import Particles from "react-particles-js";
+import Navbar from "../Components/NavBar";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -58,11 +59,6 @@ const LoginPage = (props) => {
         event.preventDefault();
     };
 
-    const handleSuccessfulAuth = (id) => {
-        props.handleLogin(id);
-        props.history.push("/user/");
-    }
-
     const handleSubmit = (event) => {
         axios
             .post(
@@ -75,7 +71,8 @@ const LoginPage = (props) => {
             )
             .then(response => {
                 if (response.data.status === "Pass") {
-                    handleSuccessfulAuth(response.data.UUID);
+                    props.handleLogin(response.data.UUID);
+                    props.history.push("/user/");
                 }
             })
             .catch(error => {
@@ -86,6 +83,7 @@ const LoginPage = (props) => {
 
     return (
         <div>
+            <Navbar />
             <Particles
                 canvasClassName={classes.particlesCanva}
                 params={{
