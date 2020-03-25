@@ -27,7 +27,7 @@ class Navbar extends Component {
     super(props);
     this.state = {
       right: false,
-	  isLogin: sessionStorage.getItem("loggedInStatus")
+	  isLogin: sessionStorage.getItem("loggedInStatus") === "LOGGED_IN"
     };
   }
   toggleSlider = (slider, open) => () => {

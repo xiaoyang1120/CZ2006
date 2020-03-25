@@ -52,12 +52,18 @@ class App extends React.Component {
                                    <LoginPage
                                        {...props}
                                        handleLogin={this.handleLogin}
-                                       handleLogout={this.handleLogout}
                                        loggedInStatus={loginStatus}
                                    />
                                )}/>
                         <Route path={loginStatus ? "/profile" : "/login"}
-                               exact component={ProfilePage}/>
+                               render={
+                                   props => (
+                                       <ProfilePage
+                                           {...props}
+                                           handleLogout={this.handleLogout}
+                                       />
+                                   )
+                               }/>
                         <Route path={loginStatus ? "/criteria" : "/login"}
                                exact component={CriteriaMatching}/>
                         <Redirect from="/*" to="/login"/>

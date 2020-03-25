@@ -32,8 +32,8 @@ const styles = theme => ({
 });
 
 class ProfilePage extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       isLogin: true,
       favPage: true
@@ -50,8 +50,9 @@ class ProfilePage extends Component {
     this.setState({ favPage: false });
   }
   handleLogout() {
-    //this.setState({ isLogin: false });
-    console.log("log out");
+    // console.log("log out");
+    this.props.handleLogout()
+    this.props.history.push("/")
   }
   render() {
     const { classes } = this.props;
