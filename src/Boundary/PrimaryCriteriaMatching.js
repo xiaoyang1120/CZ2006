@@ -30,44 +30,39 @@ import testData from "../Data/testData";
 class PrimaryCriteriaMatching extends Component{
   constructor(){
     super()
-
-    var list=[];
-    var i=0;
-    console.log(testData);
-    for (const cri of testData){
-      i++;
-      list.push({
-        id: i, name: cri, isChecked: false
-      });
-    }
-
     this.state = {
-      loading: false,
-      //criterion:{},
-      criterion: testData,
-      boolCri: list,//format of each item: {id:1, name: "PRI_SCHOOL_XXX", isChecked: false}
-      checked: {}, //format of the object: {"CRI1", "CRI2", "CRI3"}
+      loading: true,
+      criterion: [],
+      boolCri: [],//format of each item: {id:1, name: "PRI_SCHOOL_XXX", isChecked: false}
+      checked: [], //format of the object: {"CRI1", "CRI2", "CRI3"}
     }
 
     this.handleChange = this.handleChange.bind(this);
   }
 
   componentDidMount(){
-    //fake fetch
-      this.setState({
-        loading: true,
+    fetch("http://5e7ce96f71384.freetunnel.cc/api/criteria/get_all")
+      .then(response=> response.json())
+      .then(data=>{
+        console.log("After fetching:", data)
+        this.setState({
+          criterion: data,
+          loading: false,
+        })
       });
-      fetch("http://5e7ce96f71384.freetunnel.cc/api/criteria/get_all")
-        .then(response=> response.json())
-        .then(data=>{
-
-          this.setState({
-            criterion: data,
-            loading: false,
-          })
-        });
-        console.log(this.state.criterion);
-
+    console.log("After setstate:",this.state.criterion[2]);
+    var list=[];
+    var i=0;
+    for (const cri of this.state.criterion){
+      i++;
+      list.push({
+        id: i, name: cri, isChecked: false
+      });
+    };
+    this.setState({
+      boolCri: list
+    });
+    console.log(this.state.boolCri);
     };
   // const handleChange = event => {
   //   setState({ ...state, [event.target.name]: event.target.checked });
