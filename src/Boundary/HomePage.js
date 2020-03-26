@@ -1,12 +1,12 @@
-import React, { Component } from "react";
+import React from "react";
 import { Typography, Box, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import Typed from "react-typed";
 import Particles from "react-particles-js";
 import CloudUploadIcon from "@material-ui/icons/CloudUpload";
 import SearchIcon from "@material-ui/icons/Search";
-import { Link } from "react-router-dom";
 import Navbar from "../Components/NavBar";
+
 const useStyles = makeStyles(theme => ({
   title: {
     color: "white"

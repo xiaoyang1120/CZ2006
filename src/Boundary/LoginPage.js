@@ -177,7 +177,7 @@ const LoginPage = (props) => {
                                 type="text"
                                 value={values.email}
                                 onChange={handleChange("email")}
-                                labelWidth={74}
+                                labelWidth={40}
                             />
                         </FormControl>
                         <br/>

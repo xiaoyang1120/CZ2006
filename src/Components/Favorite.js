@@ -63,7 +63,7 @@ class Favorite extends Component {
     console.log("Remove!" + id);
     let newFavhouse = [];
     for (let i = 0; i < this.state.favHouse.length; i++) {
-      if (this.state.favHouse[i].houseID != id) {
+      if (this.state.favHouse[i].houseID !== id) {
         newFavhouse.push(this.state.favHouse[i]);
       }
     }

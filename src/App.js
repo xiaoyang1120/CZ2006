@@ -1,5 +1,4 @@
 import React from "react";
-import Navbar from "./Components/NavBar";
 import ProfilePage from "./Boundary/ProfilePage";
 import HomePage from "./Boundary/HomePage";
 import "./App.css";
