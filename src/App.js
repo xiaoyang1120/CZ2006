@@ -6,7 +6,7 @@ import "./App.css";
 
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import LoginPage from "./Boundary/LoginPage";
-import CriteriaMatching from "./Boundary/CriteriaMatching"
+import CriteriaMatching from "./Boundary/PrimaryCriteriaMatching"
 
 class App extends React.Component {
     constructor() {
@@ -65,7 +65,7 @@ class App extends React.Component {
                                    )
                                }/>
                         <Route path={"/criteria"}
-                               exact component={CriteriaMatching}/>
+                               exact component={PrimaryCriteriaMatching}/>
 
                         {/*<Route exact path="/login"*/}
                         {/*       render={props => (*/}
