@@ -32,7 +32,8 @@ class PrimaryCriteriaMatching extends Component{
     this.state = {
       loading: false,
       criterion:{},
-      //chosenCriteria: "",
+      boolCri: {},//format of each item: {id:1, name:PRI_SCHOOL_XXX, isChecked: false}
+      checked: {}, //format of the object: {"CRI1", "CRI2", "CRI3"}
     }
     this.handleChange = this.handleChange.bind(this)
   }
@@ -45,7 +46,7 @@ class PrimaryCriteriaMatching extends Component{
   //   });
   componentDidMount(){
       this.setState({loading: true})
-      fetch("https://c90bdde2.ap.ngrok.io/criteria/get_all")
+      fetch("https://b843c882.ap.ngrok.io/criteria/get_all")
         .then(response=> response.json())
         .then(data=>{
           this.setState({
@@ -57,11 +58,18 @@ class PrimaryCriteriaMatching extends Component{
   // const handleChange = event => {
   //   setState({ ...state, [event.target.name]: event.target.checked });
   // };
-  handleChange(event){
-    const {name, checked} = event.target
-      this.setState({
-        [name]: checked//modify!
+  handleChange(id){
+    this.setState(prevState => {//use .map
+      const updatedCri = prevState.boolCri.map(cri => {
+        if (cri.id === id){
+          cri.isChecked = !cri.isChecked
+        }
+        return cri
       })
+      return {
+        boolCri: updatedCri
+      }
+    })
   }
 
   submitEditForm(e){

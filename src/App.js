@@ -6,7 +6,7 @@ import "./App.css";
 
 import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom";
 import LoginPage from "./Boundary/LoginPage";
-import CriteriaMatching from "./Boundary/PrimaryCriteriaMatching"
+import PrimaryCriteriaMatching from "./Boundary/PrimaryCriteriaMatching"
 
 class App extends React.Component {
     constructor() {
