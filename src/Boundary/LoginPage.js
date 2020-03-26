@@ -62,7 +62,7 @@ const LoginPage = (props) => {
     const handleLoginSubmit = (event) => {
         axios
             .post(
-                "http://localhost:8080/api/user/log_in",
+                "http://5e7ce96f71384.freetunnel.cc/api/user/log_in",
                 {
                     email: values.email,
                     password: values.password

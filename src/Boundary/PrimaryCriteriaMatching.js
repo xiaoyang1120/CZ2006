@@ -12,6 +12,7 @@ import FormControl from '@material-ui/core/FormControl';
 //import FormHelperText from '@material-ui/core/FormHelperText';
 import axios from 'axios';
 import Navbar from "../Components/NavBar";
+import testData from "../Data/testData";
 // const useStyles = makeStyles(theme => ({
 //   root: {
 //     display: 'flex',
@@ -29,32 +30,45 @@ import Navbar from "../Components/NavBar";
 class PrimaryCriteriaMatching extends Component{
   constructor(){
     super()
+
+    var list=[];
+    var i=0;
+    console.log(testData);
+    for (const cri of testData){
+      i++;
+      list.push({
+        id: i, name: cri, isChecked: false
+      });
+    }
+
     this.state = {
       loading: false,
-      criterion:{},
-      boolCri: {},//format of each item: {id:1, name:PRI_SCHOOL_XXX, isChecked: false}
+      //criterion:{},
+      criterion: testData,
+      boolCri: list,//format of each item: {id:1, name: "PRI_SCHOOL_XXX", isChecked: false}
       checked: {}, //format of the object: {"CRI1", "CRI2", "CRI3"}
     }
-    this.handleChange = this.handleChange.bind(this)
-  }
-  // const [state, setState] = React.useState({
-  //   checkedA: true,//checkedPSchool..etc
-  //   checkedB: false,
-  //   checkedC: false,
-  //   checkedD: true,
 
-  //   });
+    this.handleChange = this.handleChange.bind(this);
+  }
+
   componentDidMount(){
-      this.setState({loading: true})
-      fetch("https://b843c882.ap.ngrok.io/criteria/get_all")
+    //fake fetch
+      this.setState({
+        loading: true,
+      });
+      fetch("http://5e7ce96f71384.freetunnel.cc/api/criteria/get_all")
         .then(response=> response.json())
         .then(data=>{
+
           this.setState({
             criterion: data,
             loading: false,
           })
-        })
-    }
+        });
+        console.log(this.state.criterion);
+
+    };
   // const handleChange = event => {
   //   setState({ ...state, [event.target.name]: event.target.checked });
   // };
@@ -76,24 +90,25 @@ class PrimaryCriteriaMatching extends Component{
     //TODO: store the choices to datafile
     //TODO: jump to secondary criterion page
     e.preventDefault();
-    let arr = [];
-    // for (var key in this.state.criterion) {
-    //   if(this.state.criterion[key] === true) {
-    //     arr.push(key);
+    // let arr = [];
+    // foreach item in this.state.boolCri {
+    //   if(item.isChecked === true) {
+    //     arr.push(item.name);
     //   }
     // }
     // let data = {
     //   chosenCriteria: arr.toString()
     // };
-    // axios.post('http://localhost:3000/checks/add', data)
+    // axios.post('https://b843c882.ap.ngrok.io/criteria/get_districts?offset=0', data)
     //       .then(res => console.log(res.data));
-}
+  }
 
   // const {checkedA, checkedB, checkedC, checkedD, checkedE, checkedF, checkedG} = state;
   // const error = [checkedA, checkedB, checkedC, checkedD, checkedE, checkedF, checkedG].filter(v => v).length !== 3;
 //required error={error}
   render(){
-    const text = this.state.loading ? "Loading..." : this.state.criterion[0]
+    console.log("this.state.boolCri: " + this.state.boolCri)
+    const text = this.state.loading ? "Loading..." : this.state.boolCri[1].name;
     return(
       <div>
         <Navbar />
