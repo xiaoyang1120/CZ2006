@@ -5,8 +5,8 @@ import { Button } from "@material-ui/core";
 import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-//import Favorite from '@material-ui/icons/Favorite';
-//import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 import FormLabel from '@material-ui/core/FormLabel';
 import FormControl from '@material-ui/core/FormControl';
 //import FormHelperText from '@material-ui/core/FormHelperText';
@@ -38,6 +38,7 @@ class PrimaryCriteriaMatching extends Component{
     }
 
     this.handleChange = this.handleChange.bind(this);
+    this.submitEditForm = this.submitEditForm.bind(this);
   }
 
   componentDidMount(){
@@ -63,11 +64,12 @@ class PrimaryCriteriaMatching extends Component{
   // const handleChange = event => {
   //   setState({ ...state, [event.target.name]: event.target.checked });
   // };
-  handleChange(id){
+  handleChange(event){
+    const {name, checked} = event.target
     this.setState(prevState => {//use .map
       const updatedCri = prevState.boolCri.map(cri => {
-        if (cri.id === id){
-          cri.isChecked = !cri.isChecked
+        if (cri.name === name){
+          cri.isChecked = checked
         }
         return cri
       })
@@ -100,21 +102,41 @@ class PrimaryCriteriaMatching extends Component{
   render(){
     console.log("this.state.boolCri: " + this.state.boolCri)
     const text = this.state.loading ? "Loading..." : this.state.boolCri[1].name;
+    // <FormControlLabel
+    //   control={<Checkbox name="checkedA"
+    //             icon={<FavoriteBorder />} checkedIcon={<Favorite />}
+    //             checked={state.checkedA} onChange={handleChange} />}
+    //   label="Cri1"
+    // />
+    const criItems = this.state.boolCri.map(item =>
+      <FormControlLabel
+        control={<Checkbox  name={item.name}
+                            icon={<FavoriteBorder />}
+                            checkedIcon={<Favorite />}
+                            checked={item.isChecked}
+                            onChange={this.handleChange}
+                />}
+        label={item.name}
+        key={item.id}
+      />
+    );
+
     return(
       <div>
         <Navbar />
-        <p>{text}</p>
+        <h2>Choose 3 primary criterion:</h2>
+        <FormControl
+          component="fieldset"
+          onSubmit={(e) => this.submitEditForm(e)}
+        >
+          {criItems}
+          <Button type="submit" href="/">Next step</Button>
+        </FormControl>
       </div>
     )
 
   }
-    // const priCriLabels = this.state.criterion.map(item =>
-    //   <FormControlLabel
-    //     key={item[key]]}
-    //     label={item.}
-    //     handleChange={this.handleChange}
-    //   />)
-    //   //const text = this.state.loading ? "Loading..." : this.state.character.name
+
     //   return(
     //     <div>
     //       <FormControl
