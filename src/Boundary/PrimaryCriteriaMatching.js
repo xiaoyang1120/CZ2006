@@ -10,7 +10,7 @@ import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
 // import FormLabel from '@material-ui/core/FormLabel';
 //import FormControl from '@material-ui/core/FormControl';
 //import FormHelperText from '@material-ui/core/FormHelperText';
-import axios from 'axios';
+//import axios from 'axios';
 import Navbar from "../Components/NavBar";
 //import testData from "../Data/testData";
 import {Redirect} from 'react-router-dom';
@@ -46,9 +46,9 @@ class PrimaryCriteriaMatching extends Component{
 
   componentDidMount(){
     fetch("http://5e7ce96f71384.freetunnel.cc/api/criteria/get_all")
-      .then(response=> response.json())
+      .then(res=> res.json())
       .then(data=>{
-        console.log("After fetching:", data);
+        console.log("Fetched criterion:", data);
         var list=[];
         var i=0;
         for (const cri of data){
@@ -63,7 +63,7 @@ class PrimaryCriteriaMatching extends Component{
           boolCri: list,
         })
       });
-    };
+    }
   // const handleChange = event => {
   //   setState({ ...state, [event.target.name]: event.target.checked });
   // };
@@ -89,33 +89,30 @@ class PrimaryCriteriaMatching extends Component{
         checked: list,
       };
     });
-  };
-
-  handleSubmit(e){
-    //TODO: store the choices to datafile
-    //TODO: jump to secondary criterion page
-    e.preventDefault();
-    //alert("You are submitting " + this.state.checked);
-    // if (this.state.checked.length != 3){
-    //   alert("You are submitting " + this.state.checked + ". Please choose exactly 3 criterion. Try again.");
-    // }
-
-    // let arr = [];
-    // foreach item in this.state.boolCri {
-    //   if(item.isChecked === true) {
-    //     arr.push(item.name);
-    //   }
-    // }
-    // let data = {
-    //   chosenCriteria: arr.toString()
-    // };
-    // axios.post('https://b843c882.ap.ngrok.io/criteria/get_districts?offset=0', data)
-    //       .then(res => console.log(res.data));
   }
 
-  // const {checkedA, checkedB, checkedC, checkedD, checkedE, checkedF, checkedG} = state;
-  // const error = [checkedA, checkedB, checkedC, checkedD, checkedE, checkedF, checkedG].filter(v => v).length !== 3;
-//required error={error}
+  handleSubmit(e){
+    //TODO: store the choices to sessionstorage
+    //TODO: jump to secondary criterion page<-done by submit button
+    e.preventDefault();
+    const data = this.state.checked;
+    console.log("I'm called!");
+    sessionStorage.setItem("chosenCriterion",data);
+    // if need to post to api
+    // axios.post('https://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts?offset=0', data)
+    //       .then(res => console.log(res.data));
+    const url = "https://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts?offset=0";
+    fetch(url, {method: ‘POST’, // or ‘PUT’
+                body: JSON.stringify(data), // data can be `string` or {object}!
+                headers:{'Content-Type': 'application/json'}})
+      .then(res => res.json())
+      .catch(error => console.error('Error:', error))
+      .then(response => {
+        console.log('Success:', response);
+        sessionStorage.setItem("filteredDistrictList", response);
+        });
+    }
+
   render(){
     // console.log("this.state.boolCri: " + this.state.boolCri)
     const text = this.state.loading ? "Loading..." : null;
