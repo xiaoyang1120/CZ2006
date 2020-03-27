@@ -20,13 +20,22 @@ import Favorite from "../Components/Favorite";
 import OnSale from "../Components/OnSale";
 import Navbar from "../Components/NavBar";
 import ChangePwd from "../Components/ChangePwd";
+import deepPurple from "@material-ui/core/colors/deepPurple";
 //css styles
 const styles = theme => ({
+    root: {
+        display: 'flex',
+        '& > *': {
+            margin: theme.spacing(1),
+        },
+    },
     avatar: {
-        display: "block",
-        margin: "1rem auto",
-        width: theme.spacing(13),
-        height: theme.spacing(13)
+        // display: "block",
+        // margin: "1rem auto",
+        // width: theme.spacing(13),
+        // height: theme.spacing(13),
+        color: theme.palette.getContrastText(deepPurple[500]),
+        backgroundColor: deepPurple[500],
     },
     listItem: {
         color: "white"
@@ -66,13 +75,18 @@ class ProfilePage extends Component {
 
     render() {
         const {classes} = this.props;
+        const email = sessionStorage.getItem("email")
         return (
             <div>
                 <Navbar/>
                 <Grid container>
                     <Grid item xs={2}>
                         <Paper style={{background: "#211e55"}} component="div">
-                            <Avatar className={classes.avatar} src={avatar} alt="Liu Yanli"/>
+                            <div className={classes.root}>
+                                <Avatar className={classes.avatar}>{
+                                    email[1] === "@" ? email[0]: email.substring(0, 2)
+                                }</Avatar>
+                            </div>
                             <Divider/>
                             <List>
                                 <ListItem button onClick={this.handleFavHouse}>
