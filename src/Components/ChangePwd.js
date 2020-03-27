@@ -9,6 +9,7 @@ import clsx from "clsx";
 import InputLabel from "@material-ui/core/InputLabel";
 import {withStyles} from "@material-ui/core/styles";
 import isSimplePwd from "../Boundary/PasswordCheck";
+import md5Encode from "../tool/md5";
 
 const styles = theme => ({
     cardGrid: {
@@ -50,9 +51,9 @@ class ChangePwd extends React.Component {
             axios.post(
                 "http://5e7ce96f71384.freetunnel.cc/api/user/change_password",
                 {
-                    email: sessionStorage.getItem("email"),
-                    password: this.state.password,
-                    newPassword: this.state.newPassword
+                    email: md5Encode(sessionStorage.getItem("email")),
+                    password: md5Encode(this.state.password),
+                    newPassword: md5Encode(this.state.newPassword)
                 },
                 {withCredentials: true}
             ).then(

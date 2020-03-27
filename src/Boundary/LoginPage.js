@@ -12,6 +12,7 @@ import axios from "axios";
 import Particles from "react-particles-js";
 import Navbar from "../Components/NavBar";
 import isSimplePwd from "./PasswordCheck";
+import md5Encode from "../tool/md5"
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -65,8 +66,8 @@ const LoginPage = (props) => {
             .post(
                 "http://5e7ce96f71384.freetunnel.cc/api/user/log_in",
                 {
-                    email: values.email,
-                    password: values.password
+                    email: md5Encode(values.email),
+                    password: md5Encode(values.password)
                 },
                 {withCredentials: true}
             )
@@ -89,8 +90,8 @@ const LoginPage = (props) => {
             axios.post(
                 "http://5e7ce96f71384.freetunnel.cc/api/user/sign_up",
                 {
-                    email: values.email,
-                    password: values.password
+                    email: md5Encode(values.email),
+                    password: md5Encode(values.password)
                 }, {
                     withCredentials: true
                 }
