@@ -39,8 +39,9 @@ class PrimaryCriteriaMatching extends Component{
       checked: [], //format of the object: {"CRI1", "CRI2", "CRI3"}
     }
 
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    //this.checkSubmission = this.checkSubmission.bind(this)
   }
 
   componentDidMount(){
@@ -95,11 +96,10 @@ class PrimaryCriteriaMatching extends Component{
     //TODO: jump to secondary criterion page
     e.preventDefault();
     //alert("You are submitting " + this.state.checked);
-    if (this.state.checked.length != 3){
-      alert("You are submitting " + this.state.checked + "Please choose exactly 3 criterion. Try again.");
-      return <Redirect to="/criteria" />;
-    }
-    return <Redirect to="/" />
+    // if (this.state.checked.length != 3){
+    //   alert("You are submitting " + this.state.checked + ". Please choose exactly 3 criterion. Try again.");
+    // }
+
     // let arr = [];
     // foreach item in this.state.boolCri {
     //   if(item.isChecked === true) {
@@ -123,8 +123,11 @@ class PrimaryCriteriaMatching extends Component{
     const unselectedStyle={
       color: "white",
     };
+    const selectedStyle={
+      color: "yellow",
+    };
     const criItems = this.state.boolCri.map(item =>
-      <FormControlLabel
+      <FormControlLabel style={item.isChecked? selectedStyle: unselectedStyle}
         control={<Checkbox  name={item.name}
                             icon={<FavoriteBorder />}
                             checkedIcon={<Favorite />}
@@ -140,10 +143,15 @@ class PrimaryCriteriaMatching extends Component{
       <div>
         <Navbar />
         <h2 style={unselectedStyle}>Choose exactly 3 primary criterion:</h2>
-        <h2>{text}</h2>
+        <h2 style={unselectedStyle}>{text}</h2>
         <form onSubmit={this.handleSubmit}>
           {criItems}
-          <Button type="submit">Next step</Button>
+          <br />
+          <Button type="submit"
+                  href="criteria_"
+                  style={unselectedStyle}
+                  disabled={this.state.checked.length!=3}
+          >Next step</Button>
         </form>
 
       </div>
