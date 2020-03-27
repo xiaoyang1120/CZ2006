@@ -14,7 +14,6 @@ import {
 import EditIcon from "@material-ui/icons/Edit";
 import LoyaltyIcon from "@material-ui/icons/Loyalty";
 import HouseIcon from "@material-ui/icons/House";
-import avatar from "../avatar.png";
 import ExitToAppIcon from "@material-ui/icons/ExitToApp";
 import Favorite from "../Components/Favorite";
 import OnSale from "../Components/OnSale";
