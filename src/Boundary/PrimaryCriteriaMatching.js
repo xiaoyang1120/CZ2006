@@ -44,25 +44,21 @@ class PrimaryCriteriaMatching extends Component{
     fetch("http://5e7ce96f71384.freetunnel.cc/api/criteria/get_all")
       .then(response=> response.json())
       .then(data=>{
-        console.log("After fetching:", data)
+        console.log("After fetching:", data);
+        var list=[];
+        var i=0;
+        for (const cri of data){
+          i++;
+          list.push({
+            id: i, name: cri, isChecked: false
+          });
+        };
         this.setState({
           criterion: data,
           loading: false,
+          boolCri: list,
         })
       });
-    console.log("After setstate:",this.state.criterion[2]);
-    var list=[];
-    var i=0;
-    for (const cri of this.state.criterion){
-      i++;
-      list.push({
-        id: i, name: cri, isChecked: false
-      });
-    };
-    this.setState({
-      boolCri: list
-    });
-    console.log(this.state.boolCri);
     };
   // const handleChange = event => {
   //   setState({ ...state, [event.target.name]: event.target.checked });
