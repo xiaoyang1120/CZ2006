@@ -11,6 +11,7 @@ import clsx from "clsx";
 import axios from "axios";
 import Particles from "react-particles-js";
 import Navbar from "../Components/NavBar";
+import isSimplePwd from "./PasswordCheck";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -71,7 +72,7 @@ const LoginPage = (props) => {
             )
             .then(response => {
                 if (response.data.status === "Pass") {
-                    props.handleLogin(response.data.UUID);
+                    props.handleLogin(values.email);
                     props.history.push("/");
                 }
             })
@@ -81,32 +82,12 @@ const LoginPage = (props) => {
         event.preventDefault();
     }
 
-    const isSinglePwd = (s) => {
-        if (s.length < 6) {
-            return 0;
-        }
-        let ls = 0;
-        if (s.match(/([a-z])+/)) {
-            ls++;
-        }
-        if (s.match(/([0-9])+/)) {
-            ls++;
-        }
-        if (s.match(/([A-Z])+/)) {
-            ls++;
-        }
-        if (s.match(/[^a-zA-Z0-9]+/)) {
-            ls++;
-        }
-        return ls;
-    }
-
     const handleSignUpSubmit = (event) => {
-        if (isSinglePwd(values.password) < 3) {
+        if (isSimplePwd(values.password)) {
             alert("Password is too simple!")
         } else {
             axios.post(
-                "http://localhost:8080/api/user/sign_up",
+                "http://5e7ce96f71384.freetunnel.cc/api/user/sign_up",
                 {
                     email: values.email,
                     password: values.password
@@ -173,7 +154,7 @@ const LoginPage = (props) => {
                         >
                             <InputLabel>Email</InputLabel>
                             <OutlinedInput
-                                id="user"
+                                id="email"
                                 type="text"
                                 value={values.email}
                                 onChange={handleChange("email")}
@@ -185,11 +166,11 @@ const LoginPage = (props) => {
                             className={clsx(classes.margin, classes.textField)}
                             variant="outlined"
                         >
-                            <InputLabel htmlFor="outlined-adornment-password">
+                            <InputLabel htmlFor="password">
                                 Password
                             </InputLabel>
                             <OutlinedInput
-                                id="outlined-adornment-password"
+                                id="password"
                                 type={values.showPassword ? "text" : "password"}
                                 value={values.password}
                                 onChange={handleChange("password")}

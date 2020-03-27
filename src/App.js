@@ -14,7 +14,7 @@ class App extends React.Component {
 
         this.state = {
             loggedInStatus: sessionStorage.getItem("loggedInStatus"),
-            uid: sessionStorage.getItem("uid")
+            uid: sessionStorage.getItem("email")
         };
 
         this.handleLogin = this.handleLogin.bind(this);
@@ -24,19 +24,20 @@ class App extends React.Component {
     handleLogout() {
         this.setState({
             loggedInStatus: "NOT_LOGGED_IN",
-            uid: ""
+            email: null
         });
         sessionStorage.setItem("loggedInStatus", "NOT_LOGGED_IN")
-        sessionStorage.setItem("uid", null)
+        sessionStorage.setItem("email", null)
     }
 
-    handleLogin(id) {
+    handleLogin(email) {
         this.setState({
             loggedInStatus: "LOGGED_IN",
-            uid: id
+            email: email
         });
+
         sessionStorage.setItem("loggedInStatus", "LOGGED_IN")
-        sessionStorage.setItem("uid", id)
+        sessionStorage.setItem("email", email)
     }
 
     render() {
