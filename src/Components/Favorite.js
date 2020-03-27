@@ -52,12 +52,12 @@ class Favorite extends Component {
   }
 
   componentDidMount() {
-    /*this.setState({ isLoading: true });
+    this.setState({ isLoading: true });
     fetch(
-      "http://localhost:8080/api/user/015819ef-f799-4431-84ea-960413b583c4/get_fav"
+      "http://5e7ce96f71384.freetunnel.cc/api/user/" + sessionStorage.getItem("uuid") + "/get_fav",
     )
       .then(response => response.json())
-      .then(data => this.setState({ isLoading: false, favHouse: data }));*/
+      .then(data => this.setState({ isLoading: false, favHouse: data }));
   }
   Remove(id) {
     console.log("Remove!" + id);
