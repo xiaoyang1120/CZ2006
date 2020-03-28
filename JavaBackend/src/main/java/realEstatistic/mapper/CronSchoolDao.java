@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import realEstatistic.model.SCHOOL_TYPE;
 import realEstatistic.model.School;
+import realEstatistic.util.PostalConverter;
 
 import java.io.*;
 import java.net.URL;
@@ -128,21 +129,6 @@ public class CronSchoolDao implements SchoolDao{
     public static void CronFetch() throws IOException, JSONException, ParseException, InterruptedException {
         System.setProperty("http.agent", "Mozilla/5.0");
         JSONObject json =  readJsonFromUrl("https://data.gov.sg/api/action/datastore_search?resource_id=ede26d32-01af-4228-b1ed-f05c45a1d8ee&limit=10000");
-
-
-        Map m1 = new HashMap();
-
-        File file = new File("./src/main/java/realEstatistic/downloads/SG.txt");
-        Scanner sc = new Scanner(file);
-        String a = null;
-
-        while (sc.hasNextLine()){
-            a = sc.nextLine();
-            m1.put(a.split("\t")[1], a.split("\t\t\t\t\t\t\t")[1]);
-        }
-
-
-
         for(int i = 0; i < json.getJSONObject("result").getJSONArray("records").length(); i++) {
             String schoolName, schoolDescription;
             float lat = 0;
@@ -164,8 +150,8 @@ public class CronSchoolDao implements SchoolDao{
             if(postalCode.length()==5){
                 postalCode = "0" + postalCode;
             }
-            lat = Float.parseFloat(m1.get(postalCode).toString().split("\t")[0]);
-            long_ = Float.parseFloat(m1.get(postalCode).toString().split("\t")[1]);
+            lat = Float.parseFloat(PostalConverter.convertPostal(postalCode).split("\t")[0]);
+            long_ = Float.parseFloat(PostalConverter.convertPostal(postalCode).split("\t")[1]);
 
             UUID newId = UUID.randomUUID();
             School s = new School(newId, schoolName, lat, long_, schoolDescription, type);

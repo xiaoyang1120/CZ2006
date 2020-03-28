@@ -31,6 +31,15 @@ public class DistrictController {
         return districtService.getAllDistrict();
     }
 
+    @GetMapping("/get_district_by_postal")
+    public String getDistrictByPostal(@RequestParam("postal") String postal){
+        UUID districtId = districtService.getDistrictIdByPostal(postal);
+        if (districtId == null){
+            return "Wrong Postal Code!";
+        } else {
+            return districtId.toString();
+        }
+    }
 
     @GetMapping("/{id}/detail")
     public District getDistrictDetails(@PathVariable("id") String districtId, HttpServletResponse response) throws IOException {
