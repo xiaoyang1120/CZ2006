@@ -5,7 +5,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
-import axios from 'axios';
+//import axios from 'axios';
 import Navbar from "../Components/NavBar";
 //import testData from "../Data/testData";
 
@@ -47,6 +47,7 @@ class PrimaryCriteriaMatching extends Component {
       .then(res => res.json())
       .then(data => {
         console.log("Fetched criterion:", data);
+        sessionStorage.setItem("criterion",JSON.stringify(data));
         var list = [];
         var i = 0;
         for (const cri of data) {
@@ -83,6 +84,7 @@ class PrimaryCriteriaMatching extends Component {
         if (cri.isChecked) {
           list.push(cri.name);
         }
+        return cri;
       });
       console.log("You checked:", list);
       return {
@@ -96,8 +98,8 @@ class PrimaryCriteriaMatching extends Component {
     //TODO: store the choices to sessionstorage
     //TODO: jump to secondary criterion page<-done by submit button
     const chosenCri = this.state.checked;
-    sessionStorage.setItem("chosenCriterion", chosenCri);
-    sessionStorage.setItem("boolCriterion", this.state.boolCri);
+    sessionStorage.setItem("chosenCriterion", JSON.stringify(chosenCri));
+    // sessionStorage.setItem("boolCriterion", this.state.boolCri);
     // const url =
     //   "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
     // console.log(chosenCri);
@@ -152,7 +154,7 @@ class PrimaryCriteriaMatching extends Component {
               <Button
                 type="submit"
                 className={classes.unselected}
-                disabled={this.state.checked.length != 3}
+                disabled={this.state.checked.length !== 3}
               >
                 Next step
               </Button>

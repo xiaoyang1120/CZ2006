@@ -6,6 +6,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import Navbar from "../Components/NavBar";
 import { green } from "@material-ui/core/colors";
 import axios from 'axios';
+
 const GreenCheckbox = withStyles({
   root: {
   color: green[400],
@@ -13,7 +14,6 @@ const GreenCheckbox = withStyles({
   },
   checked: {}
 })(props => <Checkbox color="default" {...props} />);
-
 
 const styles = theme => ({
   root: {
@@ -36,11 +36,14 @@ const styles = theme => ({
 
 class SecondaryCriteriaMatching extends Component{
   constructor(props){
-    super(props)
+    super(props);
     this.state={
-      boolCri: [],//sessionStorage.getItem(boolCriterion),
-      checked: [],
-    }
+      loading: true,
+      criterion: [],//sessionStorage.getItem("criterion"),
+      secBoolCri: [],//added "isAvai" value
+      secChecked: [],
+      priChecked: []
+    };
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
   }
@@ -48,13 +51,48 @@ class SecondaryCriteriaMatching extends Component{
   componentDidMount(){
     //TODO: set state by sessionStorage.getItem
     //TODO: disable those chosen as primary cri
+    //console.log("Fetched criterion:", data);
+    var data = JSON.parse(sessionStorage.getItem("criterion"));
+    console.log("componentDidMount.criterion", data);
+    if (!data){
+      alert("Please choose primary criterion first.");
+      this.props.history.push("/criteria");
+    }
+    var priCri = JSON.parse(sessionStorage.getItem("chosenCriterion"));
+    var list = [];
+    var i = 0;
+    for (const cri of data) {
+      i++;
+      if (priCri.includes(cri)){
+        list.push({
+          id: i,
+          name: cri,
+          isChecked: true,
+          isAvai: false,
+        });
+      }else{
+        list.push({
+          id: i,
+          name: cri,
+          isChecked: false,
+          isAvai: true,
+        });
+      }
+    }
+    console.log("componentDidMount.list[0]", list[0]);
+    this.setState({
+      criterion: data,
+      loading: false,
+      secBoolCri: list,
+      priChecked: priCri,
+    });
   }
 
   handleChange(event) {
     const { name, checked } = event.target;
     this.setState(prevState => {
       //use .map
-      const updatedCri = prevState.boolCri.map(cri => {
+      const updatedCri = prevState.secBoolCri.map(cri => {
         if (cri.name === name) {
           cri.isChecked = checked;
         }
@@ -63,14 +101,15 @@ class SecondaryCriteriaMatching extends Component{
       //update checked[]
       var list = [];
       updatedCri.map(cri => {
-        if (cri.isChecked) {
+        if ((cri.isChecked)&&(cri.isAvai)) {
           list.push(cri.name);
         }
+        return cri;
       });
       console.log("You checked:", list);
       return {
-        boolCri: updatedCri,
-        checked: list
+        secBoolCri: updatedCri,
+        secChecked: list,
       };
     });
   }
@@ -78,9 +117,8 @@ class SecondaryCriteriaMatching extends Component{
   handleSubmit(e) {
     //TODO: store the choices to sessionstorage
     //TODO: jump to secondary criterion page<-done by submit button
-    const chosenCri = this.state.checked;
-    sessionStorage.setItem("chosenCriterion", chosenCri);
-    sessionStorage.setItem("boolCriterion", this.state.boolCri);
+    const chosenCri = (this.state.priChecked).concat(this.state.secChecked);
+    sessionStorage.setItem("finalCriterion", JSON.stringify(chosenCri));
     // if need to post to api
     // axios.post('https://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts?offset=0', data)
     //       .then(res => console.log(res.data));
@@ -88,13 +126,13 @@ class SecondaryCriteriaMatching extends Component{
       "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
     console.log(chosenCri);
     let offset = 0;
-    sessionStorage.setItem("disListOffset", offset);
+    sessionStorage.setItem("disListOffset", JSON.stringify(offset));
     axios
         .post(url, chosenCri, {withCredentials: true,
           params: {offset}})
         .then(response => {
           console.log("Success:", response);
-          sessionStorage.setItem("filteredDistrictList", response);
+          sessionStorage.setItem("filteredDistrictList", JSON.stringify(response));
         })
         .catch(error => {
             console.error(error);
@@ -106,8 +144,9 @@ class SecondaryCriteriaMatching extends Component{
 
   render(){
     const { classes } = this.props;
+    const text = this.state.loading ? "Loading..." : null;
     //TODO:set checkbox disabling function disabled={}
-    const criItems = this.state.boolCri.map(item => (
+    const criItems = this.state.secBoolCri.map(item => (
       <FormControlLabel
         className={item.isChecked ? classes.selected : classes.unselected}
         control={
@@ -115,7 +154,7 @@ class SecondaryCriteriaMatching extends Component{
             name={item.name}
             checked={item.isChecked}
             onChange={this.handleChange}
-
+            disabled={!item.isAvai}
           />
         }
         label={item.name.charAt(0) + item.name.split('_').join(' ').toLowerCase().slice(1)}
@@ -132,26 +171,25 @@ class SecondaryCriteriaMatching extends Component{
     return(
       <div>
         <Navbar />
-        <h1>Just blank~</h1>
-
+        <div className={classes.root}>
+          <h2 className={classes.unselected}>{text}</h2>
+          <form onSubmit={this.handleSubmit}>
+            <fieldset>
+              <legend className={classes.legends}>Choose secondary criterion:</legend>
+              {criItems}
+              <br />
+              <Button
+                type="submit"
+                className={classes.unselected}
+              >
+                Submit!
+              </Button>
+            </fieldset>
+          </form>
+        </div>
       </div>
     )
-    // <div className={classes.root}>
-    //   <form onSubmit={this.handleSubmit}>
-    //     <fieldset>
-    //       <legend className={classes.legends}>Choose secondary criterion:</legend>
-    //       {criItems}
-    //       <br />
-    //       <Button
-    //         type="submit"
-    //         className={classes.unselected}
-    //       >
-    //         Submit!
-    //       </Button>
-    //     </fieldset>
-    //   </form>
-    // </div>
   }
 }
 
-export default SecondaryCriteriaMatching;
+export default withStyles(styles)(SecondaryCriteriaMatching);
