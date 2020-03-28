@@ -1,19 +1,14 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
-// import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
-// import FormLabel from '@material-ui/core/FormLabel';
-//import FormControl from '@material-ui/core/FormControl';
-//import FormHelperText from '@material-ui/core/FormHelperText';
 import axios from 'axios';
 import Navbar from "../Components/NavBar";
 //import testData from "../Data/testData";
-// import { Redirect } from "react-router-dom";
-//css styles unused for now
+
 const styles = theme => ({
   root: {
     display: "flex",
@@ -168,10 +163,8 @@ class PrimaryCriteriaMatching extends Component {
     );
   }
 }
-//in button: href="/"
-export default withStyles(styles)(PrimaryCriteriaMatching);
-//import { green } from "@material-ui/core/colors";
 
+export default withStyles(styles)(PrimaryCriteriaMatching);
 
 
 // <FormControlLabel

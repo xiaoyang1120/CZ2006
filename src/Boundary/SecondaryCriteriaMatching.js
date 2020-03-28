@@ -4,7 +4,8 @@ import { Button } from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Navbar from "../Components/NavBar";
-
+import { green } from "@material-ui/core/colors";
+import axios from 'axios';
 const GreenCheckbox = withStyles({
   root: {
   color: green[400],
@@ -132,23 +133,24 @@ class SecondaryCriteriaMatching extends Component{
       <div>
         <Navbar />
         <h1>Just blank~</h1>
-        // <div className={classes.root}>
-        //   <form onSubmit={this.handleSubmit}>
-        //     <fieldset>
-        //       <legend className={classes.legends}>Choose secondary criterion:</legend>
-        //       {criItems}
-        //       <br />
-        //       <Button
-        //         type="submit"
-        //         className={classes.unselected}
-        //       >
-        //         Submit!
-        //       </Button>
-        //     </fieldset>
-        //   </form>
-        // </div>
+
       </div>
     )
+    // <div className={classes.root}>
+    //   <form onSubmit={this.handleSubmit}>
+    //     <fieldset>
+    //       <legend className={classes.legends}>Choose secondary criterion:</legend>
+    //       {criItems}
+    //       <br />
+    //       <Button
+    //         type="submit"
+    //         className={classes.unselected}
+    //       >
+    //         Submit!
+    //       </Button>
+    //     </fieldset>
+    //   </form>
+    // </div>
   }
 }
 
