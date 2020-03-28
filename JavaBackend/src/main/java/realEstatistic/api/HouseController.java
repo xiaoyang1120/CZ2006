@@ -55,7 +55,7 @@ public class HouseController {
         return "Failed";
     }
 
-    @DeleteMapping(path = "{id}/add_to_fav")
+    @DeleteMapping(path = "{id}/remove_from_fav")
     public String removeHouseFromFavourite(@RequestParam("email") String email, @PathVariable("id") String houseId, HttpServletResponse response) throws IOException {
         try{
             UUID houseUUID = UUID.fromString(houseId);
