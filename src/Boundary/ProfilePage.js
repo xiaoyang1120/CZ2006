@@ -34,7 +34,7 @@ const styles = theme => ({
     height: theme.spacing(13),
     color: theme.palette.getContrastText(deepPurple[500]),
     backgroundColor: deepPurple[500],
-    fontSize: "75px"
+    fontSize: "40px"
   },
   listItem: {
     color: "white"
