@@ -192,17 +192,18 @@ const LoginPage = (props) => {
                         </FormControl>
                         <br/>
                         <Button
+                            className={clsx(classes.margin, classes.textField)}
                             variant="contained"
                             color="primary"
-                            style={{marginBottom: "10px", marginRight: "20px"}}
                             onClick={handleLoginSubmit}
                         >
                             Log in
                         </Button>
+                        <br />
                         <Button
+                            className={clsx(classes.margin, classes.textField)}
                             variant="contained"
-                            color="primary"
-                            style={{marginBottom: "10px", marginLeft: "20px"}}
+                            color="secondary"
                             onClick={handleSignUpSubmit}
                         >
                             Sign up
