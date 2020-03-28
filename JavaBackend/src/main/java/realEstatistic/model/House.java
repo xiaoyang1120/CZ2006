@@ -73,14 +73,6 @@ public class House {
         this.ownerId = ownerId;
     }
 
-    public boolean isAvailable() {
-        return isAvailable;
-    }
-
-    public void setAvalable(boolean avalable) {
-        isAvailable = avalable;
-    }
-
     public UUID getDistrictId() {
         return districtId;
     }
@@ -88,4 +80,13 @@ public class House {
     public void setDistrictId(UUID districtId) {
         this.districtId = districtId;
     }
+
+    public boolean getIsAvailable() {
+        return isAvailable;
+    }
+
+    public void setIsAvailable(boolean available) {
+        isAvailable = available;
+    }
+
 }

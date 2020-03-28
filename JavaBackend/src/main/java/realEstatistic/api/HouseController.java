@@ -92,8 +92,7 @@ public class HouseController {
             house.setDistrictId(districtId);
             UUID ownerId = UUID.fromString(json.get("ownerId"));
             house.setOwnerId(ownerId);
-            boolean isAvailable = Boolean.parseBoolean(json.get("isAvailable"));
-            house.setAvalable(isAvailable);
+            house.setIsAvailable(Boolean.parseBoolean(json.get("isAvailable")));
         }catch (IllegalArgumentException e){
             httpResponse.sendError(400, "Please enter a correct uuid!");
         }
