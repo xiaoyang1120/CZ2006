@@ -2,34 +2,36 @@ import React, {Component} from "react";
 //import { makeStyles } from "@material-ui/core/styles";
 import { withStyles } from '@material-ui/core/styles';
 import { Button } from "@material-ui/core";
-import FormGroup from '@material-ui/core/FormGroup';
+// import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-//import Favorite from '@material-ui/icons/Favorite';
-//import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
-import FormLabel from '@material-ui/core/FormLabel';
-import FormControl from '@material-ui/core/FormControl';
+import Favorite from '@material-ui/icons/Favorite';
+import FavoriteBorder from '@material-ui/icons/FavoriteBorder';
+// import FormLabel from '@material-ui/core/FormLabel';
+//import FormControl from '@material-ui/core/FormControl';
 //import FormHelperText from '@material-ui/core/FormHelperText';
-import axios from 'axios';
+//import axios from 'axios';
 import Navbar from "../Components/NavBar";
-import testData from "../Data/testData";
-// const useStyles = makeStyles(theme => ({
-//   root: {
-//     display: 'flex',
-//     backgroundColor: "#9fa8da",
+//import testData from "../Data/testData";
+import {Redirect} from 'react-router-dom';
+
+//css styles unused for now
+const styles = theme => ({
+  root: {
+    display: 'flex',
+    // backgroundColor: "#9fa8da",
+    "& > *": {margin: theme.spacing(1)},
 //     position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)'
-//   },
-//   formControl: {
-//     margin: theme.spacing(5),
-//   },
-//   headerFont: {
-//     fontSize: '25px'
-//   }
-// }));
+  },
+
+  selectedStyle:{
+    color: 'yellow'
+  }
+});
 
 class PrimaryCriteriaMatching extends Component{
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
     this.state = {
       loading: true,
       criterion: [],
@@ -37,14 +39,16 @@ class PrimaryCriteriaMatching extends Component{
       checked: [], //format of the object: {"CRI1", "CRI2", "CRI3"}
     }
 
-    this.handleChange = this.handleChange.bind(this);
+    this.handleChange = this.handleChange.bind(this)
+    this.handleSubmit = this.handleSubmit.bind(this)
+    //this.checkSubmission = this.checkSubmission.bind(this)
   }
 
   componentDidMount(){
     fetch("http://5e7ce96f71384.freetunnel.cc/api/criteria/get_all")
-      .then(response=> response.json())
+      .then(res=> res.json())
       .then(data=>{
-        console.log("After fetching:", data);
+        console.log("Fetched criterion:", data);
         var list=[];
         var i=0;
         for (const cri of data){
@@ -59,85 +63,99 @@ class PrimaryCriteriaMatching extends Component{
           boolCri: list,
         })
       });
-    };
+    }
   // const handleChange = event => {
   //   setState({ ...state, [event.target.name]: event.target.checked });
   // };
-  handleChange(id){
+  handleChange(event){
+    const {name, checked} = event.target;
     this.setState(prevState => {//use .map
       const updatedCri = prevState.boolCri.map(cri => {
-        if (cri.id === id){
-          cri.isChecked = !cri.isChecked
-        }
-        return cri
+        if (cri.name === name){
+          cri.isChecked = checked;
+        };
+        return cri;
       })
+      //update checked[]
+      var list=[];
+      updatedCri.map(cri=>{
+        if (cri.isChecked){
+          list.push(cri.name);
+        };
+      })
+      console.log("You checked:",list);
       return {
-        boolCri: updatedCri
-      }
-    })
+        boolCri: updatedCri,
+        checked: list,
+      };
+    });
   }
 
-  submitEditForm(e){
-    //TODO: store the choices to datafile
-    //TODO: jump to secondary criterion page
+  handleSubmit(e){
+    //TODO: store the choices to sessionstorage
+    //TODO: jump to secondary criterion page<-done by submit button
     e.preventDefault();
-    // let arr = [];
-    // foreach item in this.state.boolCri {
-    //   if(item.isChecked === true) {
-    //     arr.push(item.name);
-    //   }
-    // }
-    // let data = {
-    //   chosenCriteria: arr.toString()
-    // };
-    // axios.post('https://b843c882.ap.ngrok.io/criteria/get_districts?offset=0', data)
+    const data = this.state.checked;
+    console.log("I'm called!");
+    sessionStorage.setItem("chosenCriterion",data);
+    // if need to post to api
+    // axios.post('https://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts?offset=0', data)
     //       .then(res => console.log(res.data));
-  }
+    const url = "https://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts?offset=0";
+    fetch(url, {method: ‘POST’, // or ‘PUT’
+                body: JSON.stringify(data), // data can be `string` or {object}!
+                headers:{'Content-Type': 'application/json'}})
+      .then(res => res.json())
+      .catch(error => console.error('Error:', error))
+      .then(response => {
+        console.log('Success:', response);
+        sessionStorage.setItem("filteredDistrictList", response);
+        });
+    }
 
-  // const {checkedA, checkedB, checkedC, checkedD, checkedE, checkedF, checkedG} = state;
-  // const error = [checkedA, checkedB, checkedC, checkedD, checkedE, checkedF, checkedG].filter(v => v).length !== 3;
-//required error={error}
   render(){
-    console.log("this.state.boolCri: " + this.state.boolCri)
-    const text = this.state.loading ? "Loading..." : this.state.boolCri[1].name;
+    // console.log("this.state.boolCri: " + this.state.boolCri)
+    const text = this.state.loading ? "Loading..." : null;
+    //styles
+    const unselectedStyle={
+      color: "white",
+    };
+    const selectedStyle={
+      color: "yellow",
+    };
+    const criItems = this.state.boolCri.map(item =>
+      <FormControlLabel style={item.isChecked? selectedStyle: unselectedStyle}
+        control={<Checkbox  name={item.name}
+                            icon={<FavoriteBorder />}
+                            checkedIcon={<Favorite />}
+                            checked={item.isChecked}
+                            onChange={this.handleChange}
+                />}
+        label={item.name}
+        key={item.id}
+      />
+    );
+
     return(
       <div>
         <Navbar />
-        <p>{text}</p>
+        <h2 style={unselectedStyle}>Choose exactly 3 primary criterion:</h2>
+        <h2 style={unselectedStyle}>{text}</h2>
+        <form onSubmit={this.handleSubmit}>
+          {criItems}
+          <br />
+          <Button type="submit"
+                  href="criteria_"
+                  style={unselectedStyle}
+                  disabled={this.state.checked.length!=3}
+          >Next step</Button>
+        </form>
+
       </div>
     )
-
   }
-    // const priCriLabels = this.state.criterion.map(item =>
-    //   <FormControlLabel
-    //     key={item[key]]}
-    //     label={item.}
-    //     handleChange={this.handleChange}
-    //   />)
-    //   //const text = this.state.loading ? "Loading..." : this.state.character.name
-    //   return(
-    //     <div>
-    //       <FormControl
-    //         component="fieldset"
-    //         onSubmit={(e) => this.submitEditForm(e)}
-    //       >
-    //         <FormLabel component="legend">Choose 3 primary criterion</FormLabel>
-    //         <FormGroup>
-    //           {priCriLabels}
-    //         <FormGroup>
-    //         <br />
-    //         <Button
-    //           type="submit"
-    //           href="/"
-    //         >
-    //           Next step
-    //         </Button>
-    //       </FormControl>
-    //     </div>
-    //   )
-    // }
 }
-
+//in button: href="/"
 export default PrimaryCriteriaMatching
 // import { green } from '@material-ui/core/colors';
 
