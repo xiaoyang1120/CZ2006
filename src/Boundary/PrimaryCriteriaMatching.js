@@ -19,10 +19,6 @@ const styles = theme => ({
     display: "flex",
     backgroundColor: "#3f51b5",
     "& > *": { margin: theme.spacing(1) },
-    position: "absolute",
-    left: "50%",
-    top: "50%",
-    transform: "translate(-50%, -50%)"
   },
 
   selected: {
@@ -30,6 +26,10 @@ const styles = theme => ({
   },
   unselected: {
     color: "white"
+  },
+  legends:{
+    color:"white",
+    fontSize: "30px"
   }
 });
 
@@ -101,34 +101,24 @@ class PrimaryCriteriaMatching extends Component {
     //TODO: store the choices to sessionstorage
     //TODO: jump to secondary criterion page<-done by submit button
     const chosenCri = this.state.checked;
-    console.log("I'm called!");
     sessionStorage.setItem("chosenCriterion", chosenCri);
     sessionStorage.setItem("boolCriterion", this.state.boolCri);
     // if need to post to api
     // axios.post('https://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts?offset=0', data)
     //       .then(res => console.log(res.data));
     const url =
-      "https://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts?offset=0";
-    // fetch(url, {
-    //   method: "POST", // or 'PUT'
-    //   body: JSON.stringify(data), // data can be `string` or {object}!
-    //   headers: { "Content-Type": "application/json" }
-    // })
-    //   .then(res => res.json())
-    //   .catch(error => console.error("Error:", error))
-    //   .then(response => {
-    //     console.log("Success:", response);
-    //     sessionStorage.setItem("filteredDistrictList", response);
-    //   });
-    // this.props.history.push("/criteria_");
+      "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
+    console.log(chosenCri);
+    let offset = 0
     axios
-        .post(url, chosenCri, {withCredentials: true})
+        .post(url, chosenCri, {withCredentials: true,
+          params: {offset}})
         .then(response => {
           console.log("Success:", response);
           sessionStorage.setItem("filteredDistrictList", response);
-
         })
         .catch(error => {
+            console.error(error);
             alert("Getting distritList Error: " + error)
         });
     this.props.history.push("/criteria_");
@@ -149,6 +139,7 @@ class PrimaryCriteriaMatching extends Component {
             checkedIcon={<Favorite />}
             checked={item.isChecked}
             onChange={this.handleChange}
+            disabled={(!item.isChecked) && (this.state.checked.length >= 3)}
           />
         }
         label={item.name}
@@ -163,7 +154,7 @@ class PrimaryCriteriaMatching extends Component {
           <h2 className={classes.unselected}>{text}</h2>
           <form onSubmit={this.handleSubmit}>
             <fieldset>
-              <legend className={classes.unselected}>Choose exactly 3 primary criterion:</legend>
+              <legend className={classes.legends}>Choose exactly 3 primary criterion:</legend>
               {criItems}
               <br />
               <Button
