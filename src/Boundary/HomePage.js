@@ -121,8 +121,10 @@ const HomePage = () => {
           variant="contained"
           size="large"
           color="primary"
+          href="/upload"
           className={classes.margin}
-          startIcon={<CloudUploadIcon />}
+          startIcon={<CloudUploadIcon />
+          }
         >
           post new house info
         </Button>

@@ -8,6 +8,7 @@ import {BrowserRouter as Router, Switch, Route, Redirect} from "react-router-dom
 import LoginPage from "./Boundary/LoginPage";
 import PrimaryCriteriaMatching from "./Boundary/PrimaryCriteriaMatching"
 import SecondaryCriteriaMatching from "./Boundary/SecondaryCriteriaMatching"
+import UploadHousePage from "./Boundary/UploadHousePage";
 
 class App extends React.Component {
     constructor() {
@@ -73,6 +74,8 @@ class App extends React.Component {
                                exact component={PrimaryCriteriaMatching}/>
                         <Route path={"/criteria_"}
                                exact component={SecondaryCriteriaMatching}/>
+                        <Route path={"/upload"}
+                               exact component={UploadHousePage}/>
 
                         {/*<Route exact path="/login"*/}
                         {/*       render={props => (*/}
