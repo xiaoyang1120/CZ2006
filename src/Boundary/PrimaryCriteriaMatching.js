@@ -102,7 +102,7 @@ class PrimaryCriteriaMatching extends Component{
     // axios.post('https://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts?offset=0', data)
     //       .then(res => console.log(res.data));
     const url = "https://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts?offset=0";
-    fetch(url, {method: ‘POST’, // or ‘PUT’
+    fetch(url, {method: 'POST', // or 'PUT'
                 body: JSON.stringify(data), // data can be `string` or {object}!
                 headers:{'Content-Type': 'application/json'}})
       .then(res => res.json())
