@@ -55,6 +55,24 @@ public class HouseController {
         return "Failed";
     }
 
+    @DeleteMapping(path = "{id}/add_to_fav")
+    public String removeHouseFromFavourite(@RequestParam("email") String email, @PathVariable("id") String houseId, HttpServletResponse response) throws IOException {
+        try{
+            UUID houseUUID = UUID.fromString(houseId);
+            House h =  houseService.getHouseById(houseUUID);
+            if (h == null){
+                response.sendError(400, "The house does not exist!");
+            }
+            houseService.removeHouseFromFavourite(email, houseUUID);
+            return "OK";
+        }catch(IllegalArgumentException e){
+            response.sendError(400, "Please enter a correct uuid!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "Failed";
+    }
+
     @PostMapping("/add")
     public Map<String, Object> postHouse(@RequestBody House house, HttpServletResponse httpResponse) throws IOException {
         Map<String, Object> response = new HashMap<>();

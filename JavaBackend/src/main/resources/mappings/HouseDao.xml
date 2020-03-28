@@ -45,6 +45,11 @@
                )
     </insert>
 
+    <delete id="removeHouseFromFavourite" parameterType="map">
+        delete from favourite
+        where houseId = #{houseId} and userId = #{email}
+    </delete>
+
 
     <update id="editHouse" parameterType="realEstatistic.model.House">
         update house

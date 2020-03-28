@@ -16,6 +16,7 @@ public interface HouseDao {
     List<House> getHouseByDistrictId(@Param("districtId") UUID districtId);
     House getHouseById(@Param("houseId") UUID houseId);
     void addHouseToFavourite(@Param("email") String email, @Param("houseId") UUID houseId);
+    void removeHouseFromFavourite(@Param("email") String email, @Param("houseId") UUID houseId);
     List<House> getFavouriteByUserId(@Param("userId") UUID userId);
     List<House> getPostedRecordsByOwnerId(@Param("userId") UUID userId);
     void updateHouseStatus(@Param("houseId") UUID houseId, @Param("isAvailable") boolean isAvailable);

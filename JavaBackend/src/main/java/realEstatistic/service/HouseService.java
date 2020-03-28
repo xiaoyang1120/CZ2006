@@ -44,4 +44,5 @@ public class HouseService {
         houseDao.addHouseToFavourite(email, houseId);
     }
 
+    public void removeHouseFromFavourite(String email, UUID houseId) {houseDao.removeHouseFromFavourite(email, houseId);}
 }
