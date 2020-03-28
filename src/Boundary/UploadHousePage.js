@@ -99,10 +99,10 @@ class UploadHousePage extends React.Component {
             axios.
                 post("http://5e7ce96f71384.freetunnel.cc/api/house/add",
                 {
-                    image: JSON.stringify(this.state.image),
+                    image: this.state.image,
                     houseDescription: this.state.houseDescription,
                     ownerId: sessionStorage.getItem("uuid"),
-                    isAvailable: this.state.isAvailable ? "1" : "0",
+                    isAvailable: this.state.isAvailable,
                     districtId: this.state.districtId,
                     venue: this.state.venue
                 }, {withCredentials: true})

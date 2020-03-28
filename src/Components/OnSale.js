@@ -60,6 +60,7 @@ class OnSale extends Component {
 
   render() {
     const { classes } = this.props;
+    console.log(this.state.saleHouse[1])
     return (
       <div>
         {
@@ -77,10 +78,10 @@ class OnSale extends Component {
                     <HouseCard
                       name={saleHouse.houseID}
                       image={saleHouse.image}
-                      districtName={saleHouse.districtID}
+                      districtName={saleHouse.districtId}
                       description={saleHouse.houseDescription}
-                      status={saleHouse.status}
-                      buttonName="Update Status."
+                      status={saleHouse.isAvailable}
+                      buttonName="Update Status"
                       handleClick={this.Update}
                     />
                   </Grid>
