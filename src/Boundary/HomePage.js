@@ -78,7 +78,7 @@ const HomePage = () => {
         <br />
         <Typography className={classes.title} variant="h2">
           <Typed
-            strings={["Search For Your Idea Home with Us."]}
+            strings={["Search for Your Idea Home with Us."]}
             typeSpeed={60}
           />
         </Typography>
