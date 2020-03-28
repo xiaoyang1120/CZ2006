@@ -22,10 +22,10 @@ const styles = theme => ({
   },
 
   selected: {
-    color: "yellow"
+    color: "yellow",
   },
   unselected: {
-    color: "white"
+    color: "white",
   },
   legends:{
     color:"white",
@@ -103,24 +103,21 @@ class PrimaryCriteriaMatching extends Component {
     const chosenCri = this.state.checked;
     sessionStorage.setItem("chosenCriterion", chosenCri);
     sessionStorage.setItem("boolCriterion", this.state.boolCri);
-    // if need to post to api
-    // axios.post('https://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts?offset=0', data)
-    //       .then(res => console.log(res.data));
-    const url =
-      "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
-    console.log(chosenCri);
-    let offset = 0
-    axios
-        .post(url, chosenCri, {withCredentials: true,
-          params: {offset}})
-        .then(response => {
-          console.log("Success:", response);
-          sessionStorage.setItem("filteredDistrictList", response);
-        })
-        .catch(error => {
-            console.error(error);
-            alert("Getting distritList Error: " + error)
-        });
+    // const url =
+    //   "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
+    // console.log(chosenCri);
+    // let offset = 0
+    // axios
+    //     .post(url, chosenCri, {withCredentials: true,
+    //       params: {offset}})
+    //     .then(response => {
+    //       console.log("Success:", response);
+    //       sessionStorage.setItem("filteredDistrictList", response);
+    //     })
+    //     .catch(error => {
+    //         console.error(error);
+    //         alert("Getting distritList Error: " + error)
+    //     });
     this.props.history.push("/criteria_");
     e.preventDefault();
   }
@@ -142,7 +139,7 @@ class PrimaryCriteriaMatching extends Component {
             disabled={(!item.isChecked) && (this.state.checked.length >= 3)}
           />
         }
-        label={item.name}
+        label={item.name.charAt(0) + item.name.split('_').join(' ').toLowerCase().slice(1)}
         key={item.id}
       />
     ));
@@ -159,7 +156,6 @@ class PrimaryCriteriaMatching extends Component {
               <br />
               <Button
                 type="submit"
-
                 className={classes.unselected}
                 disabled={this.state.checked.length != 3}
               >
