@@ -9,15 +9,15 @@ import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
 // import FormLabel from '@material-ui/core/FormLabel';
 //import FormControl from '@material-ui/core/FormControl';
 //import FormHelperText from '@material-ui/core/FormHelperText';
-//import axios from 'axios';
+import axios from 'axios';
 import Navbar from "../Components/NavBar";
 //import testData from "../Data/testData";
-import { Redirect } from "react-router-dom";
+// import { Redirect } from "react-router-dom";
 //css styles unused for now
 const styles = theme => ({
   root: {
     display: "flex",
-    backgroundColor: "#9fa8da",
+    backgroundColor: "#3f51b5",
     "& > *": { margin: theme.spacing(1) },
     position: "absolute",
     left: "50%",
@@ -100,26 +100,39 @@ class PrimaryCriteriaMatching extends Component {
   handleSubmit(e) {
     //TODO: store the choices to sessionstorage
     //TODO: jump to secondary criterion page<-done by submit button
-    e.preventDefault();
-    const data = this.state.checked;
+    const chosenCri = this.state.checked;
     console.log("I'm called!");
-    sessionStorage.setItem("chosenCriterion", data);
+    sessionStorage.setItem("chosenCriterion", chosenCri);
+    sessionStorage.setItem("boolCriterion", this.state.boolCri);
     // if need to post to api
     // axios.post('https://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts?offset=0', data)
     //       .then(res => console.log(res.data));
     const url =
       "https://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts?offset=0";
-    fetch(url, {
-      method: "POST", // or 'PUT'
-      body: JSON.stringify(data), // data can be `string` or {object}!
-      headers: { "Content-Type": "application/json" }
-    })
-      .then(res => res.json())
-      .catch(error => console.error("Error:", error))
-      .then(response => {
-        console.log("Success:", response);
-        sessionStorage.setItem("filteredDistrictList", response);
-      });
+    // fetch(url, {
+    //   method: "POST", // or 'PUT'
+    //   body: JSON.stringify(data), // data can be `string` or {object}!
+    //   headers: { "Content-Type": "application/json" }
+    // })
+    //   .then(res => res.json())
+    //   .catch(error => console.error("Error:", error))
+    //   .then(response => {
+    //     console.log("Success:", response);
+    //     sessionStorage.setItem("filteredDistrictList", response);
+    //   });
+    // this.props.history.push("/criteria_");
+    axios
+        .post(url, chosenCri, {withCredentials: true})
+        .then(response => {
+          console.log("Success:", response);
+          sessionStorage.setItem("filteredDistrictList", response);
+
+        })
+        .catch(error => {
+            alert("Getting distritList Error: " + error)
+        });
+    this.props.history.push("/criteria_");
+    e.preventDefault();
   }
 
   render() {
@@ -146,22 +159,24 @@ class PrimaryCriteriaMatching extends Component {
     return (
       <div>
         <Navbar />
-        <h2 className={classes.unselected}>
-          Choose exactly 3 primary criterion:
-        </h2>
-        <h2 className={classes.unselected}>{text}</h2>
-        <form onSubmit={this.handleSubmit}>
-          {criItems}
-          <br />
-          <Button
-            type="submit"
-            href="criteria_"
-            className={classes.unselected}
-            disabled={this.state.checked.length != 3}
-          >
-            Next step
-          </Button>
-        </form>
+        <div className={classes.root}>
+          <h2 className={classes.unselected}>{text}</h2>
+          <form onSubmit={this.handleSubmit}>
+            <fieldset>
+              <legend className={classes.unselected}>Choose exactly 3 primary criterion:</legend>
+              {criItems}
+              <br />
+              <Button
+                type="submit"
+
+                className={classes.unselected}
+                disabled={this.state.checked.length != 3}
+              >
+                Next step
+              </Button>
+            </fieldset>
+          </form>
+        </div>
       </div>
     );
   }
@@ -170,21 +185,7 @@ class PrimaryCriteriaMatching extends Component {
 export default withStyles(styles)(PrimaryCriteriaMatching);
 //import { green } from "@material-ui/core/colors";
 
-//const GreenCheckbox = withStyles({
-// root: {
-// color: green[400],
-//  "&$checked": { color: green[600] }
-// },
-// checked: {}
-//})(props => <Checkbox color="default" {...props} />);
 
-// <FormControlLabel
-//   control={<GreenCheckbox
-//             checked={state.checkedB}
-//             onChange={handleChange}
-//             name="checkedB" />}
-//   label="Green1"
-// />
 
 // <FormControlLabel
 //   control={<Checkbox name="checkedA"
