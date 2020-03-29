@@ -115,7 +115,7 @@ class UploadHousePage extends React.Component {
                     this.props.history.push("/")
                 }
             })
-        } else if (window.confirm("Confirm to upload your house?")) {
+        } else if (!this.state.houseId && window.confirm("Confirm to upload your house?")) {
             axios.post("http://5e7ce96f71384.freetunnel.cc/api/house/add",
                 {
                     image: this.state.image,
