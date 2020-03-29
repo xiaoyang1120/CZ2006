@@ -34,6 +34,7 @@ class UploadHousePage extends React.Component {
         super(props);
         this.state = {
             image: null,
+            imageName: null,
             houseDescription: null,
             isAvailable: true,
             districtId: null,
@@ -65,14 +66,13 @@ class UploadHousePage extends React.Component {
 
     handleImage(event) {
         const file = event.target.files[0];
-        let reader = new FileReader();
         if (file) {
+            this.setState({imageName: file.name})
+            let reader = new FileReader();
             reader.readAsDataURL(file)
             reader.onloadend = () => {
                 this.setState({image: reader.result})
             }
-        } else {
-            alert("Image read error!")
         }
     }
 
@@ -96,8 +96,7 @@ class UploadHousePage extends React.Component {
         } else if (!this.state.venue) {
             alert("Please specify the venue!")
         } else if (window.confirm("Confirm to upload your house?")) {
-            axios.
-                post("http://5e7ce96f71384.freetunnel.cc/api/house/add",
+            axios.post("http://5e7ce96f71384.freetunnel.cc/api/house/add",
                 {
                     image: this.state.image,
                     houseDescription: this.state.houseDescription,
@@ -112,7 +111,7 @@ class UploadHousePage extends React.Component {
                         this.props.history.push("/")
                     }
                 }).catch(error => {
-                    alert(error)
+                alert(error)
             });
         }
     }
@@ -140,6 +139,9 @@ class UploadHousePage extends React.Component {
                             <IconButton color="primary" aria-label="upload picture" component="span">
                                 <PhotoCamera/>
                             </IconButton>
+                        </label>
+                        <label id="icon-button-file">
+                            {this.state.imageName != null ? this.state.imageName : "Image not selected"}
                         </label>
 
                     </div>
