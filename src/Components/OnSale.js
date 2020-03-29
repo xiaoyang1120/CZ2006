@@ -48,13 +48,16 @@ class OnSale extends Component {
 
   Update(id) {
     console.log("Update!" + id);
-    this.setState(preState => {
-      for (let i = 0; i < this.state.saleHouse.length; i++) {
-        if (this.state.saleHouse[i].houseID === id) {
-          this.state.saleHouse[i].status = !this.state.saleHouse[i].status;
+    this.setState(prevState => {
+      const updatedHs = prevState.saleHouse.map(hs => {
+        if (hs.houseID === id) {
+          hs.status = !hs.status;
         }
-      }
-      return this.state.saleHouse;
+        return hs;
+      });
+      return {
+        saleHouse:updatedHs
+      };
     });
   }
 

@@ -7,7 +7,6 @@ import Typography from "@material-ui/core/Typography";
 import { withStyles } from "@material-ui/core/styles";
 import Container from "@material-ui/core/Container";
 import Copyright from "../Components/CopyRight";
-import { render } from "@testing-library/react";
 import HouseCard from "./HouseCard";
 
 const styles = theme => ({

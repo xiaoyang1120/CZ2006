@@ -139,7 +139,7 @@ class SecondaryCriteriaMatching extends Component {
         console.error(error);
         alert("Getting distritList Error: " + error);
       });
-    this.props.history.push("/");
+    this.props.history.push("/arealist");
     e.preventDefault();
   }
 
@@ -191,7 +191,6 @@ class SecondaryCriteriaMatching extends Component {
               <Button
                 type="submit"
                 className={classes.unselected}
-                href="/arealist"
               >
                 Submit!
               </Button>

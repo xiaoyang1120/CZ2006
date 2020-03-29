@@ -7,8 +7,7 @@ import "./App.css";
 import {
   BrowserRouter as Router,
   Switch,
-  Route,
-  Redirect
+  Route
 } from "react-router-dom";
 import LoginPage from "./Boundary/LoginPage";
 import PrimaryCriteriaMatching from "./Boundary/PrimaryCriteriaMatching";

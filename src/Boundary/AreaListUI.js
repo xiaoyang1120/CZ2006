@@ -1,9 +1,10 @@
-import React from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import React, {Component} from "react";
+import { withStyles } from "@material-ui/core/styles";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Typography from "@material-ui/core/Typography";
 import NavBar from "../Components/NavBar";
 import { ListItem, Grid, Paper, Button } from "@material-ui/core";
+import MapDisplay from "../Components/MapDisplay";
 
 const images = [
   {
@@ -38,7 +39,7 @@ const images = [
   }
 ];
 
-const useStyles = makeStyles(theme => ({
+const styles = theme => ({
   root: {
     display: "flex",
     flexWrap: "wrap"
@@ -108,110 +109,115 @@ const useStyles = makeStyles(theme => ({
     left: "calc(50% - 9px)",
     transition: theme.transitions.create("opacity")
   }
-}));
+})
 
-export default function AreaListUI() {
-  const classes = useStyles();
-
-  return (
-    <div>
+class AreaListUI extends Component{
+  constructor(props) {
+    super(props);
+    this.state = {
+      loading: true,
+      //someobject: [],
+    };
+    //function binding
+  }
+  render(){
+    const { classes } = this.props;
+    return (
       <div>
         <NavBar />
-      </div>
-      <Grid container>
-        <Grid item xs={3}>
-          <div className={classes.root}>
-            <Typography variant="h3" style={{ color: "white" }}>
-              Results
-            </Typography>
-
-            {images.map(image => (
-              <ListItem>
-                <ButtonBase
-                  focusRipple
-                  key={image.title}
-                  className={classes.image}
-                  focusVisibleClassName={classes.focusVisible}
-                  style={{
-                    width: image.width
-                  }}
-                >
-                  <span
-                    className={classes.imageSrc}
+        <Grid container>
+          <Grid item xs={3}>
+            <div className={classes.root}>
+              <Typography variant="h3" style={{ color: "white" }}>
+                Results
+              </Typography>
+              {images.map(image => (
+                <ListItem key={image.title}>
+                  <ButtonBase
+                    focusRipple
+                    key={image.title}
+                    className={classes.image}
+                    focusVisibleClassName={classes.focusVisible}
                     style={{
-                      backgroundImage: `url(${image.url})`
+                      width: image.width
                     }}
-                  />
-                  <span className={classes.imageBackdrop} />
-                  <span className={classes.imageButton}>
-                    <Typography
-                      component="span"
-                      variant="subtitle1"
-                      color="inherit"
-                      className={classes.imageTitle}
-                    >
-                      {image.title}
-                      <span className={classes.imageMarked} />
-                    </Typography>
-                  </span>
-                </ButtonBase>
-              </ListItem>
-            ))}
-          </div>
-        </Grid>
-        <Grid item xs={9}>
-          <Paper style={{ padding: 20, marginTop: 10, marginBotton: 10 }}>
-            <h1>MAP</h1>
-            <h1>//</h1>
-            <h1>//假装有地图</h1>
-            <h1>//</h1>
-            <h1>//</h1>
-            <div>
-              <Button
-                variant="outlined"
-                size="large"
-                color="primary"
-                className={classes.margin}
-              >
-                A
-              </Button>
-              <Button
-                variant="outlined"
-                size="large"
-                color="primary"
-                className={classes.margin}
-              >
-                B
-              </Button>
-              <Button
-                variant="outlined"
-                size="large"
-                color="primary"
-                className={classes.margin}
-              >
-                C
-              </Button>
-              <Button
-                variant="outlined"
-                size="large"
-                color="primary"
-                className={classes.margin}
-              >
-                D
-              </Button>
+                  >
+                    <span
+                      className={classes.imageSrc}
+                      style={{
+                        backgroundImage: `url(${image.url})`
+                      }}
+                    />
+                    <span className={classes.imageBackdrop} />
+                    <span className={classes.imageButton}>
+                      <Typography
+                        component="span"
+                        variant="subtitle1"
+                        color="inherit"
+                        className={classes.imageTitle}
+                      >
+                        {image.title}
+                        <span className={classes.imageMarked} />
+                      </Typography>
+                    </span>
+                  </ButtonBase>
+                </ListItem>
+              ))}
             </div>
-            <Button
-              variant="contained"
-              size="large"
-              color="primary"
-              className={classes.margin}
-              href="/house@area"
-            >
-              See houses in this area
-            </Button>
-          </Paper>
+          </Grid>
+          <Grid item xs={9}>
+            <Paper style={{ padding: 20, marginTop: 10, marginBotton: 10 }}>
+              <MapDisplay />
+              <p>这里记得传parameter进component</p>
+              <div>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  color="primary"
+                  className={classes.margin}
+                >
+                  A
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  color="primary"
+                  className={classes.margin}
+                >
+                  B
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  color="primary"
+                  className={classes.margin}
+                >
+                  C
+                </Button>
+                <Button
+                  variant="outlined"
+                  size="large"
+                  color="primary"
+                  className={classes.margin}
+                >
+                  D
+                </Button>
+              </div>
+              <Button
+                variant="contained"
+                size="large"
+                color="primary"
+                className={classes.margin}
+                href="/house@area"
+              >
+                See houses in this area
+              </Button>
+            </Paper>
+          </Grid>
         </Grid>
-      </Grid>
-    </div>
-  );
+      </div>
+    );
+  }
 }
+
+export default withStyles(styles)(AreaListUI);

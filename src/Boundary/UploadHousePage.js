@@ -1,4 +1,5 @@
-import React, {cloneElement} from "react";
+import React from "react";
+//import {cloneElement} from "react";
 import Container from "@material-ui/core/Container";
 import Navbar from "../Components/NavBar";
 import Typography from "@material-ui/core/Typography";
