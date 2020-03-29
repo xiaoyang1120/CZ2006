@@ -3,7 +3,7 @@ import { withStyles } from "@material-ui/core/styles";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Typography from "@material-ui/core/Typography";
 import NavBar from "../Components/NavBar";
-import { ListItem, Grid, Paper, Button } from "@material-ui/core";
+import { ListItem, Grid, Paper, Button, Container } from "@material-ui/core";
 import MapDisplay from "../Components/MapDisplay";
 
 const images = [
@@ -18,22 +18,22 @@ const images = [
     width: "100%"
   },
   {
-    url: "/static/images/grid-list/camera.jpg",
+    url: "https://source.unsplash.com/random",
     title: "District 3",
     width: "100%"
   },
   {
-    url: "/static/images/grid-list/breakfast.jpg",
+    url: "https://source.unsplash.com/random",
     title: "District 4",
     width: "100%"
   },
   {
-    url: "/static/images/grid-list/breakfast.jpg",
+    url: "https://source.unsplash.com/random",
     title: "District 5",
     width: "100%"
   },
   {
-    url: "/static/images/grid-list/breakfast.jpg",
+    url: "https://source.unsplash.com/random",
     title: "District 6",
     width: "100%"
   }
@@ -41,8 +41,22 @@ const images = [
 
 const styles = theme => ({
   root: {
-    display: "flex",
-    flexWrap: "wrap"
+    width: "100%",
+    height:"100%",
+    spacing: 0,
+    justify: "space-around",
+    overflow: "hidden"
+  },
+  leftList:{
+    height: 450,
+    overflow: "auto"
+  },
+  session:{
+    padding: 20,
+    marginTop: 10,
+    marginBotton: 10,
+    height:450,
+    overflow: "hidden"
   },
   image: {
     position: "relative",
@@ -108,6 +122,9 @@ const styles = theme => ({
     bottom: -2,
     left: "calc(50% - 9px)",
     transition: theme.transitions.create("opacity")
+  },
+  loadMoreButton: {
+    width: "100%",
   }
 })
 
@@ -120,53 +137,71 @@ class AreaListUI extends Component{
     };
     //function binding
   }
+  loadMore(){
+
+  }
   render(){
     const { classes } = this.props;
     return (
-      <div>
+      <div className={classes.root}>
         <NavBar />
-        <Grid container>
-          <Grid item xs={3}>
-            <div className={classes.root}>
-              <Typography variant="h3" style={{ color: "white" }}>
-                Results
+        <Grid container spacing={1}>
+          <Grid item xs={4}>
+              <Typography variant="h4" align="center" style={{ color: "white", height: "50px"}}>
+                Recommended districts
               </Typography>
-              {images.map(image => (
-                <ListItem key={image.title}>
-                  <ButtonBase
-                    focusRipple
-                    key={image.title}
-                    className={classes.image}
-                    focusVisibleClassName={classes.focusVisible}
-                    style={{
-                      width: image.width
-                    }}
-                  >
-                    <span
-                      className={classes.imageSrc}
+              <div style={{overflow:'hidden'}}>
+              <Paper className={classes.leftList}>
+                {images.map(image => (
+                  <ListItem key={image.title}>
+                    <ButtonBase
+                      focusRipple
+                      key={image.title}
+                      className={classes.image}
+                      focusVisibleClassName={classes.focusVisible}
                       style={{
-                        backgroundImage: `url(${image.url})`
+                        width: image.width
                       }}
-                    />
-                    <span className={classes.imageBackdrop} />
-                    <span className={classes.imageButton}>
-                      <Typography
-                        component="span"
-                        variant="subtitle1"
-                        color="inherit"
-                        className={classes.imageTitle}
+                    >
+                      <span
+                        className={classes.imageSrc}
+                        style={{
+                          backgroundImage: `url(${image.url})`
+                        }}
+                      />
+                      <span className={classes.imageBackdrop} />
+                      <span className={classes.imageButton}>
+                        <Typography
+                          component="span"
+                          variant="subtitle1"
+                          color="inherit"
+                          className={classes.imageTitle}
+                        >
+                          {image.title}
+                          <span className={classes.imageMarked} />
+                        </Typography>
+                      </span>
+                    </ButtonBase>
+                  </ListItem>
+                ))}
+                <Container className={classes.loadMoreButton} style={{textAlign: 'center'}}>
+                  <div>
+                    <Button
+                      size="large"
+                      color="primary"
+                      onClick={this.loadMore}
+                      style={{justifyContent: 'center'}}
                       >
-                        {image.title}
-                        <span className={classes.imageMarked} />
-                      </Typography>
-                    </span>
-                  </ButtonBase>
-                </ListItem>
-              ))}
+                      Load More...
+                    </Button>
+                  </div>
+                </Container>
+
+              </Paper>
             </div>
           </Grid>
-          <Grid item xs={9}>
-            <Paper style={{ padding: 20, marginTop: 10, marginBotton: 10 }}>
+          <Grid item xs={8}>
+            <Paper className={classes.session}>
               <MapDisplay />
               <p>这里记得传parameter进component</p>
               <div>

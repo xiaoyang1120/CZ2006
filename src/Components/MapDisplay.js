@@ -19,15 +19,16 @@ class MapDisplay extends Component{
   render(){
     return(
       <div>
-        <Map google={this.props.google} zoom={14}>
-          <Marker onClick={this.onMarkerClick}
-                  name={'Current location'} />
-
-        </Map>
+        <p>map</p>
       </div>
     )
   }
 }
 
+// <Map google={this.props.google} zoom={14}>
+//   <Marker onClick={this.onMarkerClick}
+//           name={'Current location'} />
+//
+// </Map>
 
 export default withStyles(styles)(MapDisplay);
