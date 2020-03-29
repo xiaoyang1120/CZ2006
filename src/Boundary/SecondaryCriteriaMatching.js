@@ -1,16 +1,16 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { Button } from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Navbar from "../Components/NavBar";
 import { green } from "@material-ui/core/colors";
-import axios from 'axios';
+import axios from "axios";
 
 const GreenCheckbox = withStyles({
   root: {
-  color: green[400],
-   "&$checked": { color: green[600] }
+    color: green[400],
+    "&$checked": { color: green[600] }
   },
   checked: {}
 })(props => <Checkbox color="default" {...props} />);
@@ -19,28 +19,28 @@ const styles = theme => ({
   root: {
     display: "flex",
     backgroundColor: "#3f51b5",
-    "& > *": { margin: theme.spacing(1) },
+    "& > *": { margin: theme.spacing(1) }
   },
 
   selected: {
-    color: "yellow",
+    color: "yellow"
   },
   unselected: {
-    color: "white",
+    color: "white"
   },
-  legends:{
-    color:"white",
+  legends: {
+    color: "white",
     fontSize: "30px"
   }
 });
 
-class SecondaryCriteriaMatching extends Component{
-  constructor(props){
+class SecondaryCriteriaMatching extends Component {
+  constructor(props) {
     super(props);
-    this.state={
+    this.state = {
       loading: true,
-      criterion: [],//sessionStorage.getItem("criterion"),
-      secBoolCri: [],//added "isAvai" value
+      criterion: [], //sessionStorage.getItem("criterion"),
+      secBoolCri: [], //added "isAvai" value
       secChecked: [],
       priChecked: []
     };
@@ -48,13 +48,13 @@ class SecondaryCriteriaMatching extends Component{
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     //TODO: set state by sessionStorage.getItem
     //TODO: disable those chosen as primary cri
     //console.log("Fetched criterion:", data);
     var data = JSON.parse(sessionStorage.getItem("criterion"));
     console.log("componentDidMount.criterion", data);
-    if (!data){
+    if (!data) {
       alert("Please choose primary criterion first.");
       this.props.history.push("/criteria");
     }
@@ -63,19 +63,19 @@ class SecondaryCriteriaMatching extends Component{
     var i = 0;
     for (const cri of data) {
       i++;
-      if (priCri.includes(cri)){
+      if (priCri.includes(cri)) {
         list.push({
           id: i,
           name: cri,
           isChecked: true,
-          isAvai: false,
+          isAvai: false
         });
-      }else{
+      } else {
         list.push({
           id: i,
           name: cri,
           isChecked: false,
-          isAvai: true,
+          isAvai: true
         });
       }
     }
@@ -84,7 +84,7 @@ class SecondaryCriteriaMatching extends Component{
       criterion: data,
       loading: false,
       secBoolCri: list,
-      priChecked: priCri,
+      priChecked: priCri
     });
   }
 
@@ -101,7 +101,7 @@ class SecondaryCriteriaMatching extends Component{
       //update checked[]
       var list = [];
       updatedCri.map(cri => {
-        if ((cri.isChecked)&&(cri.isAvai)) {
+        if (cri.isChecked && cri.isAvai) {
           list.push(cri.name);
         }
         return cri;
@@ -109,7 +109,7 @@ class SecondaryCriteriaMatching extends Component{
       console.log("You checked:", list);
       return {
         secBoolCri: updatedCri,
-        secChecked: list,
+        secChecked: list
       };
     });
   }
@@ -117,32 +117,33 @@ class SecondaryCriteriaMatching extends Component{
   handleSubmit(e) {
     //TODO: store the choices to sessionstorage
     //TODO: jump to secondary criterion page<-done by submit button
-    const chosenCri = (this.state.priChecked).concat(this.state.secChecked);
+    const chosenCri = this.state.priChecked.concat(this.state.secChecked);
     sessionStorage.setItem("finalCriterion", JSON.stringify(chosenCri));
     // if need to post to api
     // axios.post('https://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts?offset=0', data)
     //       .then(res => console.log(res.data));
-    const url =
-      "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
+    const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
     console.log(chosenCri);
     let offset = 0;
     sessionStorage.setItem("disListOffset", JSON.stringify(offset));
     axios
-        .post(url, chosenCri, {withCredentials: true,
-          params: {offset}})
-        .then(response => {
-          console.log("Success:", response);
-          sessionStorage.setItem("filteredDistrictList", JSON.stringify(response));
-        })
-        .catch(error => {
-            console.error(error);
-            alert("Getting distritList Error: " + error)
-        });
+      .post(url, chosenCri, { withCredentials: true, params: { offset } })
+      .then(response => {
+        console.log("Success:", response);
+        sessionStorage.setItem(
+          "filteredDistrictList",
+          JSON.stringify(response)
+        );
+      })
+      .catch(error => {
+        console.error(error);
+        alert("Getting distritList Error: " + error);
+      });
     this.props.history.push("/");
     e.preventDefault();
   }
 
-  render(){
+  render() {
     const { classes } = this.props;
     const text = this.state.loading ? "Loading..." : null;
     //TODO:set checkbox disabling function disabled={}
@@ -157,7 +158,14 @@ class SecondaryCriteriaMatching extends Component{
             disabled={!item.isAvai}
           />
         }
-        label={item.name.charAt(0) + item.name.split('_').join(' ').toLowerCase().slice(1)}
+        label={
+          item.name.charAt(0) +
+          item.name
+            .split("_")
+            .join(" ")
+            .toLowerCase()
+            .slice(1)
+        }
         key={item.id}
       />
     ));
@@ -168,19 +176,22 @@ class SecondaryCriteriaMatching extends Component{
     //             name="checkedB" />}
     //   label="Green1"
     // />
-    return(
+    return (
       <div>
         <Navbar />
         <div className={classes.root}>
           <h2 className={classes.unselected}>{text}</h2>
           <form onSubmit={this.handleSubmit}>
             <fieldset>
-              <legend className={classes.legends}>Choose secondary criterion:</legend>
+              <legend className={classes.legends}>
+                Choose secondary criterion:
+              </legend>
               {criItems}
               <br />
               <Button
                 type="submit"
                 className={classes.unselected}
+                href="/arealist"
               >
                 Submit!
               </Button>
@@ -188,7 +199,7 @@ class SecondaryCriteriaMatching extends Component{
           </form>
         </div>
       </div>
-    )
+    );
   }
 }
 
