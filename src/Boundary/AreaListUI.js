@@ -82,6 +82,7 @@ const styles = theme => ({
   },
   focusVisible: {},
   imageButton: {
+    borderRadius: "10px",
     position: "absolute",
     left: 0,
     right: 0,
@@ -102,6 +103,7 @@ const styles = theme => ({
     backgroundPosition: "center 40%"
   },
   imageBackdrop: {
+    borderRadius: "10px",
     position: "absolute",
     left: 0,
     right: 0,
@@ -112,11 +114,13 @@ const styles = theme => ({
     transition: theme.transitions.create("opacity")
   },
   imageTitle: {
+    borderRadius: "10px",
     position: "relative",
     padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) +
       6}px`
   },
   imageMarked: {
+    borderRadius: "10px",
     height: 3,
     width: 18,
     backgroundColor: theme.palette.common.white,
@@ -126,6 +130,7 @@ const styles = theme => ({
     transition: theme.transitions.create("opacity")
   },
   loadMoreButton: {
+    borderRadius: "10px",
     width: "100%",
   }
 })
