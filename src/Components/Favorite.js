@@ -30,17 +30,7 @@ class Favorite extends Component {
       .then(response => response.json())
       .then(data => this.setState({ isLoading: false, favHouse: data }));
   }
-  Remove(id) {
-    alert("remove")
-    // console.log("Remove!" + id);
-    // let newFavhouse = [];
-    // for (let i = 0; i < this.state.favHouse.length; i++) {
-    //   if (this.state.favHouse[i].houseID !== id) {
-    //     newFavhouse.push(this.state.favHouse[i]);
-    //   }
-    // }
-    // this.setState({ favHouse: newFavhouse });
-  }
+
   render() {
     const { classes } = this.props;
     return (
@@ -55,12 +45,7 @@ class Favorite extends Component {
               <Grid container spacing={4}>
                 {this.state.favHouse.map(favHouse => (
                   <Grid item key={favHouse.houseId} xs={12} sm={6} md={4}>
-                    <HouseCard
-                      houseData={favHouse}
-                      type="fav"
-                      buttonName="Remove"
-                      handleClick={this.Remove}
-                    />
+                    <HouseCard houseData={favHouse} />
                   </Grid>
                 ))}
               </Grid>
