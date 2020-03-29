@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 //import { withStyles } from "@material-ui/core/styles";
 import GoogleMapReact from 'google-map-react';
+import { fitBounds } from 'google-map-react/utils';
 import RoomIcon from '@material-ui/icons/Room';
 import axios from "axios";
 
@@ -11,17 +12,21 @@ class MapDisplay extends Component{
     super(props);
     this.state = {
       currentDistrict:this.props.disId,
-      zoom:12,
-      center:{
-        lat: 1.36,
-        lng: 103.84,
-      },
+      bounds:{},
       //detail:{},
       //someobject: [],
     };
     //function binding
   //  this.queryFacility=this.queryFacility.bind(this);
   }
+
+  static defaultProps = {
+     center: {
+       lat: 1.36,
+       lng: 103.84,
+     },
+     zoom: 12,
+   };
 
   componentDidMount() {
     //TODO: set state
@@ -36,9 +41,15 @@ class MapDisplay extends Component{
         var d=response.data;
         console.log("response:",d);
         this.setState({
-          center:{
-            lat:(d.latStart+d.latEnd)/2,
-            lng:(d.longStart+d.longEnd)/2,
+          bounds:{
+            nw: {
+              lat: d.latStart,
+              lng: d.longStart,
+            },
+            se: {
+              lat: d.latEnd,
+              lng: d.longEnd,
+            }
           }
         });
       })
@@ -47,14 +58,20 @@ class MapDisplay extends Component{
         alert("Getting districtDetail Error: " + error);
       })
   }
-
+  zoomToDistrict(){
+    const size = {
+      width: 350, // Map width in pixels
+      height: 350, // Map height in pixels
+    };
+    const {center, zoom} = fitBounds(this.state.bounds, size);
+  }
   render(){
     return(
       <div style={{ height: '70%', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: '', language: 'en' }}
-          defaultCenter={this.state.center}
-          defaultZoom={this.state.zoom}
+          defaultCenter={this.props.center}
+          defaultZoom={this.props.zoom}
         >
           <RoomIcon
             lat={this.state.center.lat}
