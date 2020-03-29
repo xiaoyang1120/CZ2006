@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import {Map, InfoWindow, Marker, GoogleApiWrapper} from 'google-maps-react';
+import GoogleMapReact from 'google-map-react';
+
+const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 const styles = theme => ({
 
@@ -15,11 +17,24 @@ class MapDisplay extends Component{
     };
     //function binding
   }
+  static defaultProps = {
+    center: {
+      lat: 1.36,
+      lng: 103.84
+    },
+    zoom: 11.8,
+  };
 
   render(){
     return(
-      <div>
-        <p>map</p>
+      <div style={{ height: '100vh', width: '100%' }}>
+        <GoogleMapReact
+          bootstrapURLKeys={{ key: 'AIzaSyCjevUSZZlSad1G2HbuF_aAIOciqAjZrgc' }}
+          defaultCenter={this.props.center}
+          defaultZoom={this.props.zoom}
+        >
+          <AnyReactComponent lat={1.36} lng={103.84} text='My Marker' />
+        </GoogleMapReact>
       </div>
     )
   }
@@ -32,3 +47,34 @@ class MapDisplay extends Component{
 // </Map>
 
 export default withStyles(styles)(MapDisplay);
+
+// import GoogleMapReact from 'google-map-react';
+// import React, { Component } from 'react';
+// const AnyReactComponent = ({ text }) => <div>{text}</div>;
+//
+// class SimpleMap extends Component {
+//   static defaultProps = {
+//     center: {
+//       lat: 1.36,
+//       lng: 103.84
+//     },
+//     zoom: 11.8
+//   };
+//
+//   render() {
+//     return (
+//       // Important! Always set the container height explicitly
+//       <div style={{ height: '100vh', width: '100%' }}>
+//         <GoogleMapReact
+//           bootstrapURLKeys={{ key: '' }}
+//           defaultCenter={this.props.center}
+//           defaultZoom={this.props.zoom}
+//         >
+//           <AnyReactComponent lat={1.36} lng={103.84} text='My Marker' />
+//         </GoogleMapReact>
+//       </div>
+//     );
+//   }
+// }
+//
+// export default SimpleMap;

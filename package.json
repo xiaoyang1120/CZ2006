@@ -10,7 +10,7 @@
     "axios": "^0.19.2",
     "bootstrap": "^4.4.1",
     "clsx": "latest",
-    "google-maps-react": "^2.0.2",
+    "google-map-react": "^1.1.7",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-particles-js": "^2.7.1",
