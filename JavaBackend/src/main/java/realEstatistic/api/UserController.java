@@ -82,4 +82,9 @@ public class UserController {
     public List<House> getPostedHouse(@PathVariable("id") UUID userId){
         return userService.getPostedHouses(userId);
     }
+
+    @GetMapping("/{id}/get_email")
+    public String getEmailById(@PathVariable("id") UUID userId){
+        return userService.getEmailById(userId);
+    }
 }

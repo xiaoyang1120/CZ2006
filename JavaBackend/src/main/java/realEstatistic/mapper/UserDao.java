@@ -13,4 +13,5 @@ public interface UserDao {
     void addUser(User user);
     void changeUserPassword(@Param("email") String email, @Param("newPassword") String newPassword);
     User getUserByEmail(@Param("email") String email);
+    String getEmailById(@Param("id") UUID userId);
 }

@@ -38,6 +38,12 @@
         where email = #{email}
     </select>
 
+    <select id="getEmailById" parameterType="java.util.UUID" resultMap="userMap">
+        select email
+        from user
+        where userId = #{userId}
+    </select>
+
 <!--    <select id="selectAll" resultMap="userMap">-->
 <!--        select id,username,sex,age-->
 <!--        from user-->

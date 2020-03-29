@@ -89,4 +89,5 @@ public class House {
         isAvailable = available;
     }
 
+
 }
