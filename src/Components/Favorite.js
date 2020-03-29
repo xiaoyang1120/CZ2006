@@ -88,7 +88,7 @@ class Favorite extends Component {
                       image={favHouse.image}
                       districtName={favHouse.districtID}
                       description={favHouse.houseDescription}
-                      status={favHouse.status}
+                      status={favHouse.isAvailable}
                       buttonName="Remove from Fav."
                       handleClick={this.Remove}
                     />
