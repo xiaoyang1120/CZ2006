@@ -5,8 +5,13 @@ import Typography from "@material-ui/core/Typography";
 import NavBar from "../Components/NavBar";
 import { ListItem, Grid, Paper, Button, Container } from "@material-ui/core";
 import MapDisplay from "../Components/MapDisplay";
+import SomeIcon from "../Components/SomeIcon";
 import axios from "axios";
+import { spacing } from '@material-ui/system';
 
+//TODO: (use currentDis) map corresponding district information on the right-side panel (MapDisplay Object)
+//TODO: add small maps to each of left list item
+//TODO: button need to redirect by method
 const images = [
   {
     url: "https://source.unsplash.com/random",
@@ -133,7 +138,27 @@ const styles = theme => ({
   loadMoreButton: {
     borderRadius: "10px",
     width: "100%",
-  }
+    textAlign: 'center',
+  },
+  facilities:{
+    marginTop:20,
+    position:"relative",
+    height: '15%',
+    width: '100%',
+    justifyContent: 'center',
+  },
+  icon:{
+    marginTop: 10,
+    padding:20,
+    //textTransform: "none",
+  },
+  detailbtn:{
+    padding: 10,
+    textAlign:'center',
+    width: "100%",
+    height:"10%",
+  },
+
 })
 
 class AreaListUI extends Component{
@@ -143,21 +168,30 @@ class AreaListUI extends Component{
       loading: true,
       districtList:[],
       districtOffset: 0,
+      allCriterion:[],
+      chosenCriterion:[],
+      currentDis:"",
       //someobject: [],
     };
     //function binding
     this.loadMore = this.loadMore.bind(this);
     this.queryDistrictList = this.queryDistrictList.bind(this);
+    this.changeDis = this.changeDis.bind(this);
   }
 
   componentDidMount() {
     //TODO: set state by sessionStorage.getItem
+    const criterion= JSON.parse(sessionStorage.getItem("criterion"));
+    const chosenCri= JSON.parse(sessionStorage.getItem("finalCriterion"));
     sessionStorage.setItem("disListOffset", JSON.stringify(this.state.districtOffset));
     this.queryDistrictList(this.state.districtOffset);
     var data = JSON.parse(sessionStorage.getItem("filteredDistrictList"));
     console.log("data:", data)
     this.setState({
-      districtList: data
+      districtList: data,
+      allCriterion: criterion,
+      chosenCriterion: chosenCri,
+      currentDis: 0,
     });
   }
 
@@ -165,10 +199,8 @@ class AreaListUI extends Component{
     console.log("query called!offset=", offset);
     const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
     sessionStorage.setItem("disListOffset", JSON.stringify(offset));
-    //get finalCriterion
-    const chosenCri= JSON.parse(sessionStorage.getItem("finalCriterion"));
     axios
-      .post(url, chosenCri, { withCredentials: true, params: { offset } })
+      .post(url, this.state.chosenCriterion, { withCredentials: true, params: { offset } })
       .then(response => {
         var data;
         if (offset!==0){
@@ -193,40 +225,61 @@ class AreaListUI extends Component{
 
   }
 
+  changeDis(disId){
+    this.setState(prevState=>{
+      console.log("you clicked district:", disId);
+      sessionStorage.setItem("currentDistrict", JSON.stringify(disId));
+      var index= prevState.districtList.findIndex(cri=>cri.districtId===disId)
+      return {currentDis: index}
+    })
+  }
+
+  getNumOfFac(cri){
+    //return the numoffac in that district
+  }
+
   render(){
     const { classes } = this.props;
     console.log("in render, districtList:",this.state.districtList);
     const areaItems=(!this.state.districtList)?null:
-    (this.state.districtList).map(district=>(
-      <ListItem key={district.districtId}>
-        <ButtonBase
-          focusRipple
-          key={district.districtId}
-          className={classes.image}
-          focusVisibleClassName={classes.focusVisible}
-        >
-          <span
-            className={classes.imageSrc}
-            style={{
-              backgroundImage: "https://source.unsplash.com/random"
-            }}
-          />
-          <span className={classes.imageBackdrop} />
-          <span className={classes.imageButton}>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              className={classes.imageTitle}
-            >
-              {district.name}
-              <span className={classes.imageMarked} />
-            </Typography>
-          </span>
-        </ButtonBase>
-      </ListItem>
-    ));
+      (this.state.districtList).map(district=>(
+        <ListItem key={district.districtId}>
+          <ButtonBase
+            focusRipple
+            key={district.districtId}
+            className={classes.image}
+            focusVisibleClassName={classes.focusVisible}
+            onClick={()=>this.changeDis(district.districtId)}
+          >
+            <span
+              className={classes.imageSrc}
+              style={{
+                backgroundImage: "https://source.unsplash.com/random"
+              }}
+            />
+            <span className={classes.imageBackdrop} />
+            <span className={classes.imageButton}>
+              <Typography
+                component="span"
+                variant="subtitle1"
+                color="inherit"
+                className={classes.imageTitle}
+              >
+                {district.name}
+                <span className={classes.imageMarked} />
+              </Typography>
+            </span>
+          </ButtonBase>
+        </ListItem>
+      ));
 
+    //const facilityBadges=null;
+    const facilityBadges=(!this.state.allCriterion)?null:
+      (this.state.allCriterion).map(cri=>(
+          <SomeIcon cri={cri} disInfo={this.state.districtList[this.state.currentDis]}/>
+      ))
+
+    console.log(this.state.currentDis);
     return (
       <div className={classes.root}>
         <NavBar />
@@ -238,70 +291,40 @@ class AreaListUI extends Component{
               <div style={{overflow:'hidden'}}>
               <Paper className={classes.leftList}>
                 {areaItems}
-                <Container className={classes.loadMoreButton} style={{textAlign: 'center'}}>
+                <Container className={classes.loadMoreButton}>
                   <div>
                     <Button
                       size="large"
                       color="primary"
                       onClick={this.loadMore}
-                      style={{justifyContent: 'center'}}
                       >
                       Load More...
                     </Button>
                   </div>
                 </Container>
-
               </Paper>
             </div>
           </Grid>
           <Grid item xs={8}>
             <Paper className={classes.session}>
-
               <MapDisplay />
-              <br />
-              <div>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  color="primary"
-                  className={classes.margin}
-                >
-                  A
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  color="primary"
-                  className={classes.margin}
-                >
-                  B
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  color="primary"
-                  className={classes.margin}
-                >
-                  C
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  color="primary"
-                  className={classes.margin}
-                >
-                  D
-                </Button>
-              </div>
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                className={classes.margin}
-                href="/house@area"
-              >
-                See houses in this area
-              </Button>
+              <Container className={classes.facbtns}>
+                <div className={classes.facilities}>
+                  {facilityBadges}
+                </div>
+              </Container>
+              <Container className={classes.detailbtn}>
+                <div>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    color="primary"
+                    href="/house@area"
+                  >
+                    See houses in this area
+                  </Button>
+                </div>
+              </Container>
             </Paper>
           </Grid>
         </Grid>

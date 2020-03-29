@@ -5,7 +5,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Favorite from "@material-ui/icons/Favorite";
 import FavoriteBorder from "@material-ui/icons/FavoriteBorder";
-//import axios from 'axios';
 import Navbar from "../Components/NavBar";
 //import testData from "../Data/testData";
 
@@ -99,29 +98,13 @@ class PrimaryCriteriaMatching extends Component {
     //TODO: jump to secondary criterion page<-done by submit button
     const chosenCri = this.state.checked;
     sessionStorage.setItem("chosenCriterion", JSON.stringify(chosenCri));
-    // sessionStorage.setItem("boolCriterion", this.state.boolCri);
-    // const url =
-    //   "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
-    // console.log(chosenCri);
-    // let offset = 0
-    // axios
-    //     .post(url, chosenCri, {withCredentials: true,
-    //       params: {offset}})
-    //     .then(response => {
-    //       console.log("Success:", response);
-    //       sessionStorage.setItem("filteredDistrictList", response);
-    //     })
-    //     .catch(error => {
-    //         console.error(error);
-    //         alert("Getting distritList Error: " + error)
-    //     });
+
     this.props.history.push("/criteria_");
     e.preventDefault();
   }
 
   render() {
     const { classes } = this.props;
-    // console.log("this.state.boolCri: " + this.state.boolCri)
     const text = this.state.loading ? "Loading..." : null;
     const criItems = this.state.boolCri.map(item => (
       <FormControlLabel
@@ -167,11 +150,3 @@ class PrimaryCriteriaMatching extends Component {
 }
 
 export default withStyles(styles)(PrimaryCriteriaMatching);
-
-
-// <FormControlLabel
-//   control={<Checkbox name="checkedA"
-//             icon={<FavoriteBorder />} checkedIcon={<Favorite />}
-//             checked={state.checkedA} onChange={handleChange} />}
-//   label="Cri1"
-// />
