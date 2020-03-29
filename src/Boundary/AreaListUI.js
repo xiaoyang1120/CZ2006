@@ -199,8 +199,16 @@ class AreaListUI extends Component{
     console.log("query called!offset=", offset);
     const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
     sessionStorage.setItem("disListOffset", JSON.stringify(offset));
+    //console.log("this.state.chosenCriterion:",this.state.chosenCriterion);
+    var sending;
+    if (offset!==0){
+      sending=this.state.chosenCriterion;
+    }else {
+      sending=JSON.parse(sessionStorage.getItem("finalCriterion"));
+    }
+    console.log("sending...",sending);
     axios
-      .post(url, this.state.chosenCriterion, { withCredentials: true, params: { offset } })
+      .post(url, sending, { withCredentials: true, params: { offset } })
       .then(response => {
         var data;
         if (offset!==0){
@@ -232,10 +240,6 @@ class AreaListUI extends Component{
       var index= prevState.districtList.findIndex(cri=>cri.districtId===disId)
       return {currentDis: index}
     })
-  }
-
-  getNumOfFac(cri){
-    //return the numoffac in that district
   }
 
   render(){
@@ -274,7 +278,7 @@ class AreaListUI extends Component{
       ));
 
     //const facilityBadges=null;
-    const facilityBadges=(!this.state.allCriterion)?null:
+    const facilityBadges=(!this.state.districtList)?null:
       (this.state.allCriterion).map(cri=>(
           <SomeIcon cri={cri} disInfo={this.state.districtList[this.state.currentDis]}/>
       ))
