@@ -82,9 +82,8 @@ class HouseList extends Component {
   }
   componentDidMount() {
     const curDis=JSON.parse(sessionStorage.getItem("currentDistrict"));
-    this.setState{
-      currentDistrict: curDis,
-    }
+    this.setState({currentDistrict: curDis});
+
     /*this.setState({ isLoading: true });
     fetch(
       "http://5e7ce96f71384.freetunnel.cc/api/house/get_list?district_id= " +
