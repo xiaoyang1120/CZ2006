@@ -5,7 +5,6 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Navbar from "../Components/NavBar";
 import { green } from "@material-ui/core/colors";
-import axios from "axios";
 
 const GreenCheckbox = withStyles({
   root: {
@@ -51,7 +50,6 @@ class SecondaryCriteriaMatching extends Component {
   componentDidMount() {
     //TODO: set state by sessionStorage.getItem
     //TODO: disable those chosen as primary cri
-    //console.log("Fetched criterion:", data);
     var data = JSON.parse(sessionStorage.getItem("criterion"));
     console.log("componentDidMount.criterion", data);
     if (!data) {
@@ -115,27 +113,10 @@ class SecondaryCriteriaMatching extends Component {
   }
 
   handleSubmit(e) {
-    //TODO: store the choices to sessionstorage
     //TODO: jump to secondary criterion page<-done by submit button
     const chosenCri = this.state.priChecked.concat(this.state.secChecked);
     sessionStorage.setItem("finalCriterion", JSON.stringify(chosenCri));
-    // const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
-    // console.log(chosenCri);
-    // let offset = 0;
-    // sessionStorage.setItem("disListOffset", JSON.stringify(offset));
-    // axios
-    //   .post(url, chosenCri, { withCredentials: true, params: { offset } })
-    //   .then(response => {
-    //     console.log("Success:", response.data);
-    //     sessionStorage.setItem(
-    //       "filteredDistrictList",
-    //       JSON.stringify(response.data)
-    //     );
-    //   })
-    //   .catch(error => {
-    //     console.error(error);
-    //     alert("Getting distritList Error: " + error);
-    //   });
+
     this.props.history.push("/arealist");
     e.preventDefault();
   }
@@ -166,13 +147,7 @@ class SecondaryCriteriaMatching extends Component {
         key={item.id}
       />
     ));
-    // <FormControlLabel
-    //   control={<GreenCheckbox
-    //             checked={state.checkedB}
-    //             onChange={handleChange}
-    //             name="checkedB" />}
-    //   label="Green1"
-    // />
+
     return (
       <div>
         <Navbar />
