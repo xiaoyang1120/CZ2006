@@ -19,7 +19,6 @@ class Favorite extends Component {
       isLoading: false,
       favHouse: []
     };
-    this.Remove = this.Remove.bind(this);
   }
 
   componentDidMount() {
