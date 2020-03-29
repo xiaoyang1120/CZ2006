@@ -12,8 +12,8 @@ const styles = theme => ({
   }
 });
 class Favorite extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
 
     this.state = {
       isLoading: false,
@@ -31,14 +31,15 @@ class Favorite extends Component {
       .then(data => this.setState({ isLoading: false, favHouse: data }));
   }
   Remove(id) {
-    console.log("Remove!" + id);
-    let newFavhouse = [];
-    for (let i = 0; i < this.state.favHouse.length; i++) {
-      if (this.state.favHouse[i].houseID !== id) {
-        newFavhouse.push(this.state.favHouse[i]);
-      }
-    }
-    this.setState({ favHouse: newFavhouse });
+    alert("remove")
+    // console.log("Remove!" + id);
+    // let newFavhouse = [];
+    // for (let i = 0; i < this.state.favHouse.length; i++) {
+    //   if (this.state.favHouse[i].houseID !== id) {
+    //     newFavhouse.push(this.state.favHouse[i]);
+    //   }
+    // }
+    // this.setState({ favHouse: newFavhouse });
   }
   render() {
     const { classes } = this.props;
@@ -55,11 +56,8 @@ class Favorite extends Component {
                 {this.state.favHouse.map(favHouse => (
                   <Grid item key={favHouse.houseId} xs={12} sm={6} md={4}>
                     <HouseCard
-                      name={favHouse.houseId}
-                      image={favHouse.image}
-                      districtName={favHouse.districtId}
-                      description={favHouse.houseDescription}
-                      status={favHouse.isAvailable}
+                      houseData={favHouse}
+                      type="fav"
                       buttonName="Remove"
                       handleClick={this.Remove}
                     />

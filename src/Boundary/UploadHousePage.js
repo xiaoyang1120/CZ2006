@@ -14,6 +14,7 @@ import Checkbox from "@material-ui/core/Checkbox";
 import InputLabel from "@material-ui/core/InputLabel";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import axios from "axios";
+import {withRouter} from "react-router-dom";
 
 const styles = theme => ({
     root: {
@@ -33,14 +34,16 @@ const styles = theme => ({
 class UploadHousePage extends React.Component {
     constructor(props) {
         super(props);
+        let data = this.props.history.location.state
         this.state = {
-            image: null,
-            imageName: null,
-            houseDescription: null,
-            isAvailable: true,
-            districtId: null,
-            venue: null,
-            postal: null,
+            houseId: data ? data.houseId : null,
+            image: data ? data.image : null,
+            imageName: data ? data.imageName : null,
+            houseDescription: data ? data.houseDescription : null,
+            isAvailable: data ? data.isAvailable : null,
+            districtId: data ? data.districtId : null,
+            venue: data ? data.venue : null,
+            postal: data ? data.postal : null,
             nameList: [],
             idList: [],
         }
@@ -96,6 +99,22 @@ class UploadHousePage extends React.Component {
             alert("Please specify the district!")
         } else if (!this.state.venue) {
             alert("Please specify the venue!")
+        } else if (this.state.houseId && window.confirm("Confirm to save changes?")) {
+            axios.post("http://5e7ce96f71384.freetunnel.cc/api/house/" + this.state.houseId + "/update",
+                {
+                    image: this.state.image,
+                    houseDescription: this.state.houseDescription,
+                    ownerId: sessionStorage.getItem("uuid"),
+                    isAvailable: this.state.isAvailable,
+                    districtId: this.state.districtId,
+                    venue: this.state.venue
+                }, {withCredentials: true}
+            ).then(response => {
+                if (response.data.status === "successful") {
+                    alert("House update successfully!")
+                    this.props.history.push("/")
+                }
+            })
         } else if (window.confirm("Confirm to upload your house?")) {
             axios.post("http://5e7ce96f71384.freetunnel.cc/api/house/add",
                 {
@@ -155,7 +174,7 @@ class UploadHousePage extends React.Component {
                             label="House Description"
                             multiline
                             rows="4"
-                            defaultValue=""
+                            defaultValue={this.state.houseDescription}
                             variant="outlined"
                             fullWidth={true}
                             onChange={this.handleChange("houseDescription")}
@@ -175,25 +194,33 @@ class UploadHousePage extends React.Component {
                             }
                         />
                     </div>
-                    <div id="districtName">
-                        <InputLabel htmlFor="district" style={{color: "black", marginTop: 10, fontSize: 16}}>District
-                            Name</InputLabel>
-                        <NativeSelect
-                            value={this.state.districtName}
-                            onChange={this.handleChange("districtId")}
-                            inputProps={{
-                                name: 'District Name',
-                                id: 'district',
-                            }}
-                        >
-                            <option aria-label="None" value={null}/>
-                            {
-                                this.state.nameList.map((value, index) => (
-                                    <option key={index} value={this.state.idList[index]}>{value}</option>
-                                ))
-                            }
-                        </NativeSelect>
-                    </div>
+
+                    {
+                        (this.state.nameList.length !== 0  && this.state.idList.length !== 0) ? (
+                            <div id="districtName">
+                                <InputLabel htmlFor="district" style={{color: "black", marginTop: 10, fontSize: 16}}>District
+                                    Name</InputLabel>
+                                <NativeSelect
+                                    defaultValue={this.state.districtId}
+                                    value={this.state.districtName}
+                                    onChange={this.handleChange("districtId")}
+                                    inputProps={{
+                                        name: 'District Name',
+                                        id: 'district',
+                                    }}
+                                >
+                                    <option aria-label="None" />
+                                    {
+                                        this.state.nameList.map((value, index) => (
+                                            <option key={index} value={this.state.idList[index]}>{value}</option>
+                                        ))
+                                    }
+                                </NativeSelect>
+                            </div>
+                        ) : (
+                            <div></div>
+                        )
+                    }
 
                     <div id="postal" style={{marginTop: 10}}>
                         <label id="postal">Postal Code:</label>
@@ -218,7 +245,7 @@ class UploadHousePage extends React.Component {
                             style={{marginTop: 8}}
                             id="venue"
                             label="Venue"
-                            defaultValue=""
+                            defaultValue={this.state.venue}
                             variant="outlined"
                             onChange={this.handleChange("venue")}
                         />
@@ -237,4 +264,4 @@ class UploadHousePage extends React.Component {
     }
 }
 
-export default withStyles(styles)(UploadHousePage);
+export default withRouter(withStyles(styles)(UploadHousePage));

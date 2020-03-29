@@ -66,7 +66,7 @@ const LoginPage = (props) => {
             .post(
                 "http://5e7ce96f71384.freetunnel.cc/api/user/log_in",
                 {
-                    email: md5Encode(values.email),
+                    email: values.email,
                     password: md5Encode(values.password)
                 },
                 {withCredentials: true}
@@ -90,7 +90,7 @@ const LoginPage = (props) => {
             axios.post(
                 "http://5e7ce96f71384.freetunnel.cc/api/user/sign_up",
                 {
-                    email: md5Encode(values.email),
+                    email: values.email,
                     password: md5Encode(values.password)
                 }, {
                     withCredentials: true
