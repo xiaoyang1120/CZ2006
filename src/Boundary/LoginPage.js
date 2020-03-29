@@ -11,7 +11,7 @@ import clsx from "clsx";
 import axios from "axios";
 import Particles from "react-particles-js";
 import Navbar from "../Components/NavBar";
-import isSimplePwd from "./PasswordCheck";
+import isSimplePwd from "../tool/PasswordCheck";
 import md5Encode from "../tool/md5"
 
 const useStyles = makeStyles(theme => ({

@@ -8,7 +8,7 @@ import axios from "axios"
 import clsx from "clsx";
 import InputLabel from "@material-ui/core/InputLabel";
 import {withStyles} from "@material-ui/core/styles";
-import isSimplePwd from "../Boundary/PasswordCheck";
+import isSimplePwd from "../tool/PasswordCheck";
 import md5Encode from "../tool/md5";
 
 const styles = theme => ({
