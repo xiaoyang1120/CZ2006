@@ -123,7 +123,11 @@ class HouseList extends Component {
               <div className={classes.heroButtons}>
                 <Grid container spacing={2} justify="center">
                   <Grid item>
-                    <Button variant="contained" color="primary">
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      href="/arealist"
+                    >
                       Back to district list
                     </Button>
                   </Grid>
