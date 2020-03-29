@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import NavBar from "../Components/NavBar";
 import { ListItem, Grid, Paper, Button, Container } from "@material-ui/core";
 import MapDisplay from "../Components/MapDisplay";
+import axios from "axios";
 
 const images = [
   {
@@ -61,6 +62,8 @@ const styles = theme => ({
   image: {
     position: "relative",
     height: 200,
+    borderRadius: "50px",
+    width: "100%",
     [theme.breakpoints.down("xs")]: {
       width: "100% !important", // Overrides inline-style
       height: 100
@@ -80,6 +83,7 @@ const styles = theme => ({
   },
   focusVisible: {},
   imageButton: {
+    borderRadius: "10px",
     position: "absolute",
     left: 0,
     right: 0,
@@ -100,6 +104,7 @@ const styles = theme => ({
     backgroundPosition: "center 40%"
   },
   imageBackdrop: {
+    borderRadius: "10px",
     position: "absolute",
     left: 0,
     right: 0,
@@ -110,11 +115,13 @@ const styles = theme => ({
     transition: theme.transitions.create("opacity")
   },
   imageTitle: {
+    borderRadius: "10px",
     position: "relative",
     padding: `${theme.spacing(2)}px ${theme.spacing(4)}px ${theme.spacing(1) +
       6}px`
   },
   imageMarked: {
+    borderRadius: "10px",
     height: 3,
     width: 18,
     backgroundColor: theme.palette.common.white,
@@ -124,6 +131,7 @@ const styles = theme => ({
     transition: theme.transitions.create("opacity")
   },
   loadMoreButton: {
+    borderRadius: "10px",
     width: "100%",
   }
 })
@@ -133,57 +141,103 @@ class AreaListUI extends Component{
     super(props);
     this.state = {
       loading: true,
+      districtList:[],
+      districtOffset: 0,
       //someobject: [],
     };
     //function binding
+    this.loadMore = this.loadMore.bind(this);
+    this.queryDistrictList = this.queryDistrictList.bind(this);
   }
+
+  componentDidMount() {
+    //TODO: set state by sessionStorage.getItem
+    sessionStorage.setItem("disListOffset", JSON.stringify(this.state.districtOffset));
+    this.queryDistrictList(this.state.districtOffset);
+    var data = JSON.parse(sessionStorage.getItem("filteredDistrictList"));
+    console.log("data:", data)
+    this.setState({
+      districtList: data
+    });
+  }
+
+  queryDistrictList(offset){
+    console.log("query called!offset=", offset);
+    const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
+    sessionStorage.setItem("disListOffset", JSON.stringify(offset));
+    //get finalCriterion
+    const chosenCri= JSON.parse(sessionStorage.getItem("finalCriterion"));
+    axios
+      .post(url, chosenCri, { withCredentials: true, params: { offset } })
+      .then(response => {
+        var data;
+        if (offset!==0){
+          data=this.state.districtList.concat(response.data);
+        }else {
+          data=response.data;
+        }
+        sessionStorage.setItem( "filteredDistrictList", JSON.stringify(data));
+        this.setState(prevState=>{
+          return {districtList: data, districtOffset: offset}
+        })
+      })
+      .catch(error => {
+        console.error(error);
+        alert("Getting distritList Error: " + error);
+      });
+  }
+
   loadMore(){
+    var offset = this.state.districtOffset + 10;
+    this.queryDistrictList(offset);
 
   }
+
   render(){
     const { classes } = this.props;
+    console.log("in render, districtList:",this.state.districtList);
+    const areaItems=(!this.state.districtList)?null:
+    (this.state.districtList).map(district=>(
+      <ListItem key={district.districtId}>
+        <ButtonBase
+          focusRipple
+          key={district.districtId}
+          className={classes.image}
+          focusVisibleClassName={classes.focusVisible}
+        >
+          <span
+            className={classes.imageSrc}
+            style={{
+              backgroundImage: "https://source.unsplash.com/random"
+            }}
+          />
+          <span className={classes.imageBackdrop} />
+          <span className={classes.imageButton}>
+            <Typography
+              component="span"
+              variant="subtitle1"
+              color="inherit"
+              className={classes.imageTitle}
+            >
+              {district.name}
+              <span className={classes.imageMarked} />
+            </Typography>
+          </span>
+        </ButtonBase>
+      </ListItem>
+    ));
+
     return (
       <div className={classes.root}>
         <NavBar />
         <Grid container spacing={1}>
           <Grid item xs={4}>
-              <Typography variant="h4" align="center" style={{ color: "white", height: "50px"}}>
+              <Typography variant="h4" align="center" style={{ color: "white", height: "50px", paddingTop: "10px"}}>
                 Recommended districts
               </Typography>
               <div style={{overflow:'hidden'}}>
               <Paper className={classes.leftList}>
-                {images.map(image => (
-                  <ListItem key={image.title}>
-                    <ButtonBase
-                      focusRipple
-                      key={image.title}
-                      className={classes.image}
-                      focusVisibleClassName={classes.focusVisible}
-                      style={{
-                        width: image.width
-                      }}
-                    >
-                      <span
-                        className={classes.imageSrc}
-                        style={{
-                          backgroundImage: `url(${image.url})`
-                        }}
-                      />
-                      <span className={classes.imageBackdrop} />
-                      <span className={classes.imageButton}>
-                        <Typography
-                          component="span"
-                          variant="subtitle1"
-                          color="inherit"
-                          className={classes.imageTitle}
-                        >
-                          {image.title}
-                          <span className={classes.imageMarked} />
-                        </Typography>
-                      </span>
-                    </ButtonBase>
-                  </ListItem>
-                ))}
+                {areaItems}
                 <Container className={classes.loadMoreButton} style={{textAlign: 'center'}}>
                   <div>
                     <Button
@@ -202,8 +256,9 @@ class AreaListUI extends Component{
           </Grid>
           <Grid item xs={8}>
             <Paper className={classes.session}>
+
               <MapDisplay />
-              <p>这里记得传parameter进component</p>
+              <br />
               <div>
                 <Button
                   variant="outlined"

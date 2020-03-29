@@ -119,26 +119,23 @@ class SecondaryCriteriaMatching extends Component {
     //TODO: jump to secondary criterion page<-done by submit button
     const chosenCri = this.state.priChecked.concat(this.state.secChecked);
     sessionStorage.setItem("finalCriterion", JSON.stringify(chosenCri));
-    // if need to post to api
-    // axios.post('https://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts?offset=0', data)
-    //       .then(res => console.log(res.data));
-    const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
-    console.log(chosenCri);
-    let offset = 0;
-    sessionStorage.setItem("disListOffset", JSON.stringify(offset));
-    axios
-      .post(url, chosenCri, { withCredentials: true, params: { offset } })
-      .then(response => {
-        console.log("Success:", response);
-        sessionStorage.setItem(
-          "filteredDistrictList",
-          JSON.stringify(response)
-        );
-      })
-      .catch(error => {
-        console.error(error);
-        alert("Getting distritList Error: " + error);
-      });
+    // const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
+    // console.log(chosenCri);
+    // let offset = 0;
+    // sessionStorage.setItem("disListOffset", JSON.stringify(offset));
+    // axios
+    //   .post(url, chosenCri, { withCredentials: true, params: { offset } })
+    //   .then(response => {
+    //     console.log("Success:", response.data);
+    //     sessionStorage.setItem(
+    //       "filteredDistrictList",
+    //       JSON.stringify(response.data)
+    //     );
+    //   })
+    //   .catch(error => {
+    //     console.error(error);
+    //     alert("Getting distritList Error: " + error);
+    //   });
     this.props.history.push("/arealist");
     e.preventDefault();
   }
