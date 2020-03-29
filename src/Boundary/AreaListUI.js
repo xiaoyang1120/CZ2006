@@ -61,6 +61,8 @@ const styles = theme => ({
   image: {
     position: "relative",
     height: 200,
+    borderRadius: "50px",
+    width: "100%",
     [theme.breakpoints.down("xs")]: {
       width: "100% !important", // Overrides inline-style
       height: 100
@@ -133,13 +135,25 @@ class AreaListUI extends Component{
     super(props);
     this.state = {
       loading: true,
+      districtList:[],
       //someobject: [],
     };
     //function binding
   }
+
+  componentDidMount() {
+    //TODO: set state by sessionStorage.getItem
+    var data = JSON.parse(sessionStorage.getItem("filteredDistrictList"));
+    console.log("data:", data)
+    this.setState({
+      districtList: data
+    });
+  }
+
   loadMore(){
 
   }
+
   render(){
     const { classes } = this.props;
     return (
@@ -147,26 +161,23 @@ class AreaListUI extends Component{
         <NavBar />
         <Grid container spacing={1}>
           <Grid item xs={4}>
-              <Typography variant="h4" align="center" style={{ color: "white", height: "50px"}}>
+              <Typography variant="h4" align="center" style={{ color: "white", height: "50px", paddingTop: "10px"}}>
                 Recommended districts
               </Typography>
               <div style={{overflow:'hidden'}}>
               <Paper className={classes.leftList}>
-                {images.map(image => (
-                  <ListItem key={image.title}>
+                {(this.state.districtList).map(district=>(
+                  <ListItem key={district.districtId}>
                     <ButtonBase
                       focusRipple
-                      key={image.title}
+                      key={district.districtId}
                       className={classes.image}
                       focusVisibleClassName={classes.focusVisible}
-                      style={{
-                        width: image.width
-                      }}
                     >
                       <span
                         className={classes.imageSrc}
                         style={{
-                          backgroundImage: `url(${image.url})`
+                          backgroundImage: "https://source.unsplash.com/random"
                         }}
                       />
                       <span className={classes.imageBackdrop} />
@@ -177,7 +188,7 @@ class AreaListUI extends Component{
                           color="inherit"
                           className={classes.imageTitle}
                         >
-                          {image.title}
+                          {district.name}
                           <span className={classes.imageMarked} />
                         </Typography>
                       </span>
@@ -202,8 +213,9 @@ class AreaListUI extends Component{
           </Grid>
           <Grid item xs={8}>
             <Paper className={classes.session}>
+
               <MapDisplay />
-              <p>这里记得传parameter进component</p>
+              <br />
               <div>
                 <Button
                   variant="outlined"

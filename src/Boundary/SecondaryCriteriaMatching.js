@@ -129,10 +129,10 @@ class SecondaryCriteriaMatching extends Component {
     axios
       .post(url, chosenCri, { withCredentials: true, params: { offset } })
       .then(response => {
-        console.log("Success:", response);
+        console.log("Success:", response.data);
         sessionStorage.setItem(
           "filteredDistrictList",
-          JSON.stringify(response)
+          JSON.stringify(response.data)
         );
       })
       .catch(error => {
