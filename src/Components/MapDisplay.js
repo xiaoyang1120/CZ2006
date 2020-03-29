@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import GoogleMapReact from 'google-map-react';
+import RoomIcon from '@material-ui/icons/Room';
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+//const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 const styles = theme => ({
 
@@ -27,13 +28,17 @@ class MapDisplay extends Component{
 
   render(){
     return(
-      <div style={{ height: '75%', width: '100%' }}>
+      <div style={{ height: '70%', width: '100%' }}>
         <GoogleMapReact
-          bootstrapURLKeys={{ key: '', language: 'en' }}
+          bootstrapURLKeys={{ key: 'AIzaSyCjevUSZZlSad1G2HbuF_aAIOciqAjZrgc', language: 'en' }}
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
         >
-          <AnyReactComponent lat={1.36} lng={103.84} text='My Marker' />
+          <RoomIcon
+            lat={1.36}
+            lng={103.84}
+            color="primary"
+            style={{ fontSize: 30 }} />
         </GoogleMapReact>
       </div>
     )

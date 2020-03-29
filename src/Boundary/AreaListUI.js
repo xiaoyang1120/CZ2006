@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import NavBar from "../Components/NavBar";
 import { ListItem, Grid, Paper, Button, Container } from "@material-ui/core";
 import MapDisplay from "../Components/MapDisplay";
+import SomeIcon from "../Components/SomeIcon";
 import axios from "axios";
 import { spacing } from '@material-ui/system';
 
@@ -139,19 +140,16 @@ const styles = theme => ({
     width: "100%",
     textAlign: 'center',
   },
-  facbtns:{
+  facilities:{
+    marginTop:20,
     position:"relative",
     height: '15%',
     width: '100%',
+    justifyContent: 'center',
   },
-  facbtn:{
-    textAlign:'center',
-    position: "absolute",
+  icon:{
     marginTop: 10,
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
+    padding:20,
     //textTransform: "none",
   },
   detailbtn:{
@@ -170,6 +168,7 @@ class AreaListUI extends Component{
       loading: true,
       districtList:[],
       districtOffset: 0,
+      allCriterion:[],
       chosenCriterion:[],
       currentDis:"",
       //someobject: [],
@@ -182,6 +181,7 @@ class AreaListUI extends Component{
 
   componentDidMount() {
     //TODO: set state by sessionStorage.getItem
+    const criterion= JSON.parse(sessionStorage.getItem("criterion"));
     const chosenCri= JSON.parse(sessionStorage.getItem("finalCriterion"));
     sessionStorage.setItem("disListOffset", JSON.stringify(this.state.districtOffset));
     this.queryDistrictList(this.state.districtOffset);
@@ -189,8 +189,9 @@ class AreaListUI extends Component{
     console.log("data:", data)
     this.setState({
       districtList: data,
+      allCriterion: criterion,
       chosenCriterion: chosenCri,
-      currentDis: data[0]["districtId"],
+      currentDis: 0,
     });
   }
 
@@ -226,8 +227,10 @@ class AreaListUI extends Component{
 
   changeDis(disId){
     this.setState(prevState=>{
-      console.log("you clicked district:", disId)
-      return {currentDis: disId}
+      console.log("you clicked district:", disId);
+      sessionStorage.setItem("currentDistrict", JSON.stringify(disId));
+      var index= prevState.districtList.findIndex(cri=>cri.districtId===disId)
+      return {currentDis: index}
     })
   }
 
@@ -269,16 +272,13 @@ class AreaListUI extends Component{
           </ButtonBase>
         </ListItem>
       ));
-    const facilityBtns=(this.state.chosenCriterion).map(cri=>(
-      <Button
-        key={cri}
-        variant="outlined"
-        size="large"
-        color="primary"
-        >
-        {cri.split("_").join(" ")}
-      </Button>
-    ));
+
+    //const facilityBadges=null;
+    const facilityBadges=(!this.state.allCriterion)?null:
+      (this.state.allCriterion).map(cri=>(
+          <SomeIcon cri={cri} disInfo={this.state.districtList[this.state.currentDis]}/>
+      ))
+
     console.log(this.state.currentDis);
     return (
       <div className={classes.root}>
@@ -309,8 +309,8 @@ class AreaListUI extends Component{
             <Paper className={classes.session}>
               <MapDisplay />
               <Container className={classes.facbtns}>
-                <div className={classes.facbtn}>
-                  {facilityBtns}
+                <div className={classes.facilities}>
+                  {facilityBadges}
                 </div>
               </Container>
               <Container className={classes.detailbtn}>

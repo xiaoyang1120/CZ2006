@@ -45,6 +45,7 @@ class HouseList extends Component {
   constructor() {
     super();
     this.state = {
+      currentDistrict:"",
       cards: [1, 2, 3, 4, 5, 6, 7, 8, 9],
       isLoading: false,
       House: [
@@ -80,6 +81,10 @@ class HouseList extends Component {
     };
   }
   componentDidMount() {
+    const curDis=JSON.parse(sessionStorage.getItem("currentDistrict"));
+    this.setState{
+      currentDistrict: curDis,
+    }
     /*this.setState({ isLoading: true });
     fetch(
       "http://5e7ce96f71384.freetunnel.cc/api/house/get_list?district_id= " +
