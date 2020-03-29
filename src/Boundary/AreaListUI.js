@@ -6,7 +6,11 @@ import NavBar from "../Components/NavBar";
 import { ListItem, Grid, Paper, Button, Container } from "@material-ui/core";
 import MapDisplay from "../Components/MapDisplay";
 import axios from "axios";
+import { spacing } from '@material-ui/system';
 
+//TODO: (use currentDis) map corresponding district information on the right-side panel (MapDisplay Object)
+//TODO: add small maps to each of left list item
+//TODO: button need to redirect by method
 const images = [
   {
     url: "https://source.unsplash.com/random",
@@ -133,7 +137,30 @@ const styles = theme => ({
   loadMoreButton: {
     borderRadius: "10px",
     width: "100%",
-  }
+    textAlign: 'center',
+  },
+  facbtns:{
+    position:"relative",
+    height: '15%',
+    width: '100%',
+  },
+  facbtn:{
+    textAlign:'center',
+    position: "absolute",
+    marginTop: 10,
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+    //textTransform: "none",
+  },
+  detailbtn:{
+    padding: 10,
+    textAlign:'center',
+    width: "100%",
+    height:"10%",
+  },
+
 })
 
 class AreaListUI extends Component{
@@ -143,21 +170,27 @@ class AreaListUI extends Component{
       loading: true,
       districtList:[],
       districtOffset: 0,
+      chosenCriterion:[],
+      currentDis:"",
       //someobject: [],
     };
     //function binding
     this.loadMore = this.loadMore.bind(this);
     this.queryDistrictList = this.queryDistrictList.bind(this);
+    this.changeDis = this.changeDis.bind(this);
   }
 
   componentDidMount() {
     //TODO: set state by sessionStorage.getItem
+    const chosenCri= JSON.parse(sessionStorage.getItem("finalCriterion"));
     sessionStorage.setItem("disListOffset", JSON.stringify(this.state.districtOffset));
     this.queryDistrictList(this.state.districtOffset);
     var data = JSON.parse(sessionStorage.getItem("filteredDistrictList"));
     console.log("data:", data)
     this.setState({
-      districtList: data
+      districtList: data,
+      chosenCriterion: chosenCri,
+      currentDis: data[0]["districtId"],
     });
   }
 
@@ -165,10 +198,8 @@ class AreaListUI extends Component{
     console.log("query called!offset=", offset);
     const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
     sessionStorage.setItem("disListOffset", JSON.stringify(offset));
-    //get finalCriterion
-    const chosenCri= JSON.parse(sessionStorage.getItem("finalCriterion"));
     axios
-      .post(url, chosenCri, { withCredentials: true, params: { offset } })
+      .post(url, this.state.chosenCriterion, { withCredentials: true, params: { offset } })
       .then(response => {
         var data;
         if (offset!==0){
@@ -193,40 +224,62 @@ class AreaListUI extends Component{
 
   }
 
+  changeDis(disId){
+    this.setState(prevState=>{
+      console.log("you clicked district:", disId)
+      return {currentDis: disId}
+    })
+  }
+
+  getNumOfFac(cri){
+    //return the numoffac in that district
+  }
+
   render(){
     const { classes } = this.props;
     console.log("in render, districtList:",this.state.districtList);
     const areaItems=(!this.state.districtList)?null:
-    (this.state.districtList).map(district=>(
-      <ListItem key={district.districtId}>
-        <ButtonBase
-          focusRipple
-          key={district.districtId}
-          className={classes.image}
-          focusVisibleClassName={classes.focusVisible}
+      (this.state.districtList).map(district=>(
+        <ListItem key={district.districtId}>
+          <ButtonBase
+            focusRipple
+            key={district.districtId}
+            className={classes.image}
+            focusVisibleClassName={classes.focusVisible}
+            onClick={()=>this.changeDis(district.districtId)}
+          >
+            <span
+              className={classes.imageSrc}
+              style={{
+                backgroundImage: "https://source.unsplash.com/random"
+              }}
+            />
+            <span className={classes.imageBackdrop} />
+            <span className={classes.imageButton}>
+              <Typography
+                component="span"
+                variant="subtitle1"
+                color="inherit"
+                className={classes.imageTitle}
+              >
+                {district.name}
+                <span className={classes.imageMarked} />
+              </Typography>
+            </span>
+          </ButtonBase>
+        </ListItem>
+      ));
+    const facilityBtns=(this.state.chosenCriterion).map(cri=>(
+      <Button
+        key={cri}
+        variant="outlined"
+        size="large"
+        color="primary"
         >
-          <span
-            className={classes.imageSrc}
-            style={{
-              backgroundImage: "https://source.unsplash.com/random"
-            }}
-          />
-          <span className={classes.imageBackdrop} />
-          <span className={classes.imageButton}>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              className={classes.imageTitle}
-            >
-              {district.name}
-              <span className={classes.imageMarked} />
-            </Typography>
-          </span>
-        </ButtonBase>
-      </ListItem>
+        {cri.split("_").join(" ")}
+      </Button>
     ));
-
+    console.log(this.state.currentDis);
     return (
       <div className={classes.root}>
         <NavBar />
@@ -238,70 +291,40 @@ class AreaListUI extends Component{
               <div style={{overflow:'hidden'}}>
               <Paper className={classes.leftList}>
                 {areaItems}
-                <Container className={classes.loadMoreButton} style={{textAlign: 'center'}}>
+                <Container className={classes.loadMoreButton}>
                   <div>
                     <Button
                       size="large"
                       color="primary"
                       onClick={this.loadMore}
-                      style={{justifyContent: 'center'}}
                       >
                       Load More...
                     </Button>
                   </div>
                 </Container>
-
               </Paper>
             </div>
           </Grid>
           <Grid item xs={8}>
             <Paper className={classes.session}>
-
               <MapDisplay />
-              <br />
-              <div>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  color="primary"
-                  className={classes.margin}
-                >
-                  A
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  color="primary"
-                  className={classes.margin}
-                >
-                  B
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  color="primary"
-                  className={classes.margin}
-                >
-                  C
-                </Button>
-                <Button
-                  variant="outlined"
-                  size="large"
-                  color="primary"
-                  className={classes.margin}
-                >
-                  D
-                </Button>
-              </div>
-              <Button
-                variant="contained"
-                size="large"
-                color="primary"
-                className={classes.margin}
-                href="/house@area"
-              >
-                See houses in this area
-              </Button>
+              <Container className={classes.facbtns}>
+                <div className={classes.facbtn}>
+                  {facilityBtns}
+                </div>
+              </Container>
+              <Container className={classes.detailbtn}>
+                <div>
+                  <Button
+                    variant="contained"
+                    size="large"
+                    color="primary"
+                    href="/house@area"
+                  >
+                    See houses in this area
+                  </Button>
+                </div>
+              </Container>
             </Paper>
           </Grid>
         </Grid>
