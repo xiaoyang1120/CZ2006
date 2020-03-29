@@ -39,7 +39,7 @@
     </select>
 
     <select id="getEmailById" parameterType="java.util.UUID" resultMap="userMap">
-        select email
+        select userId, email, password
         from user
         where userId = #{userId}
     </select>

@@ -45,7 +45,7 @@ public class UserService {
         }
     }
 
-    public String getEmailById(UUID userId){return userDao.getEmailById(userId);}
+    public String getEmailById(UUID userId){return userDao.getEmailById(userId).getEmail();}
 
     public List<House> getFavourites(UUID userId){
         return houseDao.getFavouriteByUserId(userId);
