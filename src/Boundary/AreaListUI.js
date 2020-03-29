@@ -147,11 +147,13 @@ class AreaListUI extends Component{
     };
     //function binding
     this.loadMore = this.loadMore.bind(this);
+    this.queryDistrictList = this.queryDistrictList.bind(this);
   }
 
   componentDidMount() {
     //TODO: set state by sessionStorage.getItem
     sessionStorage.setItem("disListOffset", JSON.stringify(this.state.districtOffset));
+    this.queryDistrictList(this.state.districtOffset);
     var data = JSON.parse(sessionStorage.getItem("filteredDistrictList"));
     console.log("data:", data)
     this.setState({
@@ -159,35 +161,72 @@ class AreaListUI extends Component{
     });
   }
 
-  loadMore(){
-    this.setState(prevState =>{
-      const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
-      var offset = prevState.districtOffset + 10;
-      sessionStorage.setItem("disListOffset", JSON.stringify(offset));
-      //get finalCriterion
-      const chosenCri= JSON.parse(sessionStorage.getItem("finalCriterion"));
-      axios
-        .post(url, chosenCri, { withCredentials: true, params: { offset } })
-        .then(response => {
-          var data=prevState.districtList.concat(response.data);
-          sessionStorage.setItem( "filteredDistrictList", JSON.stringify(data));
+  queryDistrictList(offset){
+    console.log("query called!offset=", offset);
+    const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
+    sessionStorage.setItem("disListOffset", JSON.stringify(offset));
+    //get finalCriterion
+    const chosenCri= JSON.parse(sessionStorage.getItem("finalCriterion"));
+    axios
+      .post(url, chosenCri, { withCredentials: true, params: { offset } })
+      .then(response => {
+        var data;
+        if (offset!==0){
+          data=this.state.districtList.concat(response.data);
+        }else {
+          data=response.data;
+        }
+        sessionStorage.setItem( "filteredDistrictList", JSON.stringify(data));
+        this.setState(prevState=>{
+          return {districtList: data, districtOffset: offset}
         })
-        .catch(error => {
-          console.error(error);
-          alert("Getting distritList Error: " + error);
-        });
-      var list=JSON.parse(sessionStorage.getItem("filteredDistrictList"));
-      console.log("List:", list);
-      return {
-        districtList: list,
-        districtOffset: offset,
-      }
-    });
+      })
+      .catch(error => {
+        console.error(error);
+        alert("Getting distritList Error: " + error);
+      });
+  }
+
+  loadMore(){
+    var offset = this.state.districtOffset + 10;
+    this.queryDistrictList(offset);
+
   }
 
   render(){
     const { classes } = this.props;
     console.log("in render, districtList:",this.state.districtList);
+    const areaItems=(!this.state.districtList)?null:
+    (this.state.districtList).map(district=>(
+      <ListItem key={district.districtId}>
+        <ButtonBase
+          focusRipple
+          key={district.districtId}
+          className={classes.image}
+          focusVisibleClassName={classes.focusVisible}
+        >
+          <span
+            className={classes.imageSrc}
+            style={{
+              backgroundImage: "https://source.unsplash.com/random"
+            }}
+          />
+          <span className={classes.imageBackdrop} />
+          <span className={classes.imageButton}>
+            <Typography
+              component="span"
+              variant="subtitle1"
+              color="inherit"
+              className={classes.imageTitle}
+            >
+              {district.name}
+              <span className={classes.imageMarked} />
+            </Typography>
+          </span>
+        </ButtonBase>
+      </ListItem>
+    ));
+
     return (
       <div className={classes.root}>
         <NavBar />
@@ -198,35 +237,7 @@ class AreaListUI extends Component{
               </Typography>
               <div style={{overflow:'hidden'}}>
               <Paper className={classes.leftList}>
-                {(this.state.districtList).map(district=>(
-                  <ListItem key={district.districtId}>
-                    <ButtonBase
-                      focusRipple
-                      key={district.districtId}
-                      className={classes.image}
-                      focusVisibleClassName={classes.focusVisible}
-                    >
-                      <span
-                        className={classes.imageSrc}
-                        style={{
-                          backgroundImage: "https://source.unsplash.com/random"
-                        }}
-                      />
-                      <span className={classes.imageBackdrop} />
-                      <span className={classes.imageButton}>
-                        <Typography
-                          component="span"
-                          variant="subtitle1"
-                          color="inherit"
-                          className={classes.imageTitle}
-                        >
-                          {district.name}
-                          <span className={classes.imageMarked} />
-                        </Typography>
-                      </span>
-                    </ButtonBase>
-                  </ListItem>
-                ))}
+                {areaItems}
                 <Container className={classes.loadMoreButton} style={{textAlign: 'center'}}>
                   <div>
                     <Button
