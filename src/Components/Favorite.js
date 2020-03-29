@@ -82,14 +82,14 @@ class Favorite extends Component {
             ) : (
               <Grid container spacing={4}>
                 {this.state.favHouse.map(favHouse => (
-                  <Grid item key={favHouse.houseID} xs={12} sm={6} md={4}>
+                  <Grid item key={favHouse.houseId} xs={12} sm={6} md={4}>
                     <HouseCard
-                      name={favHouse.houseID}
+                      name={favHouse.houseId}
                       image={favHouse.image}
                       districtName={favHouse.districtID}
                       description={favHouse.houseDescription}
                       status={favHouse.isAvailable}
-                      buttonName="Remove from Fav."
+                      buttonName="Remove"
                       handleClick={this.Remove}
                     />
                   </Grid>
