@@ -56,17 +56,18 @@ class HouseCard extends React.Component {
 
     componentDidMount() {
         this.setState({isLoading: true});
+        console.log(this.state.houseData)
         axios.get("http://5e7ce96f71384.freetunnel.cc/api/user/" + this.state.houseData.ownerId + "/get_email")
             .then(response => {
                 this.setState({email: response.data})
             }).catch(error => {
-            alert(error)
+            console.log(error)
         })
         axios.get("http://5e7ce96f71384.freetunnel.cc/api/district/" + this.state.houseData.districtId + "/detail")
             .then(response => {
                 this.setState({districtName: response.data.districtName})
             }).catch(error => {
-            alert(error)
+            console.log(error)
         })
         axios.get("http://5e7ce96f71384.freetunnel.cc/api/user/" + sessionStorage.getItem("uuid") + "/get_fav")
             .then(response => {
@@ -78,7 +79,7 @@ class HouseCard extends React.Component {
                 }
                 // console.log(this.state.fav_list)
             }).catch(error => {
-            alert(error)
+            console.log(error)
         })
         this.setState({isLoading: false})
     }
@@ -98,11 +99,13 @@ class HouseCard extends React.Component {
         const email = this.state.email
         const isFav = this.state.isFav
 
+        console.log(this.state.isLoading, email, this.props.type !== "own")
+
         return (
             <div>
                 <Card className={classes.card}>
                     {/**Bookmark display check*/}
-                    {this.state.isLoading || email == null || this.props.type !== "own" && isFav == null ? (
+                    {this.state.isLoading || email == null || this.props.type === "fav" && isFav == null ? (
                         "Loading..."
                     ) : (
                         <div id="card">

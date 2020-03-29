@@ -44,7 +44,7 @@ class Favorite extends Component {
               <Grid container spacing={4}>
                 {this.state.favHouse.map(favHouse => (
                   <Grid item key={favHouse.houseId} xs={12} sm={6} md={4}>
-                    <HouseCard houseData={favHouse} />
+                    <HouseCard houseData={favHouse} type="fav"/>
                   </Grid>
                 ))}
               </Grid>
