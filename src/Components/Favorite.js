@@ -17,36 +17,7 @@ class Favorite extends Component {
 
     this.state = {
       isLoading: false,
-      favHouse: [
-        {
-          houseID: "Hall 11",
-          image: "https://source.unsplash.com/random",
-          houseDescription: "This is a good house",
-          districtID: "Jurong East",
-          status: true
-        },
-        {
-          houseID: "Hall 2",
-          image: "https://source.unsplash.com/random",
-          houseDescription: "This is a normal hosue",
-          districtID: "Bedok",
-          status: true
-        },
-        {
-          houseID: "Tamarind Hall",
-          image: "https://source.unsplash.com/random",
-          houseDescription: "This is a normal hosue",
-          districtID: "NTU",
-          status: true
-        },
-        {
-          houseID: "Hall 3",
-          image: "https://source.unsplash.com/random",
-          houseDescription: "This is a amazing hosue",
-          districtID: "NTU",
-          status: false
-        }
-      ]
+      favHouse: []
     };
     this.Remove = this.Remove.bind(this);
   }
@@ -82,14 +53,14 @@ class Favorite extends Component {
             ) : (
               <Grid container spacing={4}>
                 {this.state.favHouse.map(favHouse => (
-                  <Grid item key={favHouse.houseID} xs={12} sm={6} md={4}>
+                  <Grid item key={favHouse.houseId} xs={12} sm={6} md={4}>
                     <HouseCard
-                      name={favHouse.houseID}
+                      name={favHouse.houseId}
                       image={favHouse.image}
-                      districtName={favHouse.districtID}
+                      districtName={favHouse.districtId}
                       description={favHouse.houseDescription}
                       status={favHouse.isAvailable}
-                      buttonName="Remove from Fav."
+                      buttonName="Remove"
                       handleClick={this.Remove}
                     />
                   </Grid>

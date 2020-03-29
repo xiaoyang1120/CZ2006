@@ -17,22 +17,7 @@ class OnSale extends Component {
 
     this.state = {
       isLoading: false,
-      saleHouse: [
-        {
-          houseID: "Hall 11",
-          image: "https://source.unsplash.com/random",
-          houseDescription: "This is a good house",
-          districtID: "Jurong East",
-          status: true
-        },
-        {
-          houseID: "Hall 2",
-          image: "https://source.unsplash.com/random",
-          houseDescription: "This is a normal hosue",
-          districtID: "Bedok",
-          status: false
-        }
-      ]
+      saleHouse: []
     };
     this.Update = this.Update.bind(this);
   }
@@ -63,7 +48,6 @@ class OnSale extends Component {
 
   render() {
     const { classes } = this.props;
-    console.log(this.state.saleHouse[1])
     return (
       <div>
         {
@@ -77,9 +61,9 @@ class OnSale extends Component {
             ) : (
               <Grid container spacing={4}>
                 {this.state.saleHouse.map(saleHouse => (
-                  <Grid item key={saleHouse.houseID} xs={12} sm={6} md={4}>
+                  <Grid item key={saleHouse.houseId} xs={12} sm={6} md={4}>
                     <HouseCard
-                      name={saleHouse.houseID}
+                      name={saleHouse.houseId}
                       image={saleHouse.image}
                       districtName={saleHouse.districtId}
                       description={saleHouse.houseDescription}
