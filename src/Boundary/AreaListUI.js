@@ -5,6 +5,7 @@ import Typography from "@material-ui/core/Typography";
 import NavBar from "../Components/NavBar";
 import { ListItem, Grid, Paper, Button, Container } from "@material-ui/core";
 import MapDisplay from "../Components/MapDisplay";
+import axios from "axios";
 
 const images = [
   {
@@ -141,13 +142,16 @@ class AreaListUI extends Component{
     this.state = {
       loading: true,
       districtList:[],
+      districtOffset: 0,
       //someobject: [],
     };
     //function binding
+    this.loadMore = this.loadMore.bind(this);
   }
 
   componentDidMount() {
     //TODO: set state by sessionStorage.getItem
+    sessionStorage.setItem("disListOffset", JSON.stringify(this.state.districtOffset));
     var data = JSON.parse(sessionStorage.getItem("filteredDistrictList"));
     console.log("data:", data)
     this.setState({
@@ -156,11 +160,34 @@ class AreaListUI extends Component{
   }
 
   loadMore(){
-
+    this.setState(prevState =>{
+      const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
+      var offset = prevState.districtOffset + 10;
+      sessionStorage.setItem("disListOffset", JSON.stringify(offset));
+      //get finalCriterion
+      const chosenCri= JSON.parse(sessionStorage.getItem("finalCriterion"));
+      axios
+        .post(url, chosenCri, { withCredentials: true, params: { offset } })
+        .then(response => {
+          var data=prevState.districtList.concat(response.data);
+          sessionStorage.setItem( "filteredDistrictList", JSON.stringify(data));
+        })
+        .catch(error => {
+          console.error(error);
+          alert("Getting distritList Error: " + error);
+        });
+      var list=JSON.parse(sessionStorage.getItem("filteredDistrictList"));
+      console.log("List:", list);
+      return {
+        districtList: list,
+        districtOffset: offset,
+      }
+    });
   }
 
   render(){
     const { classes } = this.props;
+    console.log("in render, districtList:",this.state.districtList);
     return (
       <div className={classes.root}>
         <NavBar />
