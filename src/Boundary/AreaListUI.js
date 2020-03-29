@@ -4,7 +4,7 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import Typography from "@material-ui/core/Typography";
 import NavBar from "../Components/NavBar";
 import { ListItem, Grid, Paper, Button, Container } from "@material-ui/core";
-import MapDisplay from "../Components/MapDisplay";
+import {MapDisplay,MapLoading} from "../Components/MapDisplay";
 import SomeIcon from "../Components/SomeIcon";
 import axios from "axios";
 import { spacing } from '@material-ui/system';
@@ -276,11 +276,15 @@ class AreaListUI extends Component{
           </ButtonBase>
         </ListItem>
       ));
-
+    const mapDisplay=(!this.state.currentDis)?<MapLoading />:
+      <MapDisplay disId={this.state.currentDis}/>
     //const facilityBadges=null;
     const facilityBadges=(!this.state.districtList)?null:
       (this.state.allCriterion).map(cri=>(
-          <SomeIcon cri={cri} disInfo={this.state.districtList[this.state.currentDis]}/>
+          <SomeIcon
+            key={cri}
+            cri={cri}
+            disInfo={this.state.districtList[this.state.currentDis]}/>
       ))
 
     console.log(this.state.currentDis);
@@ -311,7 +315,8 @@ class AreaListUI extends Component{
           </Grid>
           <Grid item xs={8}>
             <Paper className={classes.session}>
-              <MapDisplay />
+              {mapDisplay}
+
               <Container className={classes.facbtns}>
                 <div className={classes.facilities}>
                   {facilityBadges}

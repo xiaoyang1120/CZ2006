@@ -22,11 +22,6 @@ import ShoppingCartIcon from '@material-ui/icons/ShoppingCart';
 import DirectionsBusIcon from '@material-ui/icons/DirectionsBus';
 //import many icons
 class SomeIcon extends Component{
-  constructor(props) {
-    super(props);
-    //this.convertToAttr=this.convertToAttr.bind(this);
-  }
-
   render(){
     const {cri, disInfo}=this.props;
     //I need: districtId, districtList
