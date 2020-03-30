@@ -9,6 +9,7 @@
         <result property="houseDescription" column="houseDescription"/>
         <result property="ownerId" column="ownerId"/>
         <result property="isAvailable" column="isAvailable"/>
+        <result property="postal" column="postal"/>
         <result property="venue" column="houseVenue"/>
         <result property="districtId" column="districtId"/>
     </resultMap>
@@ -21,7 +22,8 @@
             houseDescription,
             ownerId,
             districtId,
-            isAvailable
+            isAvailable,
+            postal
         )
         VALUES (
                    #{houseId},
@@ -30,7 +32,8 @@
                 #{houseDescription},
                 #{ownerId},
                 #{districtId},
-                #{isAvailable}
+                #{isAvailable},
+                #{postal}
                )
     </insert>
 
@@ -59,7 +62,8 @@
             houseDescription =#{houseDescription},
             ownerId =#{ownerId},
             districtId =#{districtId},
-            isAvailable =#{isAvailable}
+            isAvailable =#{isAvailable},
+            postal =#{postal}
         where houseId =#{houseId}
     </update>
 
@@ -76,13 +80,13 @@
     <!--    </delete>-->
 
     <select id="getHouseByDistrictId" parameterType="java.util.UUID" resultMap="houseMap">
-        select houseId, houseImage, houseVenue, houseDescription, ownerId, districtId, isAvailable
+        select houseId, houseImage, houseVenue, houseDescription, ownerId, districtId, isAvailable, postal
         from house
         where districtId = #{districtId}
     </select>
 
     <select id="getHouseById" parameterType="java.util.UUID" resultMap="houseMap">
-        select houseId, houseImage, houseVenue, houseDescription, ownerId, districtId, isAvailable
+        select houseId, houseImage, houseVenue, houseDescription, ownerId, districtId, isAvailable, postal
         from house
         where houseId = #{houseId}
     </select>
@@ -94,7 +98,8 @@
                houseDescription,
                ownerId,
                districtId,
-               isAvailable
+               isAvailable,
+               postal
         from house, favourite
         where favourite.userId = #{userId} AND favourite.houseId = house.houseId
     </select>
@@ -106,7 +111,8 @@
                houseDescription,
                ownerId,
                districtId,
-               isAvailable
+               isAvailable,
+               postal
         from house
         where ownerId = #{userId}
     </select>

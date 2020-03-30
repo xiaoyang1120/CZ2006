@@ -95,10 +95,10 @@ public class HouseController {
             UUID ownerId = UUID.fromString(json.get("ownerId"));
             house.setOwnerId(ownerId);
             house.setIsAvailable(Boolean.parseBoolean(json.get("isAvailable")));
+            house.setPostal(Integer.parseInt(json.get("postal")));
         }catch (IllegalArgumentException e){
             httpResponse.sendError(400, "Please enter a correct uuid!");
         }
-
         house.setHouseDescription(json.get("houseDescription"));
         house.setImage(json.get("image"));
         house.setVenue(json.get("venue"));

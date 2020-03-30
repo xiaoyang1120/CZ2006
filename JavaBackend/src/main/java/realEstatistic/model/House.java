@@ -10,8 +10,9 @@ public class House {
     private boolean isAvailable;
     private UUID districtId;
     private String venue;
+    private Integer postal;
 
-    public House(UUID houseId, String image, String houseDescription, UUID ownerId, boolean isAvalable, UUID districtId, String venue) {
+    public House(UUID houseId, String image, String houseDescription, UUID ownerId, boolean isAvalable, UUID districtId, String venue, Integer postal) {
         this.houseId = houseId;
         this.image = image;
         this.houseDescription = houseDescription;
@@ -19,15 +20,7 @@ public class House {
         this.isAvailable = isAvalable;
         this.districtId = districtId;
         this.venue = venue;
-    }
-
-    public House(UUID houseId, String image, String houseDescription, UUID ownerId, boolean isAvalable, UUID districtId) {
-        this.houseId = houseId;
-        this.image = image;
-        this.houseDescription = houseDescription;
-        this.ownerId = ownerId;
-        this.isAvailable = isAvalable;
-        this.districtId = districtId;
+        this.postal = postal;
     }
 
     public House() {
@@ -89,5 +82,12 @@ public class House {
         isAvailable = available;
     }
 
+    public Integer getPostal() {
+        return postal;
+    }
+
+    public void setPostal(Integer postal) {
+        this.postal = postal;
+    }
 
 }
