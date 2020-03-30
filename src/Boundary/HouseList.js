@@ -49,12 +49,12 @@ class HouseList extends Component {
             districtName: null,
             currentDistrict: null,
             isLoading: false,
-            House: []
+            House: null
         };
     }
 
     componentDidMount() {
-        const curDis=JSON.parse(sessionStorage.getItem("currentDistrict"));
+        const curDis = JSON.parse(sessionStorage.getItem("currentDistrict"));
         this.setState({currentDistrict: curDis, isLoading: true});
         fetch("http://5e7ce96f71384.freetunnel.cc/api/district/" + curDis + "/detail")
             .then(response => response.json())
@@ -85,8 +85,11 @@ class HouseList extends Component {
                                 color="textPrimary"
                                 gutterBottom
                             >
-                                {(this.state.districtName) ?
-                                   " Houses in " + this.state.districtName :
+                                {(this.state.districtName && this.state.House) ? (
+                                        this.state.House.length == 0 ?
+                                            "Sorry, no house in " + this.state.districtName :
+                                            "Houses in " + this.state.districtName
+                                    ) :
                                     "District Loading..."
                                 }
 
@@ -121,22 +124,25 @@ class HouseList extends Component {
                     </div>
                     <Container className={classes.cardGrid} maxWidth="md">
                         {/* End header */}
-                        <Grid container spacing={4}>
-                            {this.state.House.map(House => (
-                                <Grid item key={House.houseId} xs={12} sm={6} md={4}>
-                                    <HouseCard
-                                        houseData={House}
-                                        // name={House.houseID}
-                                        // image={House.image}
-                                        // districtName={House.districtID}
-                                        // description={House.houseDescription}
-                                        // status={House.status}
-                                        // buttonName="Add to favorite"
-                                        // handleClick={this.AddtoFav}
-                                    />
-                                </Grid>
-                            ))}
-                        </Grid>
+                        {
+                            this.state.House ? (
+                                this.state.House.length != 0 ?
+                                    <Grid container spacing={4}>
+                                        {this.state.House.map(House => (
+                                            <Grid item key={House.houseId} xs={12} sm={6} md={4}>
+                                                <HouseCard
+                                                    houseData={House}
+                                                />
+                                            </Grid>
+                                        ))}
+                                    </Grid>
+                                    :
+                                    <Typography variant="h6" align="center">You may proceed to another district for houses.</Typography>
+                            ) : (
+                                <Typography variant="h6" align="center">Loading Houses...</Typography>
+                            )
+
+                        }
                     </Container>
                 </main>
                 {/* Footer */}
