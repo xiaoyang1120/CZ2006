@@ -222,20 +222,20 @@ class UploadHousePage extends React.Component {
                         )
                     }
 
-                    <div id="postal" style={{marginTop: 10}}>
-                        <label id="postal">Postal Code:</label>
-                        <br/>
+                    {/*<div id="postal" style={{marginTop: 10}}>*/}
+                    {/*    <label id="postal">Postal Code:</label>*/}
+                    {/*    <br/>*/}
 
-                        <TextField
-                            disabled={true}
-                            style={{marginTop: 8}}
-                            id="postal"
-                            label="Postal Code"
-                            defaultValue=""
-                            variant="outlined"
-                            onChange={this.handleChange("postal")}
-                        />
-                    </div>
+                    {/*    <TextField*/}
+                    {/*        disabled={true}*/}
+                    {/*        style={{marginTop: 8}}*/}
+                    {/*        id="postal"*/}
+                    {/*        label="Postal Code"*/}
+                    {/*        defaultValue=""*/}
+                    {/*        variant="outlined"*/}
+                    {/*        onChange={this.handleChange("postal")}*/}
+                    {/*    />*/}
+                    {/*</div>*/}
 
                     <div id="venue" style={{marginTop: 10}}>
                         <label id="venue">Venue:</label>
