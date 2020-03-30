@@ -13,7 +13,7 @@ class MapDisplay extends Component{
     this.state = {
       currentDistrict:this.props.disId,
       bounds:{},
-      //detail:{},
+      renderAvai: false,
       //someobject: [],
     };
     //function binding
@@ -31,8 +31,9 @@ class MapDisplay extends Component{
   componentDidMount() {
     //TODO: set state
     console.log("query called!districtId:", this.state.currentDistrict);
+
     const url = "http://5e7ce96f71384.freetunnel.cc/api/district/"+
-      JSON.stringify(this.state.currentDistrict)+
+      this.state.currentDistrict+
       "/detail";
     console.log("url:",url);
     axios
@@ -50,7 +51,8 @@ class MapDisplay extends Component{
               lat: d.latEnd,
               lng: d.longEnd,
             }
-          }
+          },
+          renderAvai: true,
         });
       })
       .catch(error => {
@@ -58,29 +60,42 @@ class MapDisplay extends Component{
         alert("Getting districtDetail Error: " + error);
       })
   }
-  zoomToDistrict(){
-    const size = {
-      width: 350, // Map width in pixels
-      height: 350, // Map height in pixels
-    };
-    const {center, zoom} = fitBounds(this.state.bounds, size);
-  }
+  // zoomToDistrict(){
+  //   const size = {
+  //     width: 350, // Map width in pixels
+  //     height: 350, // Map height in pixels
+  //   };
+  //   const {center, zoom} = fitBounds(this.state.bounds, size);
+  // }
   render(){
-    return(
-      <div style={{ height: '70%', width: '100%' }}>
-        <GoogleMapReact
-          bootstrapURLKeys={{ key: '', language: 'en' }}
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom}
-        >
-          <RoomIcon
-            lat={this.state.center.lat}
-            lng={this.state.center.lng}
-            color="primary"
-            style={{ fontSize: 30 }} />
-        </GoogleMapReact>
-      </div>
-    )
+    if (!this.state.renderAvai){
+      return(
+        <div style={{ height: '70%', width: '100%', textAlign:'center' }}>
+          <p>Map loading...</p>
+        </div>
+      )
+    }else{
+      const size = {
+        width: 350, // Map width in pixels
+        height: 350, // Map height in pixels
+      };
+      const {center, zoom} = fitBounds(this.state.bounds, size);
+      return(
+        <div style={{ height: '70%', width: '100%' }}>
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: '', language: 'en' }}
+            defaultCenter={this.props.center}
+            defaultZoom={this.props.zoom}
+          >
+            <RoomIcon
+              lat={center.lat}
+              lng={center.lng}
+              color="primary"
+              style={{ fontSize: 30 }} />
+          </GoogleMapReact>
+        </div>
+      )
+    }
   }
 }
 

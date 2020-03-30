@@ -170,7 +170,8 @@ class AreaListUI extends Component{
       districtOffset: 0,
       allCriterion:[],
       chosenCriterion:[],
-      currentDis:"",
+      currentDisIndex:0,
+      currentDisId:"",
       //someobject: [],
     };
     //function binding
@@ -191,7 +192,7 @@ class AreaListUI extends Component{
       districtList: data,
       allCriterion: criterion,
       chosenCriterion: chosenCri,
-      currentDis: 0,
+      currentDisId: data[0].districtId,
     });
   }
 
@@ -238,7 +239,7 @@ class AreaListUI extends Component{
       console.log("you clicked district:", disId);
       sessionStorage.setItem("currentDistrict", JSON.stringify(disId));
       var index= prevState.districtList.findIndex(cri=>cri.districtId===disId)
-      return {currentDis: index}
+      return {currentDisIndex: index, currentDisId: disId}
     })
   }
 
@@ -276,15 +277,15 @@ class AreaListUI extends Component{
           </ButtonBase>
         </ListItem>
       ));
-    const mapDisplay=(!this.state.currentDis)?<MapLoading />:
-      <MapDisplay disId={this.state.currentDis}/>
+    const mapDisplay=(!this.state.currentDisId)?<MapLoading />:
+      <MapDisplay disId={this.state.currentDisId}/>
     //const facilityBadges=null;
     const facilityBadges=(!this.state.districtList)?null:
       (this.state.allCriterion).map(cri=>(
           <SomeIcon
             key={cri}
             cri={cri}
-            disInfo={this.state.districtList[this.state.currentDis]}/>
+            disInfo={this.state.districtList[this.state.currentDisIndex]}/>
       ))
 
     console.log(this.state.currentDis);
