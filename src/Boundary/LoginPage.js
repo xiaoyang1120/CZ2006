@@ -78,7 +78,7 @@ const LoginPage = (props) => {
                 }
             })
             .catch(error => {
-                alert("Login Error: " + error)
+                alert("Wrong username or password!")
             });
         event.preventDefault();
     }
@@ -101,7 +101,7 @@ const LoginPage = (props) => {
                 }
             }).catch(
                 error => {
-                    alert("Sign up error: " + error)
+                    alert("Sign up error!")
                 }
             )
         }
