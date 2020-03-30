@@ -43,8 +43,8 @@ class UploadHousePage extends React.Component {
             isAvailable: data ? data.isAvailable : true,
             districtId: data ? data.districtId : null,
             venue: data ? data.venue : null,
-            postal: data ? data.postal : null,
-            validPostal: false,
+            postal: data ? data.postal : "",
+            validPostal: true,
             nameList: [],
             idList: [],
         }
@@ -133,7 +133,6 @@ class UploadHousePage extends React.Component {
                 alert("Valid postal code! District information set.")
                 this.setState({districtId: response.data, validPostal: true})
             } else {
-                alert("Invalid postal code!")
                 this.setState({validPostal: false})
             }
             this.setState({pending: false})
@@ -148,7 +147,7 @@ class UploadHousePage extends React.Component {
             alert("Please upload the house image!")
         } else if (!this.state.houseDescription) {
             alert("Please write the house description!")
-        } else if (!this.state.validPostal) {
+        } else if (!this.state.validPostal || this.state.postal === "") {
             alert("Please enter a valid postal code!")
         } else if (!this.state.venue) {
             alert("Please specify the venue!")
@@ -282,16 +281,13 @@ class UploadHousePage extends React.Component {
 
                         <TextField
                             // disabled={true}
-                            // error={this.state.validPostal}
+                            error={!this.state.validPostal && this.state.postal}
                             style={{marginTop: 8}}
                             id="postal"
                             label="Postal Code"
                             defaultValue={this.state.postal}
                             variant="outlined"
-                            helperText=
-                                {<Typography style={this.state.validPostal ? {color: "green", size: 12} : {color: "red", size: 12} }>
-                                    {this.state.validPostal ? "Valid" : "Invalid"}
-                                </Typography>}
+                            helperText={this.state.postal === "" ? "" : this.state.validPostal ? "" : "Invalid"}
                             onChange={this.handleChangePostal}
                         />
                         {/*<br/>*/}
