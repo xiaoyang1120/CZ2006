@@ -71,17 +71,19 @@ class HouseCard extends React.Component {
         })
         axios.get("http://5e7ce96f71384.freetunnel.cc/api/user/" + sessionStorage.getItem("uuid") + "/get_fav")
             .then(response => {
+                let flag = false
                 for (let i = 0; i < response.data.length; i++) {
                     if (response.data[i]["houseId"] === this.state.houseData.houseId) {
-                        this.setState({isFav: true})
+                        flag = true
+                        this.setState({isFav: true, isLoading: false})
                         break
                     }
                 }
+                if (!flag) this.setState({isFav: false, isLoading: false})
                 // console.log(this.state.fav_list)
             }).catch(error => {
             console.log(error)
         })
-        this.setState({isLoading: false})
     }
 
     handleClickOpen() {
@@ -99,13 +101,11 @@ class HouseCard extends React.Component {
         const email = this.state.email
         const isFav = this.state.isFav
 
-        console.log(this.state.isLoading, email, this.props.type !== "own")
-
         return (
             <div>
                 <Card className={classes.card}>
                     {/**Bookmark display check*/}
-                    {this.state.isLoading || email == null || this.props.type === "fav" && isFav == null ? (
+                    {this.state.isLoading || email == null || isFav == null ? (
                         "Loading..."
                     ) : (
                         <div id="card">
@@ -140,7 +140,10 @@ class HouseCard extends React.Component {
                                         {email[1] === "@" ? email[0] : email.substring(0, 2)}
                                     </Avatar>
                                 }
-                                title={email}
+                                title={
+                                    (this.state.houseData.ownerId === sessionStorage.getItem("uuid")) ?
+                                        email + " (You)" : email
+                                }
                             >
                             </CardHeader>
 
