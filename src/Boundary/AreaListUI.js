@@ -4,7 +4,7 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import Typography from "@material-ui/core/Typography";
 import NavBar from "../Components/NavBar";
 import { ListItem, Grid, Paper, Button, Container } from "@material-ui/core";
-import {MapDisplay,MapLoading} from "../Components/MapDisplay";
+import { MapLoading, MapDisplay }from "../Components/MapDisplay";
 import SomeIcon from "../Components/SomeIcon";
 import axios from "axios";
 import { spacing } from '@material-ui/system';
@@ -165,7 +165,7 @@ class AreaListUI extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
+      //loading: true,
       districtList:[],
       districtOffset: 0,
       allCriterion:[],
@@ -185,42 +185,46 @@ class AreaListUI extends Component{
     const criterion= JSON.parse(sessionStorage.getItem("criterion"));
     const chosenCri= JSON.parse(sessionStorage.getItem("finalCriterion"));
     sessionStorage.setItem("disListOffset", JSON.stringify(this.state.districtOffset));
-    this.queryDistrictList(this.state.districtOffset);
-    var data = JSON.parse(sessionStorage.getItem("filteredDistrictList"));
-    console.log("data:", data)
-    this.setState({
-      districtList: data,
-      allCriterion: criterion,
-      chosenCriterion: chosenCri,
-      currentDisId: data[0].districtId,
-    });
+    //query offset=0
+    const offset=this.state.districtOffset;
+    var data;
+    const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
+    axios
+      .post(url, chosenCri, { withCredentials: true, params: { offset } })
+      .then(response => {
+        data=response.data;
+        console.log("response:",data)
+        sessionStorage.setItem( "filteredDistrictList", JSON.stringify(data));
+        this.setState({
+          allCriterion: criterion,
+          chosenCriterion: chosenCri,
+          districtList: data,
+          currentDisId: data[0].districtId,
+        });
+      })
+      .catch(error => {
+        console.error(error);
+        alert("Getting distritList Error: " + error);
+      });
   }
 
   queryDistrictList(offset){
     console.log("query called!offset=", offset);
     const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
-    sessionStorage.setItem("disListOffset", JSON.stringify(offset));
-    //console.log("this.state.chosenCriterion:",this.state.chosenCriterion);
-    var sending;
-    if (offset!==0){
-      sending=this.state.chosenCriterion;
-    }else {
-      sending=JSON.parse(sessionStorage.getItem("finalCriterion"));
-    }
+    const sending=this.state.chosenCriterion;
     console.log("sending...",sending);
     axios
       .post(url, sending, { withCredentials: true, params: { offset } })
       .then(response => {
-        var data;
-        if (offset!==0){
-          data=this.state.districtList.concat(response.data);
-        }else {
-          data=response.data;
-        }
+        var data= this.state.districtList.concat(response.data);
+        console.log("receiving:",data)
         sessionStorage.setItem( "filteredDistrictList", JSON.stringify(data));
         this.setState(prevState=>{
-          return {districtList: data, districtOffset: offset}
-        })
+            return {
+              districtList: data,
+              districtOffset: offset,
+            }
+          })
       })
       .catch(error => {
         console.error(error);
@@ -236,9 +240,10 @@ class AreaListUI extends Component{
 
   changeDis(disId){
     this.setState(prevState=>{
-      console.log("you clicked district:", disId);
+
       sessionStorage.setItem("currentDistrict", JSON.stringify(disId));
       var index= prevState.districtList.findIndex(cri=>cri.districtId===disId)
+      console.log("you clicked district:", index);
       return {currentDisIndex: index, currentDisId: disId}
     })
   }
@@ -278,7 +283,7 @@ class AreaListUI extends Component{
         </ListItem>
       ));
     const mapDisplay=(!this.state.currentDisId)?<MapLoading />:
-      <MapDisplay disId={this.state.currentDisId}/>
+      <MapDisplay id={this.state.currentDisId}/>;
     //const facilityBadges=null;
     const facilityBadges=(!this.state.districtList)?null:
       (this.state.allCriterion).map(cri=>(
@@ -287,8 +292,7 @@ class AreaListUI extends Component{
             cri={cri}
             disInfo={this.state.districtList[this.state.currentDisIndex]}/>
       ))
-
-    console.log(this.state.currentDis);
+    console.log(this.state.currentDisId);
     return (
       <div className={classes.root}>
         <NavBar />
