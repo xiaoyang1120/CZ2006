@@ -79,7 +79,7 @@ class HouseCard extends React.Component {
                         break
                     }
                 }
-                if(!flag) this.setState({isFav: false, isLoading: false})
+                if (!flag) this.setState({isFav: false, isLoading: false})
                 // console.log(this.state.fav_list)
             }).catch(error => {
             console.log(error)
@@ -140,7 +140,10 @@ class HouseCard extends React.Component {
                                         {email[1] === "@" ? email[0] : email.substring(0, 2)}
                                     </Avatar>
                                 }
-                                title={email}
+                                title={
+                                    (this.state.houseData.ownerId === sessionStorage.getItem("uuid")) ?
+                                        email + " (You)" : email
+                                }
                             >
                             </CardHeader>
 
