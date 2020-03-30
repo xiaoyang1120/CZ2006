@@ -40,10 +40,11 @@ class UploadHousePage extends React.Component {
             image: data ? data.image : null,
             imageName: data ? data.imageName : null,
             houseDescription: data ? data.houseDescription : null,
-            isAvailable: data ? data.isAvailable : null,
+            isAvailable: data ? data.isAvailable : true,
             districtId: data ? data.districtId : null,
             venue: data ? data.venue : null,
             postal: data ? data.postal : null,
+            validPostal: false,
             nameList: [],
             idList: [],
         }
@@ -52,6 +53,7 @@ class UploadHousePage extends React.Component {
         this.handleCheckbox = this.handleCheckbox.bind(this)
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
+        this.handleCheck = this.handleCheck.bind(this)
     }
 
     componentDidMount() {
@@ -90,13 +92,39 @@ class UploadHousePage extends React.Component {
         }
     }
 
+    handleCheck(event) {
+        let postal = this.state.postal
+        axios.get(
+            "http://5e7ce96f71384.freetunnel.cc/api/district/get_district_by_postal",
+            {
+                withCredentials: true,
+                params: {
+                    postal: this.state.postal
+                }
+            }
+        ).then(response => {
+            console.log(response.data !== "Wrong Postal Code!")
+            if (response.data !== "Wrong Postal Code!") {
+                alert("Valid postal code! District information set.")
+                this.setState({districtId: response.data, validPostal: true})
+            } else {
+                alert("Invalid postal code!")
+                this.setState({validPostal: false})
+            }
+            this.setState({pending: false})
+        }).catch(error => {
+            // alert("Error in submitting")
+            // this.setState({pending: true})
+        })
+    }
+
     handleSubmit() {
         if (!this.state.image) {
             alert("Please upload the house image!")
         } else if (!this.state.houseDescription) {
             alert("Please write the house description!")
-        } else if (!this.state.districtId) {
-            alert("Please specify the district!")
+        } else if (!this.state.validPostal) {
+            alert("Please enter a valid postal code!")
         } else if (!this.state.venue) {
             alert("Please specify the venue!")
         } else if (this.state.houseId && window.confirm("Confirm to save changes?")) {
@@ -195,47 +223,57 @@ class UploadHousePage extends React.Component {
                         />
                     </div>
 
-                    {
-                        (this.state.nameList.length !== 0  && this.state.idList.length !== 0) ? (
-                            <div id="districtName">
-                                <InputLabel htmlFor="district" style={{color: "black", marginTop: 10, fontSize: 16}}>District
-                                    Name</InputLabel>
-                                <NativeSelect
-                                    defaultValue={this.state.districtId}
-                                    value={this.state.districtName}
-                                    onChange={this.handleChange("districtId")}
-                                    inputProps={{
-                                        name: 'District Name',
-                                        id: 'district',
-                                    }}
-                                >
-                                    <option aria-label="None" />
-                                    {
-                                        this.state.nameList.map((value, index) => (
-                                            <option key={index} value={this.state.idList[index]}>{value}</option>
-                                        ))
-                                    }
-                                </NativeSelect>
-                            </div>
-                        ) : (
-                            <div></div>
-                        )
-                    }
+                    {/*{*/}
+                    {/*    // select districtName*/}
+                    {/*    (this.state.nameList.length !== 0  && this.state.idList.length !== 0) ? (*/}
+                    {/*        <div id="districtName">*/}
+                    {/*            <InputLabel htmlFor="district" style={{color: "black", marginTop: 10, fontSize: 16}}>District*/}
+                    {/*                Name</InputLabel>*/}
+                    {/*            <NativeSelect*/}
+                    {/*                defaultValue={this.state.districtId}*/}
+                    {/*                value={this.state.districtName}*/}
+                    {/*                onChange={this.handleChange("districtId")}*/}
+                    {/*                inputProps={{*/}
+                    {/*                    name: 'District Name',*/}
+                    {/*                    id: 'district',*/}
+                    {/*                }}*/}
+                    {/*            >*/}
+                    {/*                <option aria-label="None" />*/}
+                    {/*                {*/}
+                    {/*                    this.state.nameList.map((value, index) => (*/}
+                    {/*                        <option key={index} value={this.state.idList[index]}>{value}</option>*/}
+                    {/*                    ))*/}
+                    {/*                }*/}
+                    {/*            </NativeSelect>*/}
+                    {/*        </div>*/}
+                    {/*    ) : (*/}
+                    {/*        <div></div>*/}
+                    {/*    )*/}
+                    {/*}*/}
 
-                    {/*<div id="postal" style={{marginTop: 10}}>*/}
-                    {/*    <label id="postal">Postal Code:</label>*/}
-                    {/*    <br/>*/}
+                    <div id="postal" style={{marginTop: 10}}>
+                        <label id="postal">Postal Code:</label>
+                        <br/>
 
-                    {/*    <TextField*/}
-                    {/*        disabled={true}*/}
-                    {/*        style={{marginTop: 8}}*/}
-                    {/*        id="postal"*/}
-                    {/*        label="Postal Code"*/}
-                    {/*        defaultValue=""*/}
-                    {/*        variant="outlined"*/}
-                    {/*        onChange={this.handleChange("postal")}*/}
-                    {/*    />*/}
-                    {/*</div>*/}
+                        <TextField
+                            // disabled={true}
+                            // error={this.state.validPostal}
+                            style={{marginTop: 8}}
+                            id="postal"
+                            label="Postal Code"
+                            defaultValue={this.state.postal}
+                            variant="outlined"
+                            onChange={this.handleChange("postal")}
+                        />
+                        <br/>
+                        <Button variant="contained"
+                                color="primary"
+                                onClick={this.handleCheck}
+                                style={{marginTop: 10}}>
+                            Check Postal Code
+                        </Button>
+
+                    </div>
 
                     <div id="venue" style={{marginTop: 10}}>
                         <label id="venue">Venue:</label>
