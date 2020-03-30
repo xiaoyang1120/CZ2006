@@ -18,7 +18,9 @@ import CardHeader from "@material-ui/core/CardHeader";
 import IconButton from "@material-ui/core/IconButton";
 import StarIcon from '@material-ui/icons/Star';
 import StarBorderIcon from '@material-ui/icons/StarBorder';
-import {withRouter} from "react-router-dom";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import clsx from "clsx";
+import Collapse from "@material-ui/core/Collapse";
 
 const styles = (theme) => ({
     card: {
@@ -35,7 +37,17 @@ const styles = (theme) => ({
     avatar: {
         color: theme.palette.getContrastText(deepPurple[500]),
         backgroundColor: deepPurple[500],
-    }
+    },
+    expand: {
+        transform: 'rotate(0deg)',
+        marginLeft: 'auto',
+        transition: theme.transitions.create('transform', {
+            duration: theme.transitions.duration.shortest,
+        }),
+    },
+    expandOpen: {
+        transform: 'rotate(180deg)',
+    },
 });
 
 
@@ -48,10 +60,12 @@ class HouseCard extends React.Component {
             email: null,
             districtName: "",
             houseData: this.props.houseData, // houseId, image, houseDescription, ownerId, districtId, venue, isAvailable
-            isFav: null
+            isFav: null,
+            expanded: false
         }
         this.handleClickOpen = this.handleClickOpen.bind(this)
         this.handleClose = this.handleClose.bind(this)
+        this.handleExpandClick = this.handleExpandClick.bind(this)
     }
 
     componentDidMount() {
@@ -92,6 +106,10 @@ class HouseCard extends React.Component {
 
     handleClose() {
         this.setState({open: false})
+    }
+
+    handleExpandClick() {
+        this.setState({expanded: !this.state.expanded})
     }
 
     render() {
@@ -165,47 +183,73 @@ class HouseCard extends React.Component {
                                 <Typography gutterBottom variant="h6" component="h2">
                                     Status: {data.isAvailable ? "Available" : "Not Available"}
                                 </Typography>
-                                <Typography>{data.houseDescription}</Typography>
+                                {/*<Typography>{data.houseDescription}</Typography>*/}
                             </CardContent>
-                            {this.props.type === "own" ?
-                                <CardActions>
-                                    <Button
-                                        size="small"
-                                        color="primary"
-                                        onClick={this.handleClickOpen /*event => this.props.handleClick(this.props.name)*/}
-                                    >
-                                        {this.props.buttonName}
-                                    </Button>
 
-                                    <Dialog
-                                        open={this.state.open}
-                                        onClose={this.handleClose}
-                                        aria-labelledby="alert-dialog-title"
-                                        aria-describedby="alert-dialog-description"
-                                    >
-                                        <DialogTitle id="alert-dialog-title">{"ATTENTION!"}</DialogTitle>
-                                        <DialogContent>
-                                            <DialogContentText id="alert-dialog-description">
-                                                Are you sure to make the change?
-                                            </DialogContentText>
-                                        </DialogContent>
-                                        <DialogActions>
-                                            <Button
-                                                onClick={event => {
-                                                    this.handleClose();
-                                                    this.props.handleClick(this.props.houseData);
-                                                }}
-                                                color="primary"
-                                            >
-                                                Confirm
-                                            </Button>
-                                            <Button onClick={this.handleClose} color="primary" autoFocus>
-                                                Cancel
-                                            </Button>
-                                        </DialogActions>
-                                    </Dialog>
-                                </CardActions> : <div></div>
-                            }
+                            <CardActions disableSpacing>
+                                {this.props.type === "own" ?
+                                    <div>
+                                        <Button
+                                            size="small"
+                                            color="primary"
+                                            onClick={this.handleClickOpen /*event => this.props.handleClick(this.props.name)*/}
+                                        >
+                                            {this.props.buttonName}
+                                        </Button>
+
+                                        <Dialog
+                                            open={this.state.open}
+                                            onClose={this.handleClose}
+                                            aria-labelledby="alert-dialog-title"
+                                            aria-describedby="alert-dialog-description"
+                                        >
+                                            <DialogTitle id="alert-dialog-title">{"ATTENTION!"}</DialogTitle>
+                                            <DialogContent>
+                                                <DialogContentText id="alert-dialog-description">
+                                                    Are you sure to make the change?
+                                                </DialogContentText>
+                                            </DialogContent>
+                                            <DialogActions>
+                                                <Button
+                                                    onClick={event => {
+                                                        this.handleClose();
+                                                        this.props.handleClick(this.props.houseData);
+                                                    }}
+                                                    color="primary"
+                                                >
+                                                    Confirm
+                                                </Button>
+                                                <Button onClick={this.handleClose} color="primary" autoFocus>
+                                                    Cancel
+                                                </Button>
+                                            </DialogActions>
+                                        </Dialog>
+                                    </div> : <div></div>
+                                }
+
+                                <IconButton
+                                    className={clsx(classes.expand, {
+                                        [classes.expandOpen]: this.state.expanded,
+                                    })}
+                                    onClick={this.handleExpandClick}
+                                    aria-expanded={this.state.expanded}
+                                    aria-label="show more"
+                                >
+                                    <ExpandMoreIcon />
+                                </IconButton>
+
+                            </CardActions>
+                            <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
+                                <CardContent>
+                                    <Typography variant="h5">
+                                        House Description:
+                                    </Typography>
+                                    <Typography paragraph>
+                                        {data.houseDescription}
+                                    </Typography>
+                                </CardContent>
+                            </Collapse>
+
                         </div>
                     )}
                 </Card>
