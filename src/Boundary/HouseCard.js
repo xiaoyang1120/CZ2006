@@ -115,7 +115,7 @@ class HouseCard extends React.Component {
                                     <IconButton aria-label="settings" onMouseUp={() => {
                                         if (isFav) {
                                             axios.delete("http://5e7ce96f71384.freetunnel.cc/api/house/" + data.houseId
-                                                + "/remove_from_fav?email=" + sessionStorage.getItem("uuid"))
+                                                + "/remove_from_fav?userId=" + sessionStorage.getItem("uuid"))
                                                 .then(response => {
                                                     console.log(response.data)
                                                 }).catch(error => {
@@ -123,7 +123,7 @@ class HouseCard extends React.Component {
                                             })
                                         } else {
                                             axios.get("http://5e7ce96f71384.freetunnel.cc/api/house/" + data.houseId
-                                                + "/add_to_fav?email=" + sessionStorage.getItem("uuid"))
+                                                + "/add_to_fav?userId=" + sessionStorage.getItem("uuid"))
                                                 .then(response => {
                                                     console.log(response.data)
                                                 }).catch(error => {
