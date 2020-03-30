@@ -4,55 +4,120 @@ import GoogleMapReact from 'google-map-react';
 import { fitBounds } from 'google-map-react/utils';
 import RoomIcon from '@material-ui/icons/Room';
 import axios from "axios";
-
-//const AnyReactComponent = ({ text }) => <div>{text}</div>;
+import Tooltip from '@material-ui/core/Tooltip';
+import {  purple,
+          orange,
+          lightGreen,
+          lightBlue,
+          red,
+          brown,
+          green,
+          } from '@material-ui/core/colors';
 
 class MapDisplay extends Component{
-  constructor(props) {
-    super(props);
-    this.state = {
-      currentDistrict:this.props.disId,
-      bounds:{},
-      renderAvai: false,
-      //someobject: [],
-    };
-    //function binding
-  //  this.queryFacility=this.queryFacility.bind(this);
-  }
+  state = {
+      disId: null,
+      disName: null,
+      prevId: null,
+      bounds:null,
+  };
 
   static defaultProps = {
-     center: {
-       lat: 1.36,
-       lng: 103.84,
-     },
-     zoom: 12,
-   };
+    center: {
+     lat: 1.36,
+     lng: 103.84,
+    },
+    zoom: 12,
+  };
+
+  static getDerivedStateFromProps(props, state) {
+   // Store prevId in state so we can compare when props change.
+   // Clear out previously-loaded data (so we don't render stale stuff).
+   if (props.id !== state.prevId) {
+     return {
+       disId: null,
+       prevId: props.id,
+     };
+   }
+   // No state update necessary
+   return null;
+  }
 
   componentDidMount() {
-    //TODO: set state
-    console.log("query called!districtId:", this.state.currentDistrict);
+    this._queryDis(this.props.id);
+  }
 
-    const url = "http://5e7ce96f71384.freetunnel.cc/api/district/"+
-      this.state.currentDistrict+
-      "/detail";
+  componentDidUpdate(prevProps, prevState) {
+    if (this.state.disId === null) {
+      this._queryDis(this.props.id);
+    }
+  }
+
+  render() {
+    if (this.state.disId === null) {
+      // Render loading state ...
+      return(
+        <div style={{ height: '70%', width: '100%', textAlign:'center' }}>
+          <p>Map loading...</p>
+        </div>
+      )
+    } else {
+      // Render real UI ...
+      const size = {
+        width: 350, // Map width in pixels
+        height: 350, // Map height in pixels
+      };
+      const {center, zoom} = fitBounds(this.state.bounds, size);
+      const districtCenterIcon=(
+        <Tooltip title={this.state.disName} placement="top">
+          <RoomIcon
+            lat={center.lat}
+            lng={center.lng}
+            style={{color:red[500], fontSize:50}} />
+        </Tooltip>
+      )
+      return(
+        <div style={{ height: '70%', width: '100%' }}>
+          <GoogleMapReact
+            bootstrapURLKeys={{ key: '', language: 'en' }}
+            defaultCenter={center}
+            defaultZoom={zoom}
+          >{districtCenterIcon}
+
+          </GoogleMapReact>
+        </div>
+      )
+    }
+  }
+
+  _queryDis(id) {
+    //TODO: set state
+    // if (!id){
+    //   return;
+    // }
+    console.log("query called!props.districtId:", id);
+    const url = "http://5e7ce96f71384.freetunnel.cc/api/district/"+id+"/detail";
     console.log("url:",url);
     axios
       .get(url)
       .then(response => {
         var d=response.data;
         console.log("response:",d);
-        this.setState({
-          bounds:{
-            nw: {
-              lat: d.latStart,
-              lng: d.longStart,
-            },
-            se: {
-              lat: d.latEnd,
-              lng: d.longEnd,
+        this.setState(prevState=>{//要改
+          return {
+            disId: id,
+            disName: d.districtName,
+            bounds:{
+              nw: {
+                lat: d.latStart,
+                lng: d.longStart,
+              },
+              se: {
+                lat: d.latEnd,
+                lng: d.longEnd,
+              }
             }
-          },
-          renderAvai: true,
+          }
         });
       })
       .catch(error => {
@@ -60,47 +125,10 @@ class MapDisplay extends Component{
         alert("Getting districtDetail Error: " + error);
       })
   }
-  // zoomToDistrict(){
-  //   const size = {
-  //     width: 350, // Map width in pixels
-  //     height: 350, // Map height in pixels
-  //   };
-  //   const {center, zoom} = fitBounds(this.state.bounds, size);
-  // }
-  render(){
-    if (!this.state.renderAvai){
-      return(
-        <div style={{ height: '70%', width: '100%', textAlign:'center' }}>
-          <p>Map loading...</p>
-        </div>
-      )
-    }else{
-      const size = {
-        width: 350, // Map width in pixels
-        height: 350, // Map height in pixels
-      };
-      const {center, zoom} = fitBounds(this.state.bounds, size);
-      return(
-        <div style={{ height: '70%', width: '100%' }}>
-          <GoogleMapReact
-            bootstrapURLKeys={{ key: '', language: 'en' }}
-            defaultCenter={this.props.center}
-            defaultZoom={this.props.zoom}
-          >
-            <RoomIcon
-              lat={center.lat}
-              lng={center.lng}
-              color="primary"
-              style={{ fontSize: 30 }} />
-          </GoogleMapReact>
-        </div>
-      )
-    }
-  }
 }
 
 class MapLoading extends Component{
-  render(){
+  render() {
     return(
       <div style={{ height: '70%', width: '100%', textAlign:'center' }}>
         <p>Map loading...</p>
@@ -109,4 +137,4 @@ class MapLoading extends Component{
   }
 }
 
-export {MapDisplay, MapLoading};
+export {MapDisplay, MapLoading, };

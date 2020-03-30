@@ -4,7 +4,7 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import Typography from "@material-ui/core/Typography";
 import NavBar from "../Components/NavBar";
 import { ListItem, Grid, Paper, Button, Container } from "@material-ui/core";
-import { MapDisplay, MapLoading } from "../Components/MapDisplay";
+import { MapLoading, MapDisplay }from "../Components/MapDisplay";
 import SomeIcon from "../Components/SomeIcon";
 import axios from "axios";
 import { spacing } from "@material-ui/system";
@@ -133,8 +133,8 @@ class AreaListUI extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      loading: true,
-      districtList: [],
+      //loading: true,
+      districtList:[],
       districtOffset: 0,
       allCriterion: [],
       chosenCriterion: [],
@@ -150,48 +150,49 @@ class AreaListUI extends Component {
 
   componentDidMount() {
     //TODO: set state by sessionStorage.getItem
-    const criterion = JSON.parse(sessionStorage.getItem("criterion"));
-    const chosenCri = JSON.parse(sessionStorage.getItem("finalCriterion"));
-    sessionStorage.setItem(
-      "disListOffset",
-      JSON.stringify(this.state.districtOffset)
-    );
-    this.queryDistrictList(this.state.districtOffset);
-    var data = JSON.parse(sessionStorage.getItem("filteredDistrictList"));
-    console.log("data:", data);
-    this.setState({
-      districtList: data,
-      allCriterion: criterion,
-      chosenCriterion: chosenCri,
-      currentDisId: data[0].districtId
-    });
+    const criterion= JSON.parse(sessionStorage.getItem("criterion"));
+    const chosenCri= JSON.parse(sessionStorage.getItem("finalCriterion"));
+    sessionStorage.setItem("disListOffset", JSON.stringify(this.state.districtOffset));
+    //query offset=0
+    const offset=this.state.districtOffset;
+    var data;
+    const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
+    axios
+      .post(url, chosenCri, { withCredentials: true, params: { offset } })
+      .then(response => {
+        data=response.data;
+        console.log("response:",data)
+        sessionStorage.setItem( "filteredDistrictList", JSON.stringify(data));
+        this.setState({
+          allCriterion: criterion,
+          chosenCriterion: chosenCri,
+          districtList: data,
+          currentDisId: data[0].districtId,
+        });
+      })
+      .catch(error => {
+        console.error(error);
+        alert("Getting distritList Error: " + error);
+      });
   }
 
   queryDistrictList(offset) {
     console.log("query called!offset=", offset);
     const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
-    sessionStorage.setItem("disListOffset", JSON.stringify(offset));
-    //console.log("this.state.chosenCriterion:",this.state.chosenCriterion);
-    var sending;
-    if (offset !== 0) {
-      sending = this.state.chosenCriterion;
-    } else {
-      sending = JSON.parse(sessionStorage.getItem("finalCriterion"));
-    }
-    console.log("sending...", sending);
+    const sending=this.state.chosenCriterion;
+    console.log("sending...",sending);
     axios
       .post(url, sending, { withCredentials: true, params: { offset } })
       .then(response => {
-        var data;
-        if (offset !== 0) {
-          data = this.state.districtList.concat(response.data);
-        } else {
-          data = response.data;
-        }
-        sessionStorage.setItem("filteredDistrictList", JSON.stringify(data));
-        this.setState(prevState => {
-          return { districtList: data, districtOffset: offset };
-        });
+        var data= this.state.districtList.concat(response.data);
+        console.log("receiving:",data)
+        sessionStorage.setItem( "filteredDistrictList", JSON.stringify(data));
+        this.setState(prevState=>{
+            return {
+              districtList: data,
+              districtOffset: offset,
+            }
+          })
       })
       .catch(error => {
         console.error(error);
@@ -204,57 +205,52 @@ class AreaListUI extends Component {
     this.queryDistrictList(offset);
   }
 
-  changeDis(disId) {
-    this.setState(prevState => {
-      console.log("you clicked district:", disId);
+  changeDis(disId){
+    this.setState(prevState=>{
+
       sessionStorage.setItem("currentDistrict", JSON.stringify(disId));
-      var index = prevState.districtList.findIndex(
-        cri => cri.districtId === disId
-      );
-      return { currentDisIndex: index, currentDisId: disId };
-    });
+      var index= prevState.districtList.findIndex(cri=>cri.districtId===disId)
+      console.log("you clicked district:", index);
+      return {currentDisIndex: index, currentDisId: disId}
+    })
   }
 
   render() {
     const { classes } = this.props;
-    console.log("in render, districtList:", this.state.districtList);
-    const areaItems = !this.state.districtList
-      ? null
-      : this.state.districtList.map(district => (
-          <ListItem key={district.districtId}>
-            <ButtonBase
-              focusRipple
-              key={district.districtId}
-              className={classes.image}
-              focusVisibleClassName={classes.focusVisible}
-              onClick={() => this.changeDis(district.districtId)}
-            >
-              <span
-                className={classes.imageSrc}
-                style={{
-                  backgroundImage: "https://source.unsplash.com/random"
-                }}
-              />
-              <span className={classes.imageBackdrop} />
-              <span className={classes.imageButton}>
-                <Typography
-                  component="span"
-                  variant="subtitle1"
-                  color="inherit"
-                  className={classes.imageTitle}
-                >
-                  {district.name}
-                  <span className={classes.imageMarked} />
-                </Typography>
-              </span>
-            </ButtonBase>
-          </ListItem>
-        ));
-    const mapDisplay = !this.state.currentDisId ? (
-      <MapLoading />
-    ) : (
-      <MapDisplay disId={this.state.currentDisId} />
-    );
+    console.log("in render, districtList:",this.state.districtList);
+    const areaItems=(!this.state.districtList)?null:
+      (this.state.districtList).map(district=>(
+        <ListItem key={district.districtId}>
+          <ButtonBase
+            focusRipple
+            key={district.districtId}
+            className={classes.image}
+            focusVisibleClassName={classes.focusVisible}
+            onClick={()=>this.changeDis(district.districtId)}
+          >
+            <span
+              className={classes.imageSrc}
+              style={{
+                backgroundImage: "https://source.unsplash.com/random"
+              }}
+            />
+            <span className={classes.imageBackdrop} />
+            <span className={classes.imageButton}>
+              <Typography
+                component="span"
+                variant="subtitle1"
+                color="inherit"
+                className={classes.imageTitle}
+              >
+                {district.name}
+                <span className={classes.imageMarked} />
+              </Typography>
+            </span>
+          </ButtonBase>
+        </ListItem>
+      ));
+    const mapDisplay=(!this.state.currentDisId)?<MapLoading />:
+      <MapDisplay id={this.state.currentDisId}/>;
     //const facilityBadges=null;
     const facilityBadges = !this.state.districtList
       ? null
@@ -262,11 +258,9 @@ class AreaListUI extends Component {
           <SomeIcon
             key={cri}
             cri={cri}
-            disInfo={this.state.districtList[this.state.currentDisIndex]}
-          />
-        ));
-
-    console.log(this.state.currentDis);
+            disInfo={this.state.districtList[this.state.currentDisIndex]}/>
+      ))
+    console.log(this.state.currentDisId);
     return (
       <div className={classes.root}>
         <NavBar />
