@@ -4,10 +4,20 @@ import GoogleMapReact from 'google-map-react';
 import { fitBounds } from 'google-map-react/utils';
 import RoomIcon from '@material-ui/icons/Room';
 import axios from "axios";
+import Tooltip from '@material-ui/core/Tooltip';
+import {  purple,
+          orange,
+          lightGreen,
+          lightBlue,
+          red,
+          brown,
+          green,
+          } from '@material-ui/core/colors';
 
 class MapDisplay extends Component{
   state = {
       disId: null,
+      disName: null,
       prevId: null,
       bounds:null,
   };
@@ -58,18 +68,22 @@ class MapDisplay extends Component{
         height: 350, // Map height in pixels
       };
       const {center, zoom} = fitBounds(this.state.bounds, size);
+      const districtCenterIcon=(
+        <Tooltip title={this.state.disName} placement="top">
+          <RoomIcon
+            lat={center.lat}
+            lng={center.lng}
+            style={{color:red[500], fontSize:50}} />
+        </Tooltip>
+      )
       return(
         <div style={{ height: '70%', width: '100%' }}>
           <GoogleMapReact
             bootstrapURLKeys={{ key: '', language: 'en' }}
             defaultCenter={center}
             defaultZoom={zoom}
-          >
-            <RoomIcon
-              lat={center.lat}
-              lng={center.lng}
-              color="primary"
-              style={{ fontSize: 30 }} />
+          >{districtCenterIcon}
+
           </GoogleMapReact>
         </div>
       )
@@ -92,6 +106,7 @@ class MapDisplay extends Component{
         this.setState(prevState=>{//要改
           return {
             disId: id,
+            disName: d.districtName,
             bounds:{
               nw: {
                 lat: d.latStart,
