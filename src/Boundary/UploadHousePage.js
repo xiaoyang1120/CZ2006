@@ -159,7 +159,8 @@ class UploadHousePage extends React.Component {
                     ownerId: sessionStorage.getItem("uuid"),
                     isAvailable: this.state.isAvailable,
                     districtId: this.state.districtId,
-                    venue: this.state.venue
+                    venue: this.state.venue,
+                    postal: this.state.postal
                 }, {withCredentials: true}
             ).then(response => {
                 if (response.data.status === "successful") {
