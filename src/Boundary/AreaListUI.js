@@ -1,67 +1,36 @@
-import React, {Component} from "react";
+import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import ButtonBase from "@material-ui/core/ButtonBase";
 import Typography from "@material-ui/core/Typography";
 import NavBar from "../Components/NavBar";
 import { ListItem, Grid, Paper, Button, Container } from "@material-ui/core";
-import {MapDisplay,MapLoading} from "../Components/MapDisplay";
+import { MapDisplay, MapLoading } from "../Components/MapDisplay";
 import SomeIcon from "../Components/SomeIcon";
 import axios from "axios";
-import { spacing } from '@material-ui/system';
+import { spacing } from "@material-ui/system";
 
 //TODO: (use currentDis) map corresponding district information on the right-side panel (MapDisplay Object)
 //TODO: add small maps to each of left list item
 //TODO: button need to redirect by method
-const images = [
-  {
-    url: "https://source.unsplash.com/random",
-    title: "District 1",
-    width: "100%"
-  },
-  {
-    url: "https://source.unsplash.com/random",
-    title: "District 2",
-    width: "100%"
-  },
-  {
-    url: "https://source.unsplash.com/random",
-    title: "District 3",
-    width: "100%"
-  },
-  {
-    url: "https://source.unsplash.com/random",
-    title: "District 4",
-    width: "100%"
-  },
-  {
-    url: "https://source.unsplash.com/random",
-    title: "District 5",
-    width: "100%"
-  },
-  {
-    url: "https://source.unsplash.com/random",
-    title: "District 6",
-    width: "100%"
-  }
-];
 
 const styles = theme => ({
   root: {
     width: "100%",
-    height:"100%",
+    height: "100%",
     spacing: 0,
     justify: "space-around",
     overflow: "hidden"
   },
-  leftList:{
-    height: 450,
-    overflow: "auto"
+  leftList: {
+    height: 650,
+    overflow: "auto",
+    backgroundColor: "transparent"
   },
-  session:{
+  session: {
     padding: 20,
-    marginTop: 10,
+    marginTop: 95,
     marginBotton: 10,
-    height:450,
+    height: 500,
     overflow: "hidden"
   },
   image: {
@@ -138,40 +107,39 @@ const styles = theme => ({
   loadMoreButton: {
     borderRadius: "10px",
     width: "100%",
-    textAlign: 'center',
+    textAlign: "center"
   },
-  facilities:{
-    marginTop:20,
-    position:"relative",
-    height: '15%',
-    width: '100%',
-    justifyContent: 'center',
+  facilities: {
+    marginTop: 20,
+    position: "relative",
+    height: "15%",
+    width: "100%",
+    justifyContent: "center"
   },
-  icon:{
+  icon: {
     marginTop: 10,
-    padding:20,
+    padding: 20
     //textTransform: "none",
   },
-  detailbtn:{
+  detailbtn: {
     padding: 10,
-    textAlign:'center',
+    textAlign: "center",
     width: "100%",
-    height:"10%",
-  },
+    height: "10%"
+  }
+});
 
-})
-
-class AreaListUI extends Component{
+class AreaListUI extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loading: true,
-      districtList:[],
+      districtList: [],
       districtOffset: 0,
-      allCriterion:[],
-      chosenCriterion:[],
-      currentDisIndex:0,
-      currentDisId:"",
+      allCriterion: [],
+      chosenCriterion: [],
+      currentDisIndex: 0,
+      currentDisId: ""
       //someobject: [],
     };
     //function binding
@@ -182,45 +150,48 @@ class AreaListUI extends Component{
 
   componentDidMount() {
     //TODO: set state by sessionStorage.getItem
-    const criterion= JSON.parse(sessionStorage.getItem("criterion"));
-    const chosenCri= JSON.parse(sessionStorage.getItem("finalCriterion"));
-    sessionStorage.setItem("disListOffset", JSON.stringify(this.state.districtOffset));
+    const criterion = JSON.parse(sessionStorage.getItem("criterion"));
+    const chosenCri = JSON.parse(sessionStorage.getItem("finalCriterion"));
+    sessionStorage.setItem(
+      "disListOffset",
+      JSON.stringify(this.state.districtOffset)
+    );
     this.queryDistrictList(this.state.districtOffset);
     var data = JSON.parse(sessionStorage.getItem("filteredDistrictList"));
-    console.log("data:", data)
+    console.log("data:", data);
     this.setState({
       districtList: data,
       allCriterion: criterion,
       chosenCriterion: chosenCri,
-      currentDisId: data[0].districtId,
+      currentDisId: data[0].districtId
     });
   }
 
-  queryDistrictList(offset){
+  queryDistrictList(offset) {
     console.log("query called!offset=", offset);
     const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
     sessionStorage.setItem("disListOffset", JSON.stringify(offset));
     //console.log("this.state.chosenCriterion:",this.state.chosenCriterion);
     var sending;
-    if (offset!==0){
-      sending=this.state.chosenCriterion;
-    }else {
-      sending=JSON.parse(sessionStorage.getItem("finalCriterion"));
+    if (offset !== 0) {
+      sending = this.state.chosenCriterion;
+    } else {
+      sending = JSON.parse(sessionStorage.getItem("finalCriterion"));
     }
-    console.log("sending...",sending);
+    console.log("sending...", sending);
     axios
       .post(url, sending, { withCredentials: true, params: { offset } })
       .then(response => {
         var data;
-        if (offset!==0){
-          data=this.state.districtList.concat(response.data);
-        }else {
-          data=response.data;
+        if (offset !== 0) {
+          data = this.state.districtList.concat(response.data);
+        } else {
+          data = response.data;
         }
-        sessionStorage.setItem( "filteredDistrictList", JSON.stringify(data));
-        this.setState(prevState=>{
-          return {districtList: data, districtOffset: offset}
-        })
+        sessionStorage.setItem("filteredDistrictList", JSON.stringify(data));
+        this.setState(prevState => {
+          return { districtList: data, districtOffset: offset };
+        });
       })
       .catch(error => {
         console.error(error);
@@ -228,65 +199,72 @@ class AreaListUI extends Component{
       });
   }
 
-  loadMore(){
+  loadMore() {
     var offset = this.state.districtOffset + 10;
     this.queryDistrictList(offset);
-
   }
 
-  changeDis(disId){
-    this.setState(prevState=>{
+  changeDis(disId) {
+    this.setState(prevState => {
       console.log("you clicked district:", disId);
       sessionStorage.setItem("currentDistrict", JSON.stringify(disId));
-      var index= prevState.districtList.findIndex(cri=>cri.districtId===disId)
-      return {currentDisIndex: index, currentDisId: disId}
-    })
+      var index = prevState.districtList.findIndex(
+        cri => cri.districtId === disId
+      );
+      return { currentDisIndex: index, currentDisId: disId };
+    });
   }
 
-  render(){
+  render() {
     const { classes } = this.props;
-    console.log("in render, districtList:",this.state.districtList);
-    const areaItems=(!this.state.districtList)?null:
-      (this.state.districtList).map(district=>(
-        <ListItem key={district.districtId}>
-          <ButtonBase
-            focusRipple
-            key={district.districtId}
-            className={classes.image}
-            focusVisibleClassName={classes.focusVisible}
-            onClick={()=>this.changeDis(district.districtId)}
-          >
-            <span
-              className={classes.imageSrc}
-              style={{
-                backgroundImage: "https://source.unsplash.com/random"
-              }}
-            />
-            <span className={classes.imageBackdrop} />
-            <span className={classes.imageButton}>
-              <Typography
-                component="span"
-                variant="subtitle1"
-                color="inherit"
-                className={classes.imageTitle}
-              >
-                {district.name}
-                <span className={classes.imageMarked} />
-              </Typography>
-            </span>
-          </ButtonBase>
-        </ListItem>
-      ));
-    const mapDisplay=(!this.state.currentDisId)?<MapLoading />:
-      <MapDisplay disId={this.state.currentDisId}/>
+    console.log("in render, districtList:", this.state.districtList);
+    const areaItems = !this.state.districtList
+      ? null
+      : this.state.districtList.map(district => (
+          <ListItem key={district.districtId}>
+            <ButtonBase
+              focusRipple
+              key={district.districtId}
+              className={classes.image}
+              focusVisibleClassName={classes.focusVisible}
+              onClick={() => this.changeDis(district.districtId)}
+            >
+              <span
+                className={classes.imageSrc}
+                style={{
+                  backgroundImage: "https://source.unsplash.com/random"
+                }}
+              />
+              <span className={classes.imageBackdrop} />
+              <span className={classes.imageButton}>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  className={classes.imageTitle}
+                >
+                  {district.name}
+                  <span className={classes.imageMarked} />
+                </Typography>
+              </span>
+            </ButtonBase>
+          </ListItem>
+        ));
+    const mapDisplay = !this.state.currentDisId ? (
+      <MapLoading />
+    ) : (
+      <MapDisplay disId={this.state.currentDisId} />
+    );
     //const facilityBadges=null;
-    const facilityBadges=(!this.state.districtList)?null:
-      (this.state.allCriterion).map(cri=>(
+    const facilityBadges = !this.state.districtList
+      ? null
+      : this.state.allCriterion.map(cri => (
           <SomeIcon
             key={cri}
             cri={cri}
-            disInfo={this.state.districtList[this.state.currentDisIndex]}/>
-      ))
+            disInfo={this.state.districtList[this.state.currentDisIndex]}
+          />
+        ));
 
     console.log(this.state.currentDis);
     return (
@@ -294,10 +272,14 @@ class AreaListUI extends Component{
         <NavBar />
         <Grid container spacing={1}>
           <Grid item xs={4}>
-              <Typography variant="h4" align="center" style={{ color: "white", height: "50px", paddingTop: "10px"}}>
-                Recommended districts
-              </Typography>
-              <div style={{overflow:'hidden'}}>
+            <Typography
+              variant="h4"
+              align="center"
+              style={{ color: "white", height: "50px", paddingTop: "10px" }}
+            >
+              Recommended districts
+            </Typography>
+            <div style={{ overflow: "hidden" }}>
               <Paper className={classes.leftList}>
                 {areaItems}
                 <Container className={classes.loadMoreButton}>
@@ -306,7 +288,7 @@ class AreaListUI extends Component{
                       size="large"
                       color="primary"
                       onClick={this.loadMore}
-                      >
+                    >
                       Load More...
                     </Button>
                   </div>
@@ -319,9 +301,7 @@ class AreaListUI extends Component{
               {mapDisplay}
 
               <Container className={classes.facbtns}>
-                <div className={classes.facilities}>
-                  {facilityBadges}
-                </div>
+                <div className={classes.facilities}>{facilityBadges}</div>
               </Container>
               <Container className={classes.detailbtn}>
                 <div>
