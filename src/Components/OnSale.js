@@ -60,7 +60,8 @@ class OnSale extends Component {
                 houseDescription: data.houseDescription,
                 isAvailable: data.isAvailable,
                 districtId: data.districtId,
-                venue: data.venue
+                venue: data.venue,
+                postal: data.postal,
             }
         })
         // console.log("Update!" + id);
