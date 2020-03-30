@@ -101,7 +101,7 @@ const LoginPage = (props) => {
                 }
             }).catch(
                 error => {
-                    alert("Sign up error!")
+                    alert("Sign up error: user email may exist!")
                 }
             )
         }
