@@ -174,13 +174,13 @@ class HouseCard extends React.Component {
                                 {/*<Typography gutterBottom variant="h5" component="h2">*/}
                                 {/*  {data.venue}*/}
                                 {/*</Typography>*/}
-                                <Typography gutterBottom variant="h6" component="h2">
+                                <Typography paragraph gutterBottom variant="h6" component="h2">
                                     Location: {data.venue}
                                 </Typography>
-                                <Typography gutterBottom variant="h6" component="h2">
+                                <Typography paragraph gutterBottom variant="h6" component="h2">
                                     District Name: {districtName}
                                 </Typography>
-                                <Typography gutterBottom variant="h6" component="h2">
+                                <Typography paragraph gutterBottom variant="h6" component="h2">
                                     Status: {data.isAvailable ? "Available" : "Not Available"}
                                 </Typography>
                                 {/*<Typography>{data.houseDescription}</Typography>*/}
