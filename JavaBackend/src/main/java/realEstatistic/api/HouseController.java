@@ -38,14 +38,15 @@ public class HouseController {
     }
 
     @GetMapping(path = "{id}/add_to_fav")
-    public String addHouseToFavourite(@RequestParam("email") String email, @PathVariable("id") String houseId, HttpServletResponse response) throws IOException {
+    public String addHouseToFavourite(@RequestParam("userId") String userId, @PathVariable("id") String houseId, HttpServletResponse response) throws IOException {
         try{
             UUID houseUUID = UUID.fromString(houseId);
+            UUID userUUUID = UUID.fromString(userId);
             House h =  houseService.getHouseById(houseUUID);
             if (h == null){
                 response.sendError(400, "The house does not exist!");
             }
-            houseService.addHouseToFavourite(email, houseUUID);
+            houseService.addHouseToFavourite(userUUUID, houseUUID);
             return "OK";
         }catch(IllegalArgumentException e){
             response.sendError(400, "Please enter a correct uuid!");
@@ -56,14 +57,15 @@ public class HouseController {
     }
 
     @DeleteMapping(path = "{id}/remove_from_fav")
-    public String removeHouseFromFavourite(@RequestParam("email") String email, @PathVariable("id") String houseId, HttpServletResponse response) throws IOException {
+    public String removeHouseFromFavourite(@RequestParam("userId") String userId, @PathVariable("id") String houseId, HttpServletResponse response) throws IOException {
         try{
             UUID houseUUID = UUID.fromString(houseId);
+            UUID userUUUID = UUID.fromString(userId);
             House h =  houseService.getHouseById(houseUUID);
             if (h == null){
                 response.sendError(400, "The house does not exist!");
             }
-            houseService.removeHouseFromFavourite(email, houseUUID);
+            houseService.removeHouseFromFavourite(userUUUID, houseUUID);
             return "OK";
         }catch(IllegalArgumentException e){
             response.sendError(400, "Please enter a correct uuid!");

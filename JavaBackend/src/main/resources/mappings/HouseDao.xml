@@ -41,13 +41,13 @@
         )
         VALUES (
                    #{houseId},
-                   #{email}
+                   #{userId}
                )
     </insert>
 
     <delete id="removeHouseFromFavourite" parameterType="map">
         delete from favourite
-        where houseId = #{houseId} and userId = #{email}
+        where houseId = #{houseId} and userId = #{userId}
     </delete>
 
 

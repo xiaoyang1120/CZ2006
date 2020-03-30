@@ -40,9 +40,9 @@ public class HouseService {
     public House getHouseById(UUID houseId){
         return houseDao.getHouseById(houseId);
     }
-    public void addHouseToFavourite(String email, UUID houseId){
-        houseDao.addHouseToFavourite(email, houseId);
+    public void addHouseToFavourite(UUID userId, UUID houseId){
+        houseDao.addHouseToFavourite(userId, houseId);
     }
 
-    public void removeHouseFromFavourite(String email, UUID houseId) {houseDao.removeHouseFromFavourite(email, houseId);}
+    public void removeHouseFromFavourite(UUID userId, UUID houseId) {houseDao.removeHouseFromFavourite(userId, houseId);}
 }
