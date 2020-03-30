@@ -54,6 +54,7 @@ class UploadHousePage extends React.Component {
         this.handleChange = this.handleChange.bind(this)
         this.handleSubmit = this.handleSubmit.bind(this)
         this.handleCheck = this.handleCheck.bind(this)
+        this.handleChangePostal = this.handleChangePostal.bind(this)
     }
 
     componentDidMount() {
@@ -90,6 +91,30 @@ class UploadHousePage extends React.Component {
         return event => {
             this.setState({[prop]: event.target.value})
         }
+    }
+
+    handleChangePostal(event) {
+        this.setState({postal: event.target.value})
+        axios.get(
+            "http://5e7ce96f71384.freetunnel.cc/api/district/get_district_by_postal",
+            {
+                withCredentials: true,
+                params: {
+                    postal: event.target.value
+                }
+            }
+        ).then(response => {
+            console.log(response.data !== "Wrong Postal Code!")
+            if (response.data !== "Wrong Postal Code!") {
+                this.setState({districtId: response.data, validPostal: true})
+            } else {
+                this.setState({validPostal: false})
+            }
+            this.setState({pending: false})
+        }).catch(error => {
+            // alert("Error in submitting")
+            // this.setState({pending: true})
+        })
     }
 
     handleCheck(event) {
@@ -263,15 +288,19 @@ class UploadHousePage extends React.Component {
                             label="Postal Code"
                             defaultValue={this.state.postal}
                             variant="outlined"
-                            onChange={this.handleChange("postal")}
+                            helperText=
+                                {<Typography style={this.state.validPostal ? {color: "green", size: 12} : {color: "red", size: 12} }>
+                                    {this.state.validPostal ? "Valid" : "Invalid"}
+                                </Typography>}
+                            onChange={this.handleChangePostal}
                         />
-                        <br/>
-                        <Button variant="contained"
-                                color="primary"
-                                onClick={this.handleCheck}
-                                style={{marginTop: 10}}>
-                            Check Postal Code
-                        </Button>
+                        {/*<br/>*/}
+                        {/*<Button variant="contained"*/}
+                        {/*        color="primary"*/}
+                        {/*        onClick={this.handleCheck}*/}
+                        {/*        style={{marginTop: 10}}>*/}
+                        {/*    Check Postal Code*/}
+                        {/*</Button>*/}
 
                     </div>
 
