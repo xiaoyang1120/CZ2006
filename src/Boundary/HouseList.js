@@ -114,8 +114,8 @@ class HouseList extends Component {
                                         </Button>
                                     </Grid>
                                     <Grid item>
-                                        <Button variant="outlined" color="primary">
-                                            See infrustration
+                                        <Button variant="outlined" color="primary" href="/criteria">
+                                            Reselect Criteria
                                         </Button>
                                     </Grid>
                                 </Grid>
