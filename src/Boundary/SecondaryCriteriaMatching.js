@@ -5,6 +5,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Navbar from "../Components/NavBar";
 import { green } from "@material-ui/core/colors";
+import {titleCase} from "./PrimaryCriteriaMatching"
 
 const GreenCheckbox = withStyles({
   root: {
@@ -136,14 +137,7 @@ class SecondaryCriteriaMatching extends Component {
             disabled={!item.isAvai}
           />
         }
-        label={
-          item.name.charAt(0) +
-          item.name
-            .split("_")
-            .join(" ")
-            .toLowerCase()
-            .slice(1)
-        }
+        label={ titleCase(item.name)}
         key={item.id}
       />
     ));
