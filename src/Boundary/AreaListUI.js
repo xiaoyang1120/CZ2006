@@ -28,7 +28,7 @@ const styles = theme => ({
   },
   session: {
     padding: 20,
-    marginTop: 95,
+    marginTop: 15,
     marginBotton: 10,
     height: 500,
     overflow: "hidden"
@@ -237,10 +237,12 @@ class AreaListUI extends Component {
                 className={classes.imageSrc}
                 style={{
                   backgroundImage: `url(${"https://maps.googleapis.com/maps/api/staticmap?center=" +
-                    district.districtRange[0] +
+                    (district.districtRange[0] + district.districtRange[1]) /
+                      2 +
                     "," +
-                    district.districtRange[2] +
-                    "&zoom=12&size=400x200&key="})`
+                    (district.districtRange[2] + district.districtRange[3]) /
+                      2 +
+                    "&zoom=14&size=400x200&key=AIzaSyCV_hO2yd_zTG_JkbXy21CO16311-OOMdU"})`
                 }}
               />
               <span className={classes.imageBackdrop} />
