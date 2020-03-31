@@ -44,9 +44,10 @@ const styles = theme => ({
 class ProfilePage extends Component {
     constructor(props) {
         super(props);
+        let data = this.props.history.location.state
         this.state = {
-            favPage: true,
-            changePwd: false
+            favPage: data ? data.favPage : true,
+            changePwd: data ? data.changePwd : false,
         };
         this.handleFavHouse = this.handleFavHouse.bind(this);
         this.handleSaleHouse = this.handleSaleHouse.bind(this);

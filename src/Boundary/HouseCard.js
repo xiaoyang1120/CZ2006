@@ -21,6 +21,7 @@ import StarBorderIcon from '@material-ui/icons/StarBorder';
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import clsx from "clsx";
 import Collapse from "@material-ui/core/Collapse";
+import Tooltip from "@material-ui/core/Tooltip";
 
 const styles = (theme) => ({
     card: {
@@ -226,17 +227,18 @@ class HouseCard extends React.Component {
                                         </Dialog>
                                     </div> : <div></div>
                                 }
-
-                                <IconButton
-                                    className={clsx(classes.expand, {
-                                        [classes.expandOpen]: this.state.expanded,
-                                    })}
-                                    onClick={this.handleExpandClick}
-                                    aria-expanded={this.state.expanded}
-                                    aria-label="show more"
-                                >
-                                    <ExpandMoreIcon />
-                                </IconButton>
+                                <Tooltip title={this.state.expanded ? "Close" : "Expand Description"} placement="top">
+                                    <IconButton
+                                        className={clsx(classes.expand, {
+                                            [classes.expandOpen]: this.state.expanded,
+                                        })}
+                                        onClick={this.handleExpandClick}
+                                        aria-expanded={this.state.expanded}
+                                        aria-label="show more"
+                                    >
+                                        <ExpandMoreIcon/>
+                                    </IconButton>
+                                </Tooltip>
 
                             </CardActions>
                             <Collapse in={this.state.expanded} timeout="auto" unmountOnExit>
