@@ -139,7 +139,8 @@ class AreaListUI extends Component {
             allCriterion: [],
             chosenCriterion: [],
             currentDisIndex: 0,
-            currentDisId: ""
+            currentDisId: "",
+            facilityType: "CLINIC"
             //someobject: [],
         };
         //initial setup
@@ -265,7 +266,7 @@ class AreaListUI extends Component {
         const mapDisplay = !this.state.currentDisId ? (
             <MapLoading />
         ) : (
-            <MapDisplay id={this.state.currentDisId} />
+            <MapDisplay id={this.state.currentDisId} type={this.state.facilityType}/>
         );
         //const facilityBadges=null;
         const facilityBadges = !this.state.districtList
