@@ -19,6 +19,46 @@ import {
 } from "@material-ui/core/colors";
 function Map(props) {
   const [selected, setSelected] = useState(null);
+  console.log("type: " + props.t);
+  {
+    /*switch (props.t) {
+    case "CLINIC":
+      
+      break;
+    case "PRIMARY_SCHOOL":
+      
+      break;
+    case "SECONDARY_SCHOOL":
+      
+      break;
+
+    case "JUNIOR_COLLEGE":
+      
+      break;
+    case "MIXED_SCHOOL":
+      
+      break;
+    case "HAWER_CENTER":
+      
+      break;
+    case "PARK":
+      
+      break;
+
+    case "SUPERMARKET":
+      
+      break;
+    case "PREMIUM_BUS":
+      
+      break;
+    case "E_WASTE":
+      
+      break;
+  
+    default:
+      break;
+  }*/
+  }
   return (
     <GoogleMap defaultZoom={13} defaultCenter={props.center}>
       {props.isCenterShown && (
@@ -53,7 +93,9 @@ function Map(props) {
         >
           <div>
             <h4>{selected.clinicName}</h4>
-            <p> Description: {selected.description}</p>
+            <p>
+              Description: {selected.description ? selected.description : "NA"}
+            </p>
           </div>
         </InfoWindow>
       )}
@@ -127,6 +169,7 @@ class MapDisplay extends Component {
             containerElement={<div style={{ height: `100%` }} />}
             mapElement={<div style={{ height: `100%` }} />}
             fac={this.state.fac}
+            t={this.state.facType}
           />
         </div>
       );
@@ -182,7 +225,8 @@ class MapDisplay extends Component {
         this.setState(prevState => {
           //要改
           return {
-            fac: d
+            fac: d,
+            facType: type
           };
         });
       })
