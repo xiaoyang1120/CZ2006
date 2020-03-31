@@ -23,7 +23,10 @@ class MapDisplay extends Component {
     disId: null,
     disName: null,
     prevId: null,
-    center: null,
+    center: {
+      lat: 1.36,
+      lng: 103.84
+    },
     primary_school: [],
     clinic: []
   };
@@ -66,7 +69,7 @@ class MapDisplay extends Component {
       // Render loading state ...
       return (
         <div style={{ height: "70%", width: "100%", textAlign: "center" }}>
-          <p>Map loading...</p >
+          <p>Map loading...</p>
         </div>
       );
     } else {
@@ -163,7 +166,7 @@ class MapLoading extends Component {
   render() {
     return (
       <div style={{ height: "70%", width: "100%", textAlign: "center" }}>
-        <p>Map loading...</p >
+        <p>Map loading...</p>
       </div>
     );
   }
