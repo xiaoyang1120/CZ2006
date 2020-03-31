@@ -67,9 +67,9 @@ class MapDisplay extends Component {
       this._queryDis(this.props.id);
 
     }
-    if (this.state.facType === null) {
-      this._queryFac(this.props.id, this.props.facType);
-    }
+    // if (this.state.facType === null) {
+    //   this._queryFac(this.props.id, this.props.type);
+    // }
   }
 
   render() {
