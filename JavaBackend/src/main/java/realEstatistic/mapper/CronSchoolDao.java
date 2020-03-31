@@ -161,7 +161,7 @@ public class CronSchoolDao implements SchoolDao{
             long_ = Float.parseFloat(PostalConverter.convertPostal(postalCode).split("\t")[1]);
 
             UUID newId = UUID.randomUUID();
-            School s = new School(newId, FACILITY_TYPE.SCHOOL, schoolName, schoolDescription, lat, long_, type);
+            School s = new School(newId, FACILITY_TYPE.fromShool(type), schoolName, schoolDescription, lat, long_, type);
             switch (type){
                 case PRIMARY:
                     primaryList.add(s);
