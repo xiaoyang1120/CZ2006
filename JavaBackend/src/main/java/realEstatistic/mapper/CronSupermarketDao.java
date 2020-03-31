@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import realEstatistic.model.Supermarket;
+import realEstatistic.model.FACILITY_TYPE;
+import realEstatistic.model.Facility;
 import realEstatistic.config.CronTime;
 import realEstatistic.util.Unzipper;
 
@@ -21,35 +22,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-@Primary
-@Component
+@Component(value = "CronSupermarketDao")
 @EnableScheduling
 @Lazy(value = false)
-public class CronSupermarketDao implements SupermarketDao{
-
-    private static final List<Supermarket> supermarketList = new ArrayList<Supermarket>();
+public class CronSupermarketDao extends FacilityDao{
     private static String downloadDir = "./src/main/java/realEstatistic/downloads";
 
     @Override
-    public List<Supermarket> getAllSupermarket() {
-        return supermarketList;
-    }
-
-    @Override
-    public List<Supermarket> getSupermarketByLocation(float startLat, float endLat, float startLon, float endLon) {
-        ArrayList<Supermarket> filteredList = new ArrayList<Supermarket>();
-        for(Supermarket s : supermarketList){
-            float lat = s.getLat();
-            float lon = s.getLong_();
-            if (lat >= startLat && lat <= endLat && lon >= startLon && lon <= endLon){
-                filteredList.add(s);
-            }
-        }
-        return filteredList;
+    public List<Facility> getAllFacility() {
+        return facilityList;
     }
 
     @Scheduled(cron = CronTime.fetchTime)
-    public static void CronFetch(){
+    public void CronFetch(){
         String url = "https://data.gov.sg/dataset/11bb7b0b-ea38-4981-9f1f-660ad88409aa/download";
         String fileName = "supermarkets.zip";
         try {
@@ -63,14 +48,14 @@ public class CronSupermarketDao implements SupermarketDao{
             FileUtils.copyURLToFile(dataSource, new File(dir+"/"+fileName));
             Unzipper.unzip(downloadDir+"/" + fileName, downloadDir);
             System.out.println("download finished");
-            supermarketList.clear();
+            facilityList.clear();
             supermarketListGenerator();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void supermarketListGenerator() {
+    private void supermarketListGenerator() {
         String unzippedFileName = "supermarkets-kml.kml";
         //read downloadDir + "/" + unzippedFileName, update supermarketList here
 
@@ -117,8 +102,8 @@ public class CronSupermarketDao implements SupermarketDao{
 
             }
             UUID newId = UUID.randomUUID();
-            Supermarket a = new Supermarket(newId, supermarketName, lat, long_, supermarketDescription);
-            supermarketList.add(a);
+            Facility a = new Facility(newId, FACILITY_TYPE.CLINIC, supermarketName, supermarketDescription, lat, long_);
+            facilityList.add(a);
         }
     }
 

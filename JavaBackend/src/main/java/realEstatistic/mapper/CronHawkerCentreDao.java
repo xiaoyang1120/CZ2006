@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import realEstatistic.model.HawkerCentre;
+import realEstatistic.model.FACILITY_TYPE;
+import realEstatistic.model.Facility;
 import realEstatistic.config.CronTime;
 import realEstatistic.util.Unzipper;
 
@@ -21,35 +22,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-@Primary
-@Component
+@Component(value = "CronHawkerCentreDao")
 @EnableScheduling
 @Lazy(value = false)
-public class CronHawkerCentreDao implements HawkerCentreDao{
-
-    private static final List<HawkerCentre> hawkerCentreList = new ArrayList<HawkerCentre>();
+public class CronHawkerCentreDao extends FacilityDao{
     private static String downloadDir = "./src/main/java/realEstatistic/downloads";
 
     @Override
-    public List<HawkerCentre> getAllHawkerCentre() {
-        return hawkerCentreList;
-    }
-
-    @Override
-    public List<HawkerCentre> getHawkerCentreByLocation(float startLat, float endLat, float startLon, float endLon) {
-        ArrayList<HawkerCentre> filteredList = new ArrayList<HawkerCentre>();
-        for(HawkerCentre s : hawkerCentreList){
-            float lat = s.getLat();
-            float lon = s.getLong_();
-            if (lat >= startLat && lat <= endLat && lon >= startLon && lon <= endLon){
-                filteredList.add(s);
-            }
-        }
-        return filteredList;
+    public List<Facility> getAllFacility() {
+        return facilityList;
     }
 
     @Scheduled(cron = CronTime.fetchTime)
-    public static void CronFetch(){
+    public void CronFetch(){
         String url = "https://data.gov.sg/dataset/aeaf4704-5be1-4b33-993d-c70d8dcc943e/download";
         String fileName = "HawkerCentre.zip";
         try {
@@ -63,14 +48,14 @@ public class CronHawkerCentreDao implements HawkerCentreDao{
             FileUtils.copyURLToFile(dataSource, new File(dir+"/"+fileName));
             Unzipper.unzip(downloadDir+"/" + fileName, downloadDir);
             System.out.println("download finished");
-            hawkerCentreList.clear();
+            facilityList.clear();
             hawkerCentreListGenerator();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void hawkerCentreListGenerator(){
+    private void hawkerCentreListGenerator(){
         String unzippedFileName = "hawker-centres-kml.kml";
         //read downloadDir + "/" + unzippedFileName, update supermarketList here
         SAXReader reader = new SAXReader();
@@ -113,8 +98,8 @@ public class CronHawkerCentreDao implements HawkerCentreDao{
                 }
             }
             UUID newId = UUID.randomUUID();
-            HawkerCentre a = new HawkerCentre(newId, hawkerCentreName, lat, long_, hawkerCentreDescription);
-            hawkerCentreList.add(a);
+            Facility a = new Facility(newId, FACILITY_TYPE.HAWKER_CENTER, hawkerCentreName, hawkerCentreDescription, lat, long_);
+            facilityList.add(a);
         }
     }
 

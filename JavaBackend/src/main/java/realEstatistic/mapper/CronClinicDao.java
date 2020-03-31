@@ -5,13 +5,15 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import realEstatistic.model.Clinic;
 import realEstatistic.config.CronTime;
+import realEstatistic.model.FACILITY_TYPE;
+import realEstatistic.model.Facility;
 import realEstatistic.util.Unzipper;
 
 import java.io.File;
@@ -21,35 +23,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-@Primary
-@Component
+@Component(value = "CronClinicDao")
 @EnableScheduling
 @Lazy(value = false)
-public class CronClinicDao implements ClinicDao{
-
-    private static final List<Clinic> clinicList = new ArrayList<Clinic>();
+public class CronClinicDao extends FacilityDao {
     private static String downloadDir = "./src/main/java/realEstatistic/downloads";
 
     @Override
-    public List<Clinic> getAllClinic() {
-        return clinicList;
-    }
-
-    @Override
-    public List<Clinic> getClinicByLocation(float startLat, float endLat, float startLon, float endLon) {
-        ArrayList<Clinic> filteredList = new ArrayList<Clinic>();
-        for(Clinic s : clinicList){
-            float lat = s.getLat();
-            float lon = s.getLong_();
-            if (lat >= startLat && lat <= endLat && lon >= startLon && lon <= endLon){
-                filteredList.add(s);
-            }
-        }
-        return filteredList;
+    public List<Facility> getAllFacility() {
+        List<Facility> a = facilityList;
+        return facilityList;
     }
 
     @Scheduled(cron = CronTime.fetchTime)
-    public static void CronFetch(){
+    public void CronFetch(){
         String url = "https://data.gov.sg/dataset/31e92629-980d-4672-af33-cec147c18102/download";
         String fileName = "clinics.zip";
         try {
@@ -63,14 +50,14 @@ public class CronClinicDao implements ClinicDao{
             FileUtils.copyURLToFile(dataSource, new File(dir+"/"+fileName));
             Unzipper.unzip(downloadDir+"/" + fileName, downloadDir);
             System.out.println("download finished");
-            clinicList.clear();
+            facilityList.clear();
             clinicListGenerator();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void clinicListGenerator(){
+    private void clinicListGenerator(){
         String unzippedFileName = "chas-clinics-kml.kml";
         //read downloadDir + "/" + unzippedFileName, update supermarketList here
         SAXReader reader = new SAXReader();
@@ -113,8 +100,8 @@ public class CronClinicDao implements ClinicDao{
                 }
             }
             UUID newId = UUID.randomUUID();
-            Clinic a = new Clinic(newId, clinicName, lat, long_, clinicDescription);
-            clinicList.add(a);
+            Facility a = new Facility(newId, FACILITY_TYPE.CLINIC, clinicName, clinicDescription, lat, long_);
+            facilityList.add(a);
         }
     }
 

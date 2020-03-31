@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import realEstatistic.model.FACILITY_TYPE;
 import realEstatistic.model.SCHOOL_TYPE;
 import realEstatistic.model.School;
 import realEstatistic.config.CronTime;
@@ -25,10 +26,10 @@ import java.util.*;
 @Lazy(value = false)
 public class CronSchoolDao implements SchoolDao{
 
-    private static final List<School> primaryList = new ArrayList<School>();
-    private static final List<School> secondaryList = new ArrayList<School>();
-    private static final List<School> jcList = new ArrayList<School>();
-    private static final List<School> mixedList = new ArrayList<School>();
+    private static final List<School> primaryList = new ArrayList<>();
+    private static final List<School> secondaryList = new ArrayList<>();
+    private static final List<School> jcList = new ArrayList<>();
+    private static final List<School> mixedList = new ArrayList<>();
 
     @Override
     public List<School> getAllSecondary() {
@@ -103,7 +104,7 @@ public class CronSchoolDao implements SchoolDao{
         return filteredList;
     }
 
-    public static String readAll(Reader rd) throws IOException {
+    private static String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
         int cp;
         while ((cp = rd.read()) != -1) {
@@ -112,19 +113,20 @@ public class CronSchoolDao implements SchoolDao{
         return sb.toString();
     }
 
-    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+    private static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
         InputStream is = new URL(url).openStream();
         try {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
             String jsonText = readAll(rd);
             JSONObject json = new JSONObject(jsonText);
             return json;
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
         } finally {
             is.close();
         }
     }
-
-
 
     @Scheduled(cron = CronTime.fetchTime)
     public static void CronFetch() throws IOException, JSONException, ParseException, InterruptedException {
@@ -159,7 +161,7 @@ public class CronSchoolDao implements SchoolDao{
             long_ = Float.parseFloat(PostalConverter.convertPostal(postalCode).split("\t")[1]);
 
             UUID newId = UUID.randomUUID();
-            School s = new School(newId, schoolName, lat, long_, schoolDescription, type);
+            School s = new School(newId, FACILITY_TYPE.SCHOOL, schoolName, schoolDescription, lat, long_, type);
             switch (type){
                 case PRIMARY:
                     primaryList.add(s);

@@ -10,7 +10,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import realEstatistic.model.Park;
+import realEstatistic.model.FACILITY_TYPE;
+import realEstatistic.model.Facility;
 import realEstatistic.config.CronTime;
 import realEstatistic.util.Unzipper;
 
@@ -21,35 +22,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-@Primary
-@Component
+@Component(value = "CronParkDao")
 @EnableScheduling
 @Lazy(value = false)
-public class CronParkDao implements ParkDao{
-
-    private static final List<Park> parkList = new ArrayList<Park>();
+public class CronParkDao extends FacilityDao{
     private static String downloadDir = "./src/main/java/realEstatistic/downloads";
 
     @Override
-    public List<Park> getAllPark() {
-        return parkList;
-    }
-
-    @Override
-    public List<Park> getParkByLocation(float startLat, float endLat, float startLon, float endLon) {
-        ArrayList<Park> filteredList = new ArrayList<Park>();
-        for(Park s : parkList){
-            float lat = s.getLat();
-            float lon = s.getLong_();
-            if (lat >= startLat && lat <= endLat && lon >= startLon && lon <= endLon){
-                filteredList.add(s);
-            }
-        }
-        return filteredList;
+    public List<Facility> getAllFacility() {
+        return facilityList;
     }
 
     @Scheduled(cron = CronTime.fetchTime)
-    public static void CronFetch(){
+    public void CronFetch(){
         String url = "https://data.gov.sg/dataset/f3005537-b958-479c-9ba9-d2adffeb9c73/download";
         String fileName = "parks.zip";
         try {
@@ -63,14 +48,14 @@ public class CronParkDao implements ParkDao{
             FileUtils.copyURLToFile(dataSource, new File(dir+"/"+fileName));
             Unzipper.unzip(downloadDir+"/" + fileName, downloadDir);
             System.out.println("download finished");
-            parkList.clear();
+            facilityList.clear();
             parkListGenerator();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void parkListGenerator(){
+    private void parkListGenerator(){
         String unzippedFileName = "parks-kml.kml";
         //read downloadDir + "/" + unzippedFileName, update supermarketList here
         SAXReader reader = new SAXReader(); //TODO solve this duplicate code issue
@@ -113,8 +98,8 @@ public class CronParkDao implements ParkDao{
                 }
             }
             UUID newId = UUID.randomUUID();
-            Park a = new Park(newId, parkName, lat, long_, parkDescription);
-            parkList.add(a);
+            Facility a = new Facility(newId, FACILITY_TYPE.PARK, parkDescription, parkName, lat, long_);
+            facilityList.add(a);
         }
     }
 

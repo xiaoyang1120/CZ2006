@@ -10,8 +10,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import realEstatistic.model.EWaste;
 import realEstatistic.config.CronTime;
+import realEstatistic.model.FACILITY_TYPE;
+import realEstatistic.model.Facility;
 import realEstatistic.util.Unzipper;
 
 import java.io.File;
@@ -21,35 +22,20 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
-@Primary
-@Component
+@Component(value = "CronEWasteDao")
 @EnableScheduling
 @Lazy(value = false)
-public class CronEWasteDao implements EWasteDao{
-
-    private static final List<EWaste> eWasteList = new ArrayList<EWaste>();
+public class CronEWasteDao extends FacilityDao {
     private static String downloadDir = "./src/main/java/realEstatistic/downloads";
 
     @Override
-    public List<EWaste> getAllEWaste() {
-        return eWasteList;
-    }
-
-    @Override
-    public List<EWaste> getEWasteByLocation(float startLat, float endLat, float startLon, float endLon) {
-        ArrayList<EWaste> filteredList = new ArrayList<EWaste>();
-        for(EWaste s : eWasteList){
-            float lat = s.getLat();
-            float lon = s.getLong_();
-            if (lat >= startLat && lat <= endLat && lon >= startLon && lon <= endLon){
-                filteredList.add(s);
-            }
-        }
-        return filteredList;
+    public List<Facility> getAllFacility() {
+        List<Facility> a = facilityList;
+        return facilityList;
     }
 
     @Scheduled(cron = CronTime.fetchTime)
-    public static void CronFetch(){
+    public void CronFetch(){
         String url = "https://data.gov.sg/dataset/fcc50758-b469-4980-a0b1-00321da6aa09/download";
         String fileName = "eWaste.zip";
         try {
@@ -63,14 +49,14 @@ public class CronEWasteDao implements EWasteDao{
             FileUtils.copyURLToFile(dataSource, new File(dir+"/"+fileName));
             Unzipper.unzip(downloadDir+"/" + fileName, downloadDir);
             System.out.println("download finished");
-            eWasteList.clear();
+            facilityList.clear();
             EWasteListGenerator();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private static void EWasteListGenerator(){
+    private void EWasteListGenerator(){
         String unzippedFileName = "e-waste-recycling-kml.kml";
         //read downloadDir + "/" + unzippedFileName, update supermarketList here
         SAXReader reader = new SAXReader();
@@ -113,8 +99,8 @@ public class CronEWasteDao implements EWasteDao{
                 }
             }
             UUID newId = UUID.randomUUID();
-            EWaste a = new EWaste(newId, eWasteName, lat, long_, eWasteDescription);
-            eWasteList.add(a);
+            Facility a = new Facility(newId, FACILITY_TYPE.E_WASTE, eWasteName, eWasteDescription, lat, long_);
+            facilityList.add(a);
         }
     }
 

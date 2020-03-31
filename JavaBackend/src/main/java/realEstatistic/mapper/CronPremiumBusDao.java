@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import realEstatistic.model.PremiumBus;
+import realEstatistic.model.FACILITY_TYPE;
+import realEstatistic.model.Facility;
 import realEstatistic.config.CronTime;
 
 import java.io.*;
@@ -17,33 +18,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-@Primary
-@Component
+@Component(value = "CronPremiumBusDao")
 @EnableScheduling
 @Lazy(value = false)
-public class CronPremiumBusDao implements PremiumBusDao{
-
-    private static final List<PremiumBus> premiumBusList = new ArrayList<PremiumBus>();
+public class CronPremiumBusDao extends FacilityDao{
 
     @Override
-    public List<PremiumBus> getAllPremiumBus() {
-        return premiumBusList;
+    public List<Facility> getAllFacility() {
+        return facilityList;
     }
 
-    @Override
-    public List<PremiumBus> getPremiumBusByLocation(float startLat, float endLat, float startLon, float endLon) {
-        ArrayList<PremiumBus> filteredList = new ArrayList<PremiumBus>();
-        for(PremiumBus s : premiumBusList){
-            float lat = s.getLat();
-            float lon = s.getLong_();
-            if (lat >= startLat && lat <= endLat && lon >= startLon && lon <= endLon){
-                filteredList.add(s);
-            }
-        }
-        return filteredList;
-    }
-
-    public static String readAll(Reader rd) throws IOException {
+    public String readAll(Reader rd) throws IOException {
         StringBuilder sb = new StringBuilder();
         int cp;
         while ((cp = rd.read()) != -1) {
@@ -52,7 +37,7 @@ public class CronPremiumBusDao implements PremiumBusDao{
         return sb.toString();
     }
 
-    public static JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
+    public JSONObject readJsonFromUrl(String url) throws IOException, JSONException {
         InputStream is = new URL(url).openStream();
         try {
             BufferedReader rd = new BufferedReader(new InputStreamReader(is, Charset.forName("UTF-8")));
@@ -64,13 +49,11 @@ public class CronPremiumBusDao implements PremiumBusDao{
         }
     }
 
-
-
     @Scheduled(cron = CronTime.fetchTime)
-    public static void CronFetch() throws IOException, JSONException {
+    public void CronFetch() throws IOException, JSONException {
         System.setProperty("http.agent", "Mozilla/5.0");
         JSONObject json =  readJsonFromUrl("https://data.gov.sg/api/action/datastore_search?resource_id=7670be81-ca96-49ba-9215-caf1f218954b&limit=10000");
-        premiumBusList.clear();
+        facilityList.clear();
         for(int i = 0; i < json.getJSONObject("result").getJSONArray("records").length(); i++) {
             String premiumBusName = null, premiumBusDescription = null;
             float lat = 0, long_ = 0;
@@ -80,8 +63,8 @@ public class CronPremiumBusDao implements PremiumBusDao{
             premiumBusName = myjson.getString("bus_stop_desc_txt");
             premiumBusDescription = myjson.getString("op_hr_1_txt") + "  " + myjson.getString("op_hr_2_txt") + "  " + myjson.getString("fare_txt") + "  " + myjson.getString("orig_dest_txt");
             UUID newId = UUID.randomUUID();
-            PremiumBus a = new PremiumBus(newId, premiumBusName, lat, long_, premiumBusDescription);
-            premiumBusList.add(a);
+            Facility a = new Facility(newId, FACILITY_TYPE.PREMIUM_BUS, premiumBusName, premiumBusDescription, lat, long_);
+            facilityList.add(a);
         }
 
     }
