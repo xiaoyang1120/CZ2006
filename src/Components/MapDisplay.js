@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 //import { withStyles } from "@material-ui/core/styles";
-import GoogleMapReact from "google-map-react";
+import { GoogleMapReact, withScriptjs, withGoogleMap } from "google-map-react";
 import { fitBounds } from "google-map-react/utils";
 import RoomIcon from "@material-ui/icons/Room";
 import axios from "axios";
@@ -21,6 +21,7 @@ class MapDisplay extends Component {
     disName: null,
     prevId: null,
     bounds: null,
+    primary_school: [],
     clinic: []
   };
 
@@ -57,6 +58,19 @@ class MapDisplay extends Component {
     }
   }
 
+  Map(center, zoom) {
+    return (
+      <GoogleMapReact
+        bootstrapURLKeys={{
+          key: "AIzaSyCV_hO2yd_zTG_JkbXy21CO16311-OOMdU",
+          language: "en"
+        }}
+        defaultCenter={center}
+        defaultZoom={zoom}
+      ></GoogleMapReact>
+    );
+  }
+
   render() {
     if (this.state.disId === null) {
       // Render loading state ...
@@ -72,27 +86,11 @@ class MapDisplay extends Component {
         height: 350 // Map height in pixels
       };
       const { center, zoom } = fitBounds(this.state.bounds, size);
-      const districtCenterIcon = (
-        <Tooltip title={this.state.disName} placement="top">
-          <RoomIcon
-            lat={center.lat}
-            lng={center.lng}
-            style={{ color: red[500], fontSize: 50 }}
-          />
-        </Tooltip>
-      );
+      const WrappedMap = withScriptjs(withGoogleMap(this.Map(center, zoom)));
+
       return (
         <div style={{ height: "70%", width: "100%" }}>
-          <GoogleMapReact
-            bootstrapURLKeys={{
-              key: "AIzaSyCV_hO2yd_zTG_JkbXy21CO16311-OOMdU",
-              language: "en"
-            }}
-            defaultCenter={center}
-            defaultZoom={zoom}
-          >
-            {districtCenterIcon}
-          </GoogleMapReact>
+          <WrappedMap />
         </div>
       );
     }
@@ -141,16 +139,16 @@ class MapDisplay extends Component {
       id +
       "/get_facility_list?type=" +
       type;
-    console.log("url:", url);
     axios
       .get(url)
       .then(response => {
-        var d = response.data;
+        const d = response.data;
+        //console.log(id);
         console.log("response:", d);
         this.setState(prevState => {
           //要改
           return {
-            type: d
+            clinic: d
           };
         });
       })
