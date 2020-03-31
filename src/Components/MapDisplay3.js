@@ -76,27 +76,16 @@ class MapDisplay extends Component {
           defaultZoom={13}
           defaultCenter={props.center}
           >
+        {props.isCenterShown && <Marker position={{ lat: props.center.lat, lng: props.center.lng }} />}
         </GoogleMap>
       ));
       // Render real UI ...
-      // const size = {
-      //   width: 350, // Map width in pixels
-      //   height: 350 // Map height in pixels
-      // };
-      //const { center, zoom } = fitBounds(this.state.bounds, size);
-      // const districtCenterIcon = (
-      //   <Tooltip title={this.state.disName} placement="top">
-      //     <RoomIcon
-      //       lat={center.lat}
-      //       lng={center.lng}
-      //       style={{ color: red[500], fontSize: 50 }}
-      //     />
-      //   </Tooltip>
-      // );
+
       return (
         <div style={{ height: "70%", width: "100%" }}>
           <MapWrapped
             center={this.state.center}
+            isCenterShown
             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.40
               &libraries=geometry,drawing,places
               &key=AIzaSyBIG4HJrqb0FCfqfAE7OxQdeDhMTNzhJAU

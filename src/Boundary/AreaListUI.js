@@ -30,7 +30,7 @@ const styles = theme => ({
         padding: 20,
         marginTop: 15,
         marginBotton: 10,
-        height: 500,
+        height: 650,
         overflow: "hidden"
     },
     image: {
