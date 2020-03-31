@@ -5,7 +5,7 @@ import {
   Marker,
   InfoWindow
 } from "react-google-maps";
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import axios from "axios";
 import Tooltip from "@material-ui/core/Tooltip";
 import {
@@ -17,39 +17,71 @@ import {
   brown,
   green
 } from "@material-ui/core/colors";
-
+function Map(props) {
+  const [selected, setSelected] = useState(null);
+  return (
+    <GoogleMap defaultZoom={13} defaultCenter={props.center}>
+      {props.isCenterShown && (
+        <Marker
+          position={{ lat: props.center.lat, lng: props.center.lng }}
+          icon={{
+            url: "http://maps.google.com/mapfiles/ms/icons/blue-dot.png"
+          }}
+        />
+      )}
+      {props.fac.map(c => (
+        <Marker
+          key={c.clinicID}
+          position={{
+            lat: c.lat,
+            lng: c.long_
+          }}
+          onClick={() => {
+            setSelected(c);
+          }}
+        />
+      ))}
+      {selected && (
+        <InfoWindow
+          onCloseClick={() => {
+            setSelected(null);
+          }}
+          position={{
+            lat: selected.lat,
+            lng: selected.long_
+          }}
+        >
+          <div>
+            <h4>{selected.clinicName}</h4>
+            <p> Description: {selected.description}</p>
+          </div>
+        </InfoWindow>
+      )}
+    </GoogleMap>
+  );
+}
 class MapDisplay extends Component {
   state = {
     disId: null,
     disName: null,
     prevId: null,
     center: null,
-    facType:null,
-    primary_school: [],
-    clinic: []
-  };
-
-  static defaultProps = {
-    center: {
-      lat: 1.36,
-      lng: 103.84
-    },
-    zoom: 12
+    fac: []
   };
 
   static getDerivedStateFromProps(props, state) {
     // Store prevId in state so we can compare when props change.
     // Clear out previously-loaded data (so we don't render stale stuff).
-    if (props.id !== state.prevId ||props.type !== state.prevType) {
-      if (props.id !== state.prevId){
+    if (props.id !== state.prevId || props.type !== state.prevType) {
+      if (props.id !== state.prevId) {
         return {
           disId: null,
-          prevId: props.id,
+          prevId: props.id
         };
-      }else{
+      } else {
         return {
           facType: null,
-          prevType: props.type,
+          prevType: props.type
         };
       }
     }
@@ -59,38 +91,25 @@ class MapDisplay extends Component {
 
   componentDidMount() {
     this._queryDis(this.props.id);
-    //no need to query for facility if no facility icon is clicked.
+    this._queryFac(this.props.id, "CLINIC");
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.disId === null) {
       this._queryDis(this.props.id);
-
+      this._queryFac(this.props.id, "CLINIC");
     }
-    // if (this.state.facType === null) {
-    //   this._queryFac(this.props.id, this.props.type);
-    // }
   }
 
   render() {
     if (this.state.disId === null) {
-      // Render loading state ...
       return (
         <div style={{ height: "70%", width: "100%", textAlign: "center" }}>
-          <p>Map loading...</p >
+          <p>Map loading...</p>
         </div>
       );
     } else {
-      console.log("this.state.center:", this.state.center)
-      const MapWrapped= withScriptjs(withGoogleMap(props=>
-        <GoogleMap
-          defaultZoom={13}
-          defaultCenter={props.center}
-          >
-        {props.isCenterShown && <Marker position={{ lat: props.center.lat, lng: props.center.lng }} />}
-        </GoogleMap>
-      ));
-      // Render real UI ...
+      const MapWrapped = withScriptjs(withGoogleMap(props => Map(props)));
 
       return (
         <div style={{ height: "70%", width: "100%" }}>
@@ -104,6 +123,7 @@ class MapDisplay extends Component {
             loadingElement={<div style={{ height: `100%` }} />}
             containerElement={<div style={{ height: `100%` }} />}
             mapElement={<div style={{ height: `100%` }} />}
+            fac={this.state.fac}
           />
         </div>
       );
@@ -126,16 +146,16 @@ class MapDisplay extends Component {
         console.log("single district query response:", d);
         this.setState(prevState => {
           //modified
-          var latcenter= (d.latStart+d.latEnd)/2;
-          var lngcenter= (d.longStart+d.longEnd)/2;
-          console.log("latcenter:",latcenter)
+          var latcenter = (d.latStart + d.latEnd) / 2;
+          var lngcenter = (d.longStart + d.longEnd) / 2;
+          console.log("latcenter:", latcenter);
           return {
             disId: id,
             disName: d.districtName,
-            center:{
-              lat:latcenter,
-              lng:lngcenter
-            },
+            center: {
+              lat: latcenter,
+              lng: lngcenter
+            }
           };
         });
       })
@@ -155,17 +175,17 @@ class MapDisplay extends Component {
       .then(response => {
         const d = response.data;
         //console.log(id);
-        console.log("query facility response:", d);
+        console.log("response:", d);
         this.setState(prevState => {
           //要改
           return {
-            clinic: d
+            fac: d
           };
         });
       })
       .catch(error => {
         console.error(error);
-        alert("Getting facility Detail Error: " + error);
+        alert("Getting districtDetail Error: " + error);
       });
   }
 }
@@ -174,7 +194,7 @@ class MapLoading extends Component {
   render() {
     return (
       <div style={{ height: "70%", width: "100%", textAlign: "center" }}>
-        <p>Map loading...</p >
+        <p>Map loading...</p>
       </div>
     );
   }
