@@ -15,7 +15,7 @@ import {
   green
 } from "@material-ui/core/colors";
 
-class MapDisplay extends Component {
+class MapDisplay2 extends Component {
   state = {
     disId: null,
     disName: null,
@@ -122,7 +122,7 @@ class MapDisplay extends Component {
   }
 }
 
-class MapLoading extends Component {
+class MapLoading2 extends Component {
   render() {
     return (
       <div style={{ height: "70%", width: "100%", textAlign: "center" }}>
@@ -132,4 +132,4 @@ class MapLoading extends Component {
   }
 }
 
-export { MapDisplay, MapLoading };
+export { MapDisplay2, MapLoading2 };

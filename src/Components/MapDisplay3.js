@@ -1,8 +1,11 @@
+import {
+  withGoogleMap,
+  withScriptjs,
+  GoogleMap,
+  Marker,
+  InfoWindow
+} from "react-google-maps";
 import React, { Component } from "react";
-//import { withStyles } from "@material-ui/core/styles";
-import GoogleMapReact from "google-map-react";
-import { fitBounds } from "google-map-react/utils";
-import RoomIcon from "@material-ui/icons/Room";
 import axios from "axios";
 import Tooltip from "@material-ui/core/Tooltip";
 import {
@@ -14,6 +17,22 @@ import {
   brown,
   green
 } from "@material-ui/core/colors";
+
+function Map(){
+  const defaultCenter={
+    lat: 1.36,
+    lng: 103.84
+  };
+  return (
+    <GoogleMap
+      defaultZoom={13}
+      defaultCenter={defaultCenter}
+      >
+    </GoogleMap>
+  )
+}
+
+const MapWrapped= withScriptjs(withGoogleMap(Map));
 
 class MapDisplay extends Component {
   state = {
@@ -68,32 +87,31 @@ class MapDisplay extends Component {
       );
     } else {
       // Render real UI ...
-      const size = {
-        width: 350, // Map width in pixels
-        height: 350 // Map height in pixels
-      };
-      const { center, zoom } = fitBounds(this.state.bounds, size);
-      const districtCenterIcon = (
-        <Tooltip title={this.state.disName} placement="top">
-          <RoomIcon
-            lat={center.lat}
-            lng={center.lng}
-            style={{ color: red[500], fontSize: 50 }}
-          />
-        </Tooltip>
-      );
+      // const size = {
+      //   width: 350, // Map width in pixels
+      //   height: 350 // Map height in pixels
+      // };
+      //const { center, zoom } = fitBounds(this.state.bounds, size);
+      // const districtCenterIcon = (
+      //   <Tooltip title={this.state.disName} placement="top">
+      //     <RoomIcon
+      //       lat={center.lat}
+      //       lng={center.lng}
+      //       style={{ color: red[500], fontSize: 50 }}
+      //     />
+      //   </Tooltip>
+      // );
       return (
         <div style={{ height: "70%", width: "100%" }}>
-          <GoogleMapReact
-            bootstrapURLKeys={{
-              key: "AIzaSyCV_hO2yd_zTG_JkbXy21CO16311-OOMdU",
-              language: "en"
-            }}
-            defaultCenter={center}
-            defaultZoom={zoom}
-          >
-            {console.log(this.state.clinic)}
-          </GoogleMapReact>
+          <MapWrapped
+            googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.40
+              &libraries=geometry,drawing,places
+              &key=AIzaSyBIG4HJrqb0FCfqfAE7OxQdeDhMTNzhJAU
+              `}
+            loadingElement={<div style={{ height: `100%` }} />}
+            containerElement={<div style={{ height: `100%` }} />}
+            mapElement={<div style={{ height: `100%` }} />}
+          />
         </div>
       );
     }

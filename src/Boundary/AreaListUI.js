@@ -4,7 +4,7 @@ import ButtonBase from "@material-ui/core/ButtonBase";
 import Typography from "@material-ui/core/Typography";
 import NavBar from "../Components/NavBar";
 import { ListItem, Grid, Paper, Button, Container } from "@material-ui/core";
-import { MapLoading, MapDisplay } from "../Components/MapDisplay";
+import { MapLoading, MapDisplay } from "../Components/MapDisplay3";
 import SomeIcon from "../Components/SomeIcon";
 import axios from "axios";
 import { spacing } from "@material-ui/system";
