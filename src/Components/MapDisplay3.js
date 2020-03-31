@@ -19,46 +19,6 @@ import {
 } from "@material-ui/core/colors";
 function Map(props) {
   const [selected, setSelected] = useState(null);
-  console.log("type: " + props.t);
-  {
-    /*switch (props.t) {
-    case "CLINIC":
-      
-      break;
-    case "PRIMARY_SCHOOL":
-      
-      break;
-    case "SECONDARY_SCHOOL":
-      
-      break;
-
-    case "JUNIOR_COLLEGE":
-      
-      break;
-    case "MIXED_SCHOOL":
-      
-      break;
-    case "HAWER_CENTER":
-      
-      break;
-    case "PARK":
-      
-      break;
-
-    case "SUPERMARKET":
-      
-      break;
-    case "PREMIUM_BUS":
-      
-      break;
-    case "E_WASTE":
-      
-      break;
-  
-    default:
-      break;
-  }*/
-  }
   return (
     <GoogleMap defaultZoom={13} defaultCenter={props.center}>
       {props.isCenterShown && (
@@ -71,7 +31,7 @@ function Map(props) {
       )}
       {props.fac.map(c => (
         <Marker
-          key={c.clinicID}
+          key={c}
           position={{
             lat: c.lat,
             lng: c.long_
@@ -92,7 +52,7 @@ function Map(props) {
           }}
         >
           <div>
-            <h4>{selected.clinicName}</h4>
+            <h4>{selected.name}</h4>
             <p>
               Description: {selected.description ? selected.description : "NA"}
             </p>
@@ -109,13 +69,15 @@ class MapDisplay extends Component {
     prevId: null,
     center: null,
     fac: [],
-    facType: null
+    facType: null,
+    rerender: false
   };
 
   static getDerivedStateFromProps(props, state) {
     // Store prevId in state so we can compare when props change.
     // Clear out previously-loaded data (so we don't render stale stuff).
-    if (props.id !== state.prevId || props.type !== state.prevType) {
+    {
+      /*if (props.id !== state.prevId || props.type !== state.prevType) {
       if (props.id !== state.prevId) {
         return {
           disId: null,
@@ -125,6 +87,28 @@ class MapDisplay extends Component {
         return {
           facType: null,
           prevType: props.type
+        };
+      }
+    }*/
+    }
+    if (props.id !== state.prevId) {
+      return {
+        disId: null,
+        prevId: props.id,
+        fac: [],
+        rerender: true
+      };
+    } else {
+      if (props.type !== state.prevType) {
+        return {
+          facType: null,
+          prevType: props.type,
+          fac: [],
+          rerender: true
+        };
+      } else {
+        return {
+          rerender: false
         };
       }
     }
@@ -140,7 +124,9 @@ class MapDisplay extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.disId === null) {
       this._queryDis(this.props.id);
-      if (this.state.facType === null) {
+    }
+    if (this.state.facType === null) {
+      if (!this.props.type) {
         this._queryFac(this.props.id, this.props.type);
       }
     }
@@ -169,7 +155,6 @@ class MapDisplay extends Component {
             containerElement={<div style={{ height: `100%` }} />}
             mapElement={<div style={{ height: `100%` }} />}
             fac={this.state.fac}
-            t={this.state.facType}
           />
         </div>
       );
@@ -225,8 +210,7 @@ class MapDisplay extends Component {
         this.setState(prevState => {
           //要改
           return {
-            fac: d,
-            facType: type
+            fac: d
           };
         });
       })
