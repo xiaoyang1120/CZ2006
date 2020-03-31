@@ -66,7 +66,8 @@ class MapDisplay extends Component {
     disName: null,
     prevId: null,
     center: null,
-    fac: []
+    fac: [],
+    facType: null
   };
 
   static getDerivedStateFromProps(props, state) {
@@ -91,13 +92,15 @@ class MapDisplay extends Component {
 
   componentDidMount() {
     this._queryDis(this.props.id);
-    this._queryFac(this.props.id, "CLINIC");
+    //this._queryFac(this.props.id, this.props.type);
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.disId === null) {
       this._queryDis(this.props.id);
-      this._queryFac(this.props.id, "CLINIC");
+      if (this.state.facType === null) {
+        this._queryFac(this.props.id, this.props.type);
+      }
     }
   }
 
