@@ -18,28 +18,12 @@ import {
   green
 } from "@material-ui/core/colors";
 
-function Map(){
-  const defaultCenter={
-    lat: 1.36,
-    lng: 103.84
-  };
-  return (
-    <GoogleMap
-      defaultZoom={13}
-      defaultCenter={defaultCenter}
-      >
-    </GoogleMap>
-  )
-}
-
-const MapWrapped= withScriptjs(withGoogleMap(Map));
-
 class MapDisplay extends Component {
   state = {
     disId: null,
     disName: null,
     prevId: null,
-    bounds: null,
+    center: null,
     primary_school: [],
     clinic: []
   };
@@ -86,6 +70,13 @@ class MapDisplay extends Component {
         </div>
       );
     } else {
+      const MapWrapped= withScriptjs(withGoogleMap(props=>
+        <GoogleMap
+          defaultZoom={13}
+          defaultCenter={props.center}
+          >
+        </GoogleMap>
+      ));
       // Render real UI ...
       // const size = {
       //   width: 350, // Map width in pixels
@@ -104,6 +95,7 @@ class MapDisplay extends Component {
       return (
         <div style={{ height: "70%", width: "100%" }}>
           <MapWrapped
+            center={this.state.center}
             googleMapURL={`https://maps.googleapis.com/maps/api/js?v=3.40
               &libraries=geometry,drawing,places
               &key=AIzaSyBIG4HJrqb0FCfqfAE7OxQdeDhMTNzhJAU
@@ -132,20 +124,14 @@ class MapDisplay extends Component {
         var d = response.data;
         //console.log("response:", d);
         this.setState(prevState => {
-          //要改
+          //modified
           return {
             disId: id,
             disName: d.districtName,
-            bounds: {
-              nw: {
-                lat: d.latStart,
-                lng: d.longStart
-              },
-              se: {
-                lat: d.latEnd,
-                lng: d.longEnd
-              }
-            }
+            center:{
+              lat: (d.latStart+d.latEnd)/2,
+              lng: (d.longStar+d.longEnd)/2
+            },
           };
         });
       })
