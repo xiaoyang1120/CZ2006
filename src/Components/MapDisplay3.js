@@ -51,13 +51,13 @@ class MapDisplay extends Component {
 
   componentDidMount() {
     this._queryDis(this.props.id);
-    this._queryFac(this.props.id, "CLINIC");
+    //this._queryFac(this.props.id, "CLINIC");
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.disId === null) {
       this._queryDis(this.props.id);
-      this._queryFac(this.props.id, "CLINIC");
+      //this._queryFac(this.props.id, "CLINIC");
     }
   }
 
@@ -70,6 +70,7 @@ class MapDisplay extends Component {
         </div>
       );
     } else {
+      console.log("this.state.center:", this.state.center)
       const MapWrapped= withScriptjs(withGoogleMap(props=>
         <GoogleMap
           defaultZoom={13}
@@ -122,15 +123,18 @@ class MapDisplay extends Component {
       .get(url)
       .then(response => {
         var d = response.data;
-        //console.log("response:", d);
+        console.log("single district query response:", d);
         this.setState(prevState => {
           //modified
+          var latcenter= (d.latStart+d.latEnd)/2;
+          var lngcenter= (d.longStart+d.longEnd)/2;
+          console.log("latcenter:",latcenter)
           return {
             disId: id,
             disName: d.districtName,
             center:{
-              lat: (d.latStart+d.latEnd)/2,
-              lng: (d.longStar+d.longEnd)/2
+              lat:latcenter,
+              lng:lngcenter
             },
           };
         });
