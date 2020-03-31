@@ -219,7 +219,11 @@ class AreaListUI extends Component {
                 cri => cri.districtId === disId
             );
             console.log("you clicked district:", index);
-            return { currentDisIndex: index, currentDisId: disId };
+            return {
+              currentDisIndex: index,
+              currentDisId: disId,
+              facilityType: "",
+            };
         });
     }
 
