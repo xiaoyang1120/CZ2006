@@ -156,11 +156,11 @@ class Navbar extends Component {
                                         id="customized-menu"
                                         anchorEl={anchorEl}
                                         keepMounted
-                                        open={Boolean(anchorEl)}
+                                        open={open}
                                         onClose={this.handleClose}
                                     >
                                         <MenuItem onClick={this.redirectProfile}>
-                                            Profile
+                                            Profile Menu
                                         </MenuItem>
                                         <MenuItem onClick={this.redirectChangePwd}>
                                             Change Password
