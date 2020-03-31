@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import realEstatistic.model.SCHOOL_TYPE;
 import realEstatistic.model.School;
+import realEstatistic.config.CronTime;
 import realEstatistic.util.PostalConverter;
 
 import java.io.*;
@@ -24,10 +25,10 @@ import java.util.*;
 @Lazy(value = false)
 public class CronSchoolDao implements SchoolDao{
 
-    private static List<School> primaryList = new ArrayList<School>();
-    private static List<School> secondaryList = new ArrayList<School>();
-    private static List<School> jcList = new ArrayList<School>();
-    private static List<School> mixedList = new ArrayList<School>();
+    private static final List<School> primaryList = new ArrayList<School>();
+    private static final List<School> secondaryList = new ArrayList<School>();
+    private static final List<School> jcList = new ArrayList<School>();
+    private static final List<School> mixedList = new ArrayList<School>();
 
     @Override
     public List<School> getAllSecondary() {
@@ -125,10 +126,14 @@ public class CronSchoolDao implements SchoolDao{
 
 
 
-    @Scheduled(cron = "0 10 17 * * *")
+    @Scheduled(cron = CronTime.fetchTime)
     public static void CronFetch() throws IOException, JSONException, ParseException, InterruptedException {
         System.setProperty("http.agent", "Mozilla/5.0");
         JSONObject json =  readJsonFromUrl("https://data.gov.sg/api/action/datastore_search?resource_id=ede26d32-01af-4228-b1ed-f05c45a1d8ee&limit=10000");
+        primaryList.clear();
+        secondaryList.clear();
+        jcList.clear();
+        mixedList.clear();
         for(int i = 0; i < json.getJSONObject("result").getJSONArray("records").length(); i++) {
             String schoolName, schoolDescription;
             float lat = 0;
@@ -168,8 +173,8 @@ public class CronSchoolDao implements SchoolDao{
                 case JC:
                     jcList.add(s);
                     break;
-                    default:
-                        break;
+                default:
+                    break;
             }
         }}
 

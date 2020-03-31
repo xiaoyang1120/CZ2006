@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import realEstatistic.model.EWaste;
+import realEstatistic.config.CronTime;
 import realEstatistic.util.Unzipper;
 
 import java.io.File;
@@ -26,7 +27,7 @@ import java.util.UUID;
 @Lazy(value = false)
 public class CronEWasteDao implements EWasteDao{
 
-    private static List<EWaste> eWasteList = new ArrayList<EWaste>();
+    private static final List<EWaste> eWasteList = new ArrayList<EWaste>();
     private static String downloadDir = "./src/main/java/realEstatistic/downloads";
 
     @Override
@@ -47,7 +48,7 @@ public class CronEWasteDao implements EWasteDao{
         return filteredList;
     }
 
-    @Scheduled(cron = "0 10 17 * * *")
+    @Scheduled(cron = CronTime.fetchTime)
     public static void CronFetch(){
         String url = "https://data.gov.sg/dataset/fcc50758-b469-4980-a0b1-00321da6aa09/download";
         String fileName = "eWaste.zip";
@@ -62,6 +63,7 @@ public class CronEWasteDao implements EWasteDao{
             FileUtils.copyURLToFile(dataSource, new File(dir+"/"+fileName));
             Unzipper.unzip(downloadDir+"/" + fileName, downloadDir);
             System.out.println("download finished");
+            eWasteList.clear();
             EWasteListGenerator();
         } catch (Exception e) {
             e.printStackTrace();

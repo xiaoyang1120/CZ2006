@@ -7,6 +7,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import realEstatistic.mapper.*;
 import realEstatistic.model.*;
+import realEstatistic.config.CronTime;
 
 import java.util.HashMap;
 import java.util.List;
@@ -47,7 +48,7 @@ public class GovDataService {
         this.districtDao = districtDao;
     }
 
-    @Scheduled(cron = "0 11 17 * * *")
+    @Scheduled(cron = CronTime.updateTime)
     public void updateDistrictInfoDao(){
         // one hour after the rest cron fetch
         //TODO will it be better to change it to DAO and let each dao to call it after they finished?

@@ -8,6 +8,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import realEstatistic.model.PremiumBus;
+import realEstatistic.config.CronTime;
 
 import java.io.*;
 import java.net.URL;
@@ -22,7 +23,7 @@ import java.util.UUID;
 @Lazy(value = false)
 public class CronPremiumBusDao implements PremiumBusDao{
 
-    private static List<PremiumBus> premiumBusList = new ArrayList<PremiumBus>();
+    private static final List<PremiumBus> premiumBusList = new ArrayList<PremiumBus>();
 
     @Override
     public List<PremiumBus> getAllPremiumBus() {
@@ -65,11 +66,11 @@ public class CronPremiumBusDao implements PremiumBusDao{
 
 
 
-    @Scheduled(cron = "0 10 17 * * *")
+    @Scheduled(cron = CronTime.fetchTime)
     public static void CronFetch() throws IOException, JSONException {
         System.setProperty("http.agent", "Mozilla/5.0");
         JSONObject json =  readJsonFromUrl("https://data.gov.sg/api/action/datastore_search?resource_id=7670be81-ca96-49ba-9215-caf1f218954b&limit=10000");
-
+        premiumBusList.clear();
         for(int i = 0; i < json.getJSONObject("result").getJSONArray("records").length(); i++) {
             String premiumBusName = null, premiumBusDescription = null;
             float lat = 0, long_ = 0;

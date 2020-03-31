@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import realEstatistic.model.Supermarket;
+import realEstatistic.config.CronTime;
 import realEstatistic.util.Unzipper;
 
 import java.io.File;
@@ -26,7 +27,7 @@ import java.util.UUID;
 @Lazy(value = false)
 public class CronSupermarketDao implements SupermarketDao{
 
-    private static List<Supermarket> supermarketList = new ArrayList<Supermarket>();
+    private static final List<Supermarket> supermarketList = new ArrayList<Supermarket>();
     private static String downloadDir = "./src/main/java/realEstatistic/downloads";
 
     @Override
@@ -47,7 +48,7 @@ public class CronSupermarketDao implements SupermarketDao{
         return filteredList;
     }
 
-    @Scheduled(cron = "0 10 17 * * *")
+    @Scheduled(cron = CronTime.fetchTime)
     public static void CronFetch(){
         String url = "https://data.gov.sg/dataset/11bb7b0b-ea38-4981-9f1f-660ad88409aa/download";
         String fileName = "supermarkets.zip";
@@ -62,6 +63,7 @@ public class CronSupermarketDao implements SupermarketDao{
             FileUtils.copyURLToFile(dataSource, new File(dir+"/"+fileName));
             Unzipper.unzip(downloadDir+"/" + fileName, downloadDir);
             System.out.println("download finished");
+            supermarketList.clear();
             supermarketListGenerator();
         } catch (Exception e) {
             e.printStackTrace();

@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import realEstatistic.model.Clinic;
+import realEstatistic.config.CronTime;
 import realEstatistic.util.Unzipper;
 
 import java.io.File;
@@ -26,7 +27,7 @@ import java.util.UUID;
 @Lazy(value = false)
 public class CronClinicDao implements ClinicDao{
 
-    private static List<Clinic> clinicList = new ArrayList<Clinic>();
+    private static final List<Clinic> clinicList = new ArrayList<Clinic>();
     private static String downloadDir = "./src/main/java/realEstatistic/downloads";
 
     @Override
@@ -47,7 +48,7 @@ public class CronClinicDao implements ClinicDao{
         return filteredList;
     }
 
-    @Scheduled(cron = "0 37 0 * * *")
+    @Scheduled(cron = CronTime.fetchTime)
     public static void CronFetch(){
         String url = "https://data.gov.sg/dataset/31e92629-980d-4672-af33-cec147c18102/download";
         String fileName = "clinics.zip";
@@ -62,6 +63,7 @@ public class CronClinicDao implements ClinicDao{
             FileUtils.copyURLToFile(dataSource, new File(dir+"/"+fileName));
             Unzipper.unzip(downloadDir+"/" + fileName, downloadDir);
             System.out.println("download finished");
+            clinicList.clear();
             clinicListGenerator();
         } catch (Exception e) {
             e.printStackTrace();

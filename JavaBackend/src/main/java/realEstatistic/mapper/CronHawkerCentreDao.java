@@ -11,6 +11,7 @@ import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import realEstatistic.model.HawkerCentre;
+import realEstatistic.config.CronTime;
 import realEstatistic.util.Unzipper;
 
 import java.io.File;
@@ -26,7 +27,7 @@ import java.util.UUID;
 @Lazy(value = false)
 public class CronHawkerCentreDao implements HawkerCentreDao{
 
-    private static List<HawkerCentre> hawkerCentreList = new ArrayList<HawkerCentre>();
+    private static final List<HawkerCentre> hawkerCentreList = new ArrayList<HawkerCentre>();
     private static String downloadDir = "./src/main/java/realEstatistic/downloads";
 
     @Override
@@ -47,7 +48,7 @@ public class CronHawkerCentreDao implements HawkerCentreDao{
         return filteredList;
     }
 
-    @Scheduled(cron = "0 10 17 * * *")
+    @Scheduled(cron = CronTime.fetchTime)
     public static void CronFetch(){
         String url = "https://data.gov.sg/dataset/aeaf4704-5be1-4b33-993d-c70d8dcc943e/download";
         String fileName = "HawkerCentre.zip";
@@ -62,6 +63,7 @@ public class CronHawkerCentreDao implements HawkerCentreDao{
             FileUtils.copyURLToFile(dataSource, new File(dir+"/"+fileName));
             Unzipper.unzip(downloadDir+"/" + fileName, downloadDir);
             System.out.println("download finished");
+            hawkerCentreList.clear();
             hawkerCentreListGenerator();
         } catch (Exception e) {
             e.printStackTrace();
