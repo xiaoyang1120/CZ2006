@@ -1,92 +1,100 @@
 import React, { Component } from "react";
 //import { withStyles } from "@material-ui/core/styles";
-import GoogleMapReact from 'google-map-react';
-import { fitBounds } from 'google-map-react/utils';
-import RoomIcon from '@material-ui/icons/Room';
+import GoogleMapReact from "google-map-react";
+import { fitBounds } from "google-map-react/utils";
+import RoomIcon from "@material-ui/icons/Room";
 import axios from "axios";
-import Tooltip from '@material-ui/core/Tooltip';
-import {  purple,
-          orange,
-          lightGreen,
-          lightBlue,
-          red,
-          brown,
-          green,
-          } from '@material-ui/core/colors';
+import Tooltip from "@material-ui/core/Tooltip";
+import {
+  purple,
+  orange,
+  lightGreen,
+  lightBlue,
+  red,
+  brown,
+  green
+} from "@material-ui/core/colors";
 
-class MapDisplay extends Component{
+class MapDisplay extends Component {
   state = {
-      disId: null,
-      disName: null,
-      prevId: null,
-      bounds:null,
+    disId: null,
+    disName: null,
+    prevId: null,
+    bounds: null,
+    clinic: []
   };
 
   static defaultProps = {
     center: {
-     lat: 1.36,
-     lng: 103.84,
+      lat: 1.36,
+      lng: 103.84
     },
-    zoom: 12,
+    zoom: 12
   };
 
   static getDerivedStateFromProps(props, state) {
-   // Store prevId in state so we can compare when props change.
-   // Clear out previously-loaded data (so we don't render stale stuff).
-   if (props.id !== state.prevId) {
-     return {
-       disId: null,
-       prevId: props.id,
-     };
-   }
-   // No state update necessary
-   return null;
+    // Store prevId in state so we can compare when props change.
+    // Clear out previously-loaded data (so we don't render stale stuff).
+    if (props.id !== state.prevId) {
+      return {
+        disId: null,
+        prevId: props.id
+      };
+    }
+    // No state update necessary
+    return null;
   }
 
   componentDidMount() {
     this._queryDis(this.props.id);
+    this._queryFac(this.props.id, "CLINIC");
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.disId === null) {
       this._queryDis(this.props.id);
+      this._queryFac(this.props.id, "CLINIC");
     }
   }
 
   render() {
     if (this.state.disId === null) {
       // Render loading state ...
-      return(
-        <div style={{ height: '70%', width: '100%', textAlign:'center' }}>
+      return (
+        <div style={{ height: "70%", width: "100%", textAlign: "center" }}>
           <p>Map loading...</p>
         </div>
-      )
+      );
     } else {
       // Render real UI ...
       const size = {
         width: 350, // Map width in pixels
-        height: 350, // Map height in pixels
+        height: 350 // Map height in pixels
       };
-      const {center, zoom} = fitBounds(this.state.bounds, size);
-      const districtCenterIcon=(
+      const { center, zoom } = fitBounds(this.state.bounds, size);
+      const districtCenterIcon = (
         <Tooltip title={this.state.disName} placement="top">
           <RoomIcon
             lat={center.lat}
             lng={center.lng}
-            style={{color:red[500], fontSize:50}} />
+            style={{ color: red[500], fontSize: 50 }}
+          />
         </Tooltip>
-      )
-      return(
-        <div style={{ height: '70%', width: '100%' }}>
+      );
+      return (
+        <div style={{ height: "70%", width: "100%" }}>
           <GoogleMapReact
-            bootstrapURLKeys={{ key: '', language: 'en' }}
+            bootstrapURLKeys={{
+              key: "AIzaSyCV_hO2yd_zTG_JkbXy21CO16311-OOMdU",
+              language: "en"
+            }}
             defaultCenter={center}
             defaultZoom={zoom}
-          >{districtCenterIcon}
-
+          >
+            {districtCenterIcon}
           </GoogleMapReact>
         </div>
-      )
+      );
     }
   }
 
@@ -95,46 +103,72 @@ class MapDisplay extends Component{
     // if (!id){
     //   return;
     // }
-    console.log("query called!props.districtId:", id);
-    const url = "http://5e7ce96f71384.freetunnel.cc/api/district/"+id+"/detail";
-    console.log("url:",url);
+    //console.log("query called!props.districtId:", id);
+    const url =
+      "http://5e7ce96f71384.freetunnel.cc/api/district/" + id + "/detail";
+    //console.log("url:", url);
     axios
       .get(url)
       .then(response => {
-        var d=response.data;
-        console.log("response:",d);
-        this.setState(prevState=>{//要改
+        var d = response.data;
+        //console.log("response:", d);
+        this.setState(prevState => {
+          //要改
           return {
             disId: id,
             disName: d.districtName,
-            bounds:{
+            bounds: {
               nw: {
                 lat: d.latStart,
-                lng: d.longStart,
+                lng: d.longStart
               },
               se: {
                 lat: d.latEnd,
-                lng: d.longEnd,
+                lng: d.longEnd
               }
             }
-          }
+          };
         });
       })
       .catch(error => {
         console.error(error);
         alert("Getting districtDetail Error: " + error);
+      });
+  }
+  _queryFac(id, type) {
+    const url =
+      "http://5e7ce96f71384.freetunnel.cc/api/district/" +
+      id +
+      "/get_facility_list?type=" +
+      type;
+    console.log("url:", url);
+    axios
+      .get(url)
+      .then(response => {
+        var d = response.data;
+        console.log("response:", d);
+        this.setState(prevState => {
+          //要改
+          return {
+            type: d
+          };
+        });
       })
+      .catch(error => {
+        console.error(error);
+        alert("Getting districtDetail Error: " + error);
+      });
   }
 }
 
-class MapLoading extends Component{
+class MapLoading extends Component {
   render() {
-    return(
-      <div style={{ height: '70%', width: '100%', textAlign:'center' }}>
+    return (
+      <div style={{ height: "70%", width: "100%", textAlign: "center" }}>
         <p>Map loading...</p>
       </div>
-    )
+    );
   }
 }
 
-export {MapDisplay, MapLoading, };
+export { MapDisplay, MapLoading };
