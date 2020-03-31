@@ -102,7 +102,7 @@ public class CronSupermarketDao extends FacilityDao{
 
             }
             UUID newId = UUID.randomUUID();
-            Facility a = new Facility(newId, FACILITY_TYPE.CLINIC, supermarketName, supermarketDescription, lat, long_);
+            Facility a = new Facility(newId, FACILITY_TYPE.SUPERMARKET, supermarketName, supermarketDescription, lat, long_);
             facilityList.add(a);
         }
     }
