@@ -23,10 +23,8 @@ class MapDisplay extends Component {
     disId: null,
     disName: null,
     prevId: null,
-    center: {
-      lat: 1.36,
-      lng: 103.84
-    },
+    center: null,
+    facType:null,
     primary_school: [],
     clinic: []
   };
@@ -42,11 +40,18 @@ class MapDisplay extends Component {
   static getDerivedStateFromProps(props, state) {
     // Store prevId in state so we can compare when props change.
     // Clear out previously-loaded data (so we don't render stale stuff).
-    if (props.id !== state.prevId) {
-      return {
-        disId: null,
-        prevId: props.id
-      };
+    if (props.id !== state.prevId ||props.type !== state.prevType) {
+      if (props.id !== state.prevId){
+        return {
+          disId: null,
+          prevId: props.id,
+        };
+      }else{
+        return {
+          facType: null,
+          prevType: props.type,
+        };
+      }
     }
     // No state update necessary
     return null;
@@ -54,13 +59,16 @@ class MapDisplay extends Component {
 
   componentDidMount() {
     this._queryDis(this.props.id);
-    //this._queryFac(this.props.id, "CLINIC");
+    //no need to query for facility if no facility icon is clicked.
   }
 
   componentDidUpdate(prevProps, prevState) {
     if (this.state.disId === null) {
       this._queryDis(this.props.id);
-      //this._queryFac(this.props.id, "CLINIC");
+
+    }
+    if (this.state.facType === null) {
+      this._queryFac(this.props.id, this.props.facType);
     }
   }
 
@@ -69,7 +77,7 @@ class MapDisplay extends Component {
       // Render loading state ...
       return (
         <div style={{ height: "70%", width: "100%", textAlign: "center" }}>
-          <p>Map loading...</p>
+          <p>Map loading...</p >
         </div>
       );
     } else {
@@ -147,7 +155,7 @@ class MapDisplay extends Component {
       .then(response => {
         const d = response.data;
         //console.log(id);
-        console.log("response:", d);
+        console.log("query facility response:", d);
         this.setState(prevState => {
           //要改
           return {
@@ -157,7 +165,7 @@ class MapDisplay extends Component {
       })
       .catch(error => {
         console.error(error);
-        alert("Getting districtDetail Error: " + error);
+        alert("Getting facility Detail Error: " + error);
       });
   }
 }
@@ -166,7 +174,7 @@ class MapLoading extends Component {
   render() {
     return (
       <div style={{ height: "70%", width: "100%", textAlign: "center" }}>
-        <p>Map loading...</p>
+        <p>Map loading...</p >
       </div>
     );
   }
