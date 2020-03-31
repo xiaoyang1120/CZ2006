@@ -13,7 +13,7 @@ public enum SCHOOL_TYPE {
         ALIAS_MAP.put("PRIMARY", PRIMARY);
         ALIAS_MAP.put("SECONDARY", SECONDASRY);
         ALIAS_MAP.put("CENTRALISED INSTITUTE", CI);
-        ALIAS_MAP.put("na", NA);
+        ALIAS_MAP.put("NA", NA);
     }
 
     static public SCHOOL_TYPE fromString(String value) throws IllegalArgumentException {
