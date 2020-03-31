@@ -31,7 +31,7 @@ function Map(props) {
       )}
       {props.fac.map(c => (
         <Marker
-          key={c}
+          key={c.id}
           position={{
             lat: c.lat,
             lng: c.long_
@@ -76,27 +76,12 @@ class MapDisplay extends Component {
   static getDerivedStateFromProps(props, state) {
     // Store prevId in state so we can compare when props change.
     // Clear out previously-loaded data (so we don't render stale stuff).
-    {
-      /*if (props.id !== state.prevId || props.type !== state.prevType) {
-      if (props.id !== state.prevId) {
-        return {
-          disId: null,
-          prevId: props.id
-        };
-      } else {
-        return {
-          facType: null,
-          prevType: props.type
-        };
-      }
-    }*/
-    }
     if (props.id !== state.prevId) {
       return {
         disId: null,
         prevId: props.id,
         fac: [],
-        rerender: true
+        facType: null,
       };
     } else {
       if (props.type !== state.prevType) {
@@ -104,11 +89,6 @@ class MapDisplay extends Component {
           facType: null,
           prevType: props.type,
           fac: [],
-          rerender: true
-        };
-      } else {
-        return {
-          rerender: false
         };
       }
     }
@@ -124,10 +104,13 @@ class MapDisplay extends Component {
   componentDidUpdate(prevProps, prevState) {
     if (this.state.disId === null) {
       this._queryDis(this.props.id);
+
     }
     if (this.state.facType === null) {
-      if (!this.props.type) {
-        this._queryFac(this.props.id, this.props.type);
+      if (this.state.disId !== null){
+        if (this.props.type) {
+          this._queryFac(this.props.id, this.props.type);
+        }
       }
     }
   }
@@ -196,6 +179,7 @@ class MapDisplay extends Component {
       });
   }
   _queryFac(id, type) {
+    console.log("facility query called!")
     const url =
       "http://5e7ce96f71384.freetunnel.cc/api/district/" +
       id +
@@ -206,17 +190,18 @@ class MapDisplay extends Component {
       .then(response => {
         const d = response.data;
         //console.log(id);
-        console.log("response:", d);
+        console.log("facility response:", d);
         this.setState(prevState => {
           //要改
           return {
-            fac: d
+            fac: d,
+            facType: type,
           };
         });
       })
       .catch(error => {
         console.error(error);
-        alert("Getting districtDetail Error: " + error);
+        alert("Getting facility Detail Error: " + error);
       });
   }
 }

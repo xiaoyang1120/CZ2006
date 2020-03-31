@@ -140,7 +140,7 @@ class AreaListUI extends Component {
             chosenCriterion: [],
             currentDisIndex: 0,
             currentDisId: "",
-            facilityType: "CLINIC"
+            facilityType: ""
             //someobject: [],
         };
         //initial setup
