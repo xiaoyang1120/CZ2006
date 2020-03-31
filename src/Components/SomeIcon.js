@@ -23,7 +23,7 @@ import DirectionsBusIcon from '@material-ui/icons/DirectionsBus';
 //import many icons
 class SomeIcon extends Component{
   render(){
-    const {cri, disInfo}=this.props;
+    const {cri, disInfo, update}=this.props;
     //I need: districtId, districtList
     var attrName;
     var icon;
@@ -85,7 +85,7 @@ class SomeIcon extends Component{
         <Badge  color="secondary"
               badgeContent={disInfo[attrName]}
               showZero>
-          <IconButton>
+          <IconButton onClick={()=>update(cri)}>
             {icon}
           </IconButton>
         </Badge>

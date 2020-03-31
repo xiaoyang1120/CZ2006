@@ -149,6 +149,7 @@ class AreaListUI extends Component {
         this.loadMore = this.loadMore.bind(this);
         this.queryDistrictList = this.queryDistrictList.bind(this);
         this.changeDis = this.changeDis.bind(this);
+        this.updateType = this.updateType.bind(this);
     }
 
     componentDidMount() {
@@ -222,6 +223,15 @@ class AreaListUI extends Component {
         });
     }
 
+    updateType(cri){
+      this.setState(prevState => {
+        console.log("you clicked facility:", cri);
+        return {
+            facilityType: cri,
+        };
+      });
+    }
+
     render() {
         const { classes } = this.props;
         console.log("in render, districtList:", this.state.districtList);
@@ -276,6 +286,7 @@ class AreaListUI extends Component {
                     key={cri}
                     cri={cri}
                     disInfo={this.state.districtList[this.state.currentDisIndex]}
+                    update={this.updateType}
                 />
             ));
         console.log(this.state.currentDisId);
