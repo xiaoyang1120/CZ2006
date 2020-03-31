@@ -140,7 +140,7 @@ class MapDisplay extends Component {
       "/get_facility_list?type=" +
       type;
     axios
-      .get(url)
+      .get(url, {params: {type} })
       .then(response => {
         const d = response.data;
         //console.log(id);
@@ -154,7 +154,7 @@ class MapDisplay extends Component {
       })
       .catch(error => {
         console.error(error);
-        alert("Getting districtDetail Error: " + error);
+        alert("Getting facility Error: " + error);
       });
   }
 }
