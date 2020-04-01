@@ -110,7 +110,12 @@ class PrimaryCriteriaMatching extends Component {
     const chosenCri = this.state.checked;
     sessionStorage.setItem("chosenCriterion", JSON.stringify(chosenCri));
 
-    this.props.history.push("/criteria_");
+    this.props.history.push({
+      pathname: "/criteria_",
+      state: {
+        prev: true
+      }
+    });
     e.preventDefault();
   }
 

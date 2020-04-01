@@ -37,6 +37,7 @@ const styles = theme => ({
 class SecondaryCriteriaMatching extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
       loading: true,
       criterion: [], //sessionStorage.getItem("criterion"),
@@ -49,14 +50,19 @@ class SecondaryCriteriaMatching extends Component {
   }
 
   componentDidMount() {
+    if (this.props.history.location.state === undefined) {
+      alert("Please choose the criteria before accessing this page!")
+      this.props.history.push("/criteria")
+      return
+    }
     //TODO: set state by sessionStorage.getItem
     //TODO: disable those chosen as primary cri
     var data = JSON.parse(sessionStorage.getItem("criterion"));
     console.log("componentDidMount.criterion", data);
-    if (!data) {
-      alert("Please choose primary criterion first.");
-      this.props.history.push("/criteria");
-    }
+    // if (!data) {
+    //   alert("Please choose primary criterion first.");
+    //   this.props.history.push("/criteria");
+    // }
     var priCri = JSON.parse(sessionStorage.getItem("chosenCriterion"));
     var list = [];
     var i = 0;
@@ -118,7 +124,12 @@ class SecondaryCriteriaMatching extends Component {
     const chosenCri = this.state.priChecked.concat(this.state.secChecked);
     sessionStorage.setItem("finalCriterion", JSON.stringify(chosenCri));
 
-    this.props.history.push("/arealist");
+    this.props.history.push({
+      pathname: "/arealist",
+      state: {
+        prev: true
+      }
+    });
     e.preventDefault();
   }
 

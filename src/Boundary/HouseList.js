@@ -43,18 +43,25 @@ const styles = theme => ({
 });
 
 class HouseList extends Component {
-    constructor() {
-        super();
+    constructor(props) {
+        super(props);
         this.state = {
             districtName: null,
-            currentDistrict: null,
+            currentDistrict: this.props.history.location.state ? this.props.history.location.state.currentDisId : null,
             isLoading: false,
             House: null
         };
+        this.handleClick = this.handleClick.bind(this)
     }
 
     componentDidMount() {
-        const curDis = JSON.parse(sessionStorage.getItem("currentDistrict"));
+        if (this.props.history.location.state === undefined) {
+            alert("Please choose the criteria before accessing this page!")
+            this.props.history.push("/criteria")
+            return
+        }
+        // const curDis = JSON.parse(sessionStorage.getItem("currentDistrict"));
+        const curDis = this.state.currentDistrict
         this.setState({currentDistrict: curDis, isLoading: true});
         fetch("http://5e7ce96f71384.freetunnel.cc/api/district/" + curDis + "/detail")
             .then(response => response.json())
@@ -63,6 +70,15 @@ class HouseList extends Component {
             "http://5e7ce96f71384.freetunnel.cc/api/house/get_list?district_id=" + curDis
         ).then(response => response.json())
             .then(data => this.setState({isLoading: false, House: data}));
+    }
+
+    handleClick() {
+        this.props.history.push({
+            pathname: "/arealist",
+            state: {
+                prev: true
+            }
+        })
     }
 
     render() {
@@ -108,7 +124,8 @@ class HouseList extends Component {
                                         <Button
                                             variant="contained"
                                             color="primary"
-                                            href="/arealist"
+                                            // href="/arealist"
+                                            onClick={this.handleClick}
                                         >
                                             Back to district list
                                         </Button>

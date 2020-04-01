@@ -150,9 +150,15 @@ class AreaListUI extends Component {
         this.queryDistrictList = this.queryDistrictList.bind(this);
         this.changeDis = this.changeDis.bind(this);
         this.updateType = this.updateType.bind(this);
+        this.handleClick = this.handleClick.bind(this);
     }
 
     componentDidMount() {
+        if (this.props.history.location.state === undefined) {
+            alert("Please choose the criteria before accessing this page!")
+            this.props.history.push("/criteria")
+            return
+        }
         //TODO: set state by sessionStorage.getItem
         const criterion = JSON.parse(sessionStorage.getItem("criterion"));
         const chosenCri = JSON.parse(sessionStorage.getItem("finalCriterion"));
@@ -234,6 +240,15 @@ class AreaListUI extends Component {
             facilityType: cri,
         };
       });
+    }
+
+    handleClick() {
+        this.props.history.push({
+            pathname: "/house@area",
+            state: {
+                currentDisId: this.state.currentDisId
+            }
+        })
     }
 
     render() {
@@ -337,7 +352,8 @@ class AreaListUI extends Component {
                                         variant="contained"
                                         size="large"
                                         color="primary"
-                                        href="/house@area"
+                                        // href="/house@area"
+                                        onClick={this.handleClick}
                                     >
                                         See houses in this area
                                     </Button>
