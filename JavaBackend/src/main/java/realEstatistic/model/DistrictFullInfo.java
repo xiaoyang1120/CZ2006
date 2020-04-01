@@ -2,6 +2,7 @@ package realEstatistic.model;
 
 import java.util.List;
 import java.util.UUID;
+import realEstatistic.mapper.DistrictDao;
 
 public class DistrictFullInfo extends DistrictInfo{
     private List<Float> districtRange;
@@ -15,12 +16,20 @@ public class DistrictFullInfo extends DistrictInfo{
         this.description=Description;
     }
 
+    public List<Float> getDistrictRange() {
+        return this.districtRange;
+    }
+
     public String getName() {
         return this.name;
     }
 
     public String getDescription() {
         return this.description;
+    }
+
+    public void setDistrictRange(List<Float> districtRange) {
+        this.districtRange = districtRange;
     }
 
     public void setName(String name) {
