@@ -74,6 +74,11 @@ class UploadHousePage extends React.Component {
     handleImage(event) {
         const file = event.target.files[0];
         if (file) {
+            console.log(file)
+            if (file.size >= 5000000) {
+                alert("Image size exceeds 5MB, upload a file with smaller size!")
+                return
+            }
             this.setState({imageName: file.name})
             let reader = new FileReader();
             reader.readAsDataURL(file)
