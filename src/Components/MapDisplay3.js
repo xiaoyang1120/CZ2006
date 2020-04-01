@@ -54,7 +54,7 @@ function Map(props) {
           <div>
             <h4>{selected.name}</h4>
             <p>
-              Description: {selected.description ? selected.description : "NA"}
+              Description: {selected.description ? selected.description.replace(/<br \/>/g, "") : "NA"}
             </p>
           </div>
         </InfoWindow>
