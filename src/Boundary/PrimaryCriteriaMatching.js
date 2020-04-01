@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+import { Button, ListItem, Grid, Typography } from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Favorite from "@material-ui/icons/Favorite";
@@ -10,32 +10,32 @@ import Navbar from "../Components/NavBar";
 
 const styles = theme => ({
   root: {
-    display: "flex",
-    backgroundColor: "#3f51b5",
-    "& > *": { margin: theme.spacing(1) },
+    display: "flex"
+    //"& > *": { margin: theme.spacing(0.1) }
   },
 
   selected: {
-    color: "yellow",
+    color: "yellow"
   },
   unselected: {
-    color: "white",
+    color: "white"
   },
-  legends:{
-    color:"white",
+  legends: {
+    color: "white",
     fontSize: "30px"
   }
 });
 
 export function titleCase(str) {
-  var splitStr = str.toLowerCase().split('_');
+  var splitStr = str.toLowerCase().split("_");
   for (var i = 0; i < splitStr.length; i++) {
-      // You do not need to check if i is larger than splitStr length, as your for does that for you
-      // Assign it back to the array
-      splitStr[i] = splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);     
+    // You do not need to check if i is larger than splitStr length, as your for does that for you
+    // Assign it back to the array
+    splitStr[i] =
+      splitStr[i].charAt(0).toUpperCase() + splitStr[i].substring(1);
   }
   // Directly return the joined string
-  return splitStr.join(' '); 
+  return splitStr.join(" ");
 }
 
 class PrimaryCriteriaMatching extends Component {
@@ -57,7 +57,7 @@ class PrimaryCriteriaMatching extends Component {
       .then(res => res.json())
       .then(data => {
         console.log("Fetched criterion:", data);
-        sessionStorage.setItem("criterion",JSON.stringify(data));
+        sessionStorage.setItem("criterion", JSON.stringify(data));
         var list = [];
         var i = 0;
         for (const cri of data) {
@@ -123,21 +123,23 @@ class PrimaryCriteriaMatching extends Component {
     const { classes } = this.props;
     const text = this.state.loading ? "Loading..." : null;
     const criItems = this.state.boolCri.map(item => (
-      <FormControlLabel
-        className={item.isChecked ? classes.selected : classes.unselected}
-        control={
-          <Checkbox
-            name={item.name}
-            icon={<FavoriteBorder />}
-            checkedIcon={<Favorite />}
-            checked={item.isChecked}
-            onChange={this.handleChange}
-            disabled={(!item.isChecked) && (this.state.checked.length >= 3)}
-          />
-        }
-        label={titleCase(item.name)}
-        key={item.id}
-      />
+      <ListItem>
+        <FormControlLabel
+          className={item.isChecked ? classes.selected : classes.unselected}
+          control={
+            <Checkbox
+              name={item.name}
+              icon={<FavoriteBorder />}
+              checkedIcon={<Favorite />}
+              checked={item.isChecked}
+              onChange={this.handleChange}
+              disabled={!item.isChecked && this.state.checked.length >= 3}
+            />
+          }
+          label={titleCase(item.name)}
+          key={item.id}
+        />
+      </ListItem>
     ));
 
     return (
@@ -145,20 +147,33 @@ class PrimaryCriteriaMatching extends Component {
         <Navbar />
         <div className={classes.root}>
           <h2 className={classes.unselected}>{text}</h2>
-          <form onSubmit={this.handleSubmit}>
-            <fieldset>
-              <legend className={classes.legends}>Choose exactly 3 primary criterion:</legend>
-              {criItems}
-              <br />
-              <Button
-                type="submit"
-                className={classes.unselected}
-                disabled={this.state.checked.length !== 3}
-              >
-                Next step
-              </Button>
-            </fieldset>
-          </form>
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justify="center"
+            style={{ minHeight: "100vh" }}
+          >
+            <Grid item xs={10}>
+              <form onSubmit={this.handleSubmit}>
+                <fieldset>
+                  <legend className={classes.legends}>
+                    Choose Exactly 3 「Primary」 Criterion
+                  </legend>
+                  <list>{criItems}</list>
+
+                  <Button
+                    type="submit"
+                    className={classes.unselected}
+                    disabled={this.state.checked.length !== 3}
+                  >
+                    Next step
+                  </Button>
+                </fieldset>
+              </form>
+            </Grid>
+          </Grid>
         </div>
       </div>
     );

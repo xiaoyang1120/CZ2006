@@ -1,11 +1,11 @@
 import React, { Component } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { Button } from "@material-ui/core";
+import { Button, ListItem, Grid } from "@material-ui/core";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import Navbar from "../Components/NavBar";
 import { green } from "@material-ui/core/colors";
-import {titleCase} from "./PrimaryCriteriaMatching"
+import { titleCase } from "./PrimaryCriteriaMatching";
 
 const GreenCheckbox = withStyles({
   root: {
@@ -17,9 +17,9 @@ const GreenCheckbox = withStyles({
 
 const styles = theme => ({
   root: {
-    display: "flex",
-    backgroundColor: "#3f51b5",
-    "& > *": { margin: theme.spacing(1) }
+    display: "flex"
+    //backgroundColor: "#3f51b5",
+    //"& > *": { margin: theme.spacing(1) }
   },
 
   selected: {
@@ -51,9 +51,9 @@ class SecondaryCriteriaMatching extends Component {
 
   componentDidMount() {
     if (this.props.history.location.state === undefined) {
-      alert("Please choose the criteria before accessing this page!")
-      this.props.history.push("/criteria")
-      return
+      alert("Please choose the criteria before accessing this page!");
+      this.props.history.push("/criteria");
+      return;
     }
     //TODO: set state by sessionStorage.getItem
     //TODO: disable those chosen as primary cri
@@ -138,19 +138,21 @@ class SecondaryCriteriaMatching extends Component {
     const text = this.state.loading ? "Loading..." : null;
     //TODO:set checkbox disabling function disabled={}
     const criItems = this.state.secBoolCri.map(item => (
-      <FormControlLabel
-        className={item.isChecked ? classes.selected : classes.unselected}
-        control={
-          <GreenCheckbox
-            name={item.name}
-            checked={item.isChecked}
-            onChange={this.handleChange}
-            disabled={!item.isAvai}
-          />
-        }
-        label={ titleCase(item.name)}
-        key={item.id}
-      />
+      <ListItem>
+        <FormControlLabel
+          className={item.isChecked ? classes.selected : classes.unselected}
+          control={
+            <GreenCheckbox
+              name={item.name}
+              checked={item.isChecked}
+              onChange={this.handleChange}
+              disabled={!item.isAvai}
+            />
+          }
+          label={titleCase(item.name)}
+          key={item.id}
+        />
+      </ListItem>
     ));
 
     return (
@@ -158,21 +160,29 @@ class SecondaryCriteriaMatching extends Component {
         <Navbar />
         <div className={classes.root}>
           <h2 className={classes.unselected}>{text}</h2>
-          <form onSubmit={this.handleSubmit}>
-            <fieldset>
-              <legend className={classes.legends}>
-                Choose secondary criterion:
-              </legend>
-              {criItems}
-              <br />
-              <Button
-                type="submit"
-                className={classes.unselected}
-              >
-                Submit!
-              </Button>
-            </fieldset>
-          </form>
+          <Grid
+            container
+            spacing={0}
+            direction="column"
+            alignItems="center"
+            justify="center"
+            style={{ minHeight: "100vh" }}
+          >
+            <Grid item xs={10}>
+              <form onSubmit={this.handleSubmit}>
+                <fieldset>
+                  <legend className={classes.legends}>
+                    Choose 「Secondary」 Criterion
+                  </legend>
+                  <list>{criItems}</list>
+                  <br />
+                  <Button type="submit" className={classes.unselected}>
+                    Submit!
+                  </Button>
+                </fieldset>
+              </form>
+            </Grid>
+          </Grid>
         </div>
       </div>
     );
