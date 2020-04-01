@@ -8,6 +8,7 @@ import axios from "axios"
 import clsx from "clsx";
 import InputLabel from "@material-ui/core/InputLabel";
 import {withStyles} from "@material-ui/core/styles";
+import {withRouter} from "react-router-dom";
 import isSimplePwd from "../tool/PasswordCheck";
 import md5Encode from "../tool/md5";
 
@@ -48,10 +49,11 @@ class ChangePwd extends React.Component {
         if (isSimplePwd(this.state.newPassword)) {
             alert("New password is too simple!")
         } else {
+            const email = sessionStorage.getItem("email")
             axios.post(
                 "http://5e7ce96f71384.freetunnel.cc/api/user/change_password",
                 {
-                    email: sessionStorage.getItem("email"),
+                    email: email,
                     password: md5Encode(this.state.password),
                     newPassword: md5Encode(this.state.newPassword)
                 },
@@ -59,7 +61,9 @@ class ChangePwd extends React.Component {
             ).then(
                 response => {
                     if (response.data.status === "Success") {
-                        alert("Password Updated!")
+                        alert("Password updated! Please log in again!")
+                        sessionStorage.clear()
+                        this.props.history.push("/")
                     }
                 }
             ).catch(error => {
@@ -86,7 +90,7 @@ class ChangePwd extends React.Component {
                             type={"password"}
                             value={this.state.password}
                             onChange={this.handleChange("password")}
-                            labelWidth={108}
+                            labelWidth={100}
                         />
                     </FormControl>
                     <br/>
@@ -125,4 +129,4 @@ class ChangePwd extends React.Component {
 
 }
 
-export default withStyles(styles)(ChangePwd)
+export default withRouter(withStyles(styles)(ChangePwd))
