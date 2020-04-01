@@ -23,20 +23,7 @@ const useStyles = makeStyles(theme => ({
     position: "absolute"
   }
 }));
-/*class HomePage extends Component {
-  constructor() {
-    super();
-    this.state = {
-      isLoggedin: true
-    };
-  }*/
 
-// callLoginUI(){}
-// chooseCriteria(){}
-// aboutUs(){}
-// nextPage(){}
-// back(){}
-//render() {
 const HomePage = () => {
   const classes = useStyles();
   return (
@@ -78,7 +65,7 @@ const HomePage = () => {
         <br />
         <Typography className={classes.title} variant="h2">
           <Typed
-            strings={["Search for Your Idea Home with Us."]}
+            strings={["Search for Your Ideal Home with Us."]}
             typeSpeed={60}
           />
         </Typography>

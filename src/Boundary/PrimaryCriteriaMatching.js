@@ -159,7 +159,7 @@ class PrimaryCriteriaMatching extends Component {
               <form onSubmit={this.handleSubmit}>
                 <fieldset>
                   <legend className={classes.legends}>
-                    Choose Exactly 3 「Primary」 Criterion
+                    Choose Exactly 3 「Primary」 Criteria
                   </legend>
                   <list>{criItems}</list>
 

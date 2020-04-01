@@ -172,7 +172,7 @@ class SecondaryCriteriaMatching extends Component {
               <form onSubmit={this.handleSubmit}>
                 <fieldset>
                   <legend className={classes.legends}>
-                    Choose 「Secondary」 Criterion
+                    Choose 「Secondary」 Criteria
                   </legend>
                   <list>{criItems}</list>
                   <br />
