@@ -35,9 +35,7 @@ class App extends React.Component {
             loggedInStatus: "NOT_LOGGED_IN",
             email: null
         });
-        sessionStorage.setItem("loggedInStatus", "NOT_LOGGED_IN");
-        sessionStorage.setItem("email", null);
-        sessionStorage.setItem("uuid", null);
+        sessionStorage.clear()
     }
 
     handleLogin(email, uuid) {

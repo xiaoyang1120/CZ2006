@@ -69,8 +69,7 @@ class ProfilePage extends Component {
 
     handleLogout() {
         // console.log("log out");
-        let flag = window.confirm("Do you want to log out?")
-        if (flag) {
+        if (window.confirm("Do you want to log out?")) {
             this.props.handleLogout();
             this.props.history.push("/");
         }

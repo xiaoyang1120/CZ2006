@@ -102,9 +102,10 @@ class Navbar extends Component {
 
     handleLogout() {
         if (window.confirm("Do you want to log out?")) {
-            sessionStorage.setItem("loggedInStatus", "NOT_LOGGED_IN");
-            sessionStorage.setItem("email", null);
-            sessionStorage.setItem("uuid", null);
+            // sessionStorage.setItem("loggedInStatus", "NOT_LOGGED_IN");
+            // sessionStorage.setItem("email", null);
+            // sessionStorage.setItem("uuid", null);
+            sessionStorage.clear()
             if (window.location.pathname === "/") {
                 window.location.reload()
             } else {
