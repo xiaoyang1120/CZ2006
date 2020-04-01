@@ -1,16 +1,14 @@
 package realEstatistic.mapper;
 
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import realEstatistic.model.FACILITY_TYPE;
 import realEstatistic.model.Facility;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -30,7 +28,7 @@ public class CronMRTDao extends FacilityDao{
         return facilityList;
     }
 
-    public void mrtListGenerator() throws IOException {
+    private void mrtListGenerator() throws IOException {
         String filePath = "./src/main/java/realEstatistic/downloads/mrt_lrt_data.csv";
         BufferedReader reader = new BufferedReader(new FileReader(filePath));
         String stopName;
@@ -46,14 +44,7 @@ public class CronMRTDao extends FacilityDao{
             Facility a = new Facility(newId, FACILITY_TYPE.MRT, stopName, null, lat, long_);
             facilityList.add(a);
         }
-
-
-
-
-
-        }
-
-
+    }
 }
 
 

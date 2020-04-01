@@ -6,18 +6,16 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import realEstatistic.config.CronTime;
 import realEstatistic.model.FACILITY_TYPE;
 import realEstatistic.model.Facility;
-import realEstatistic.config.CronTime;
 import realEstatistic.util.Unzipper;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -34,7 +32,7 @@ public class CronParkDao extends FacilityDao{
     }
 
     @Scheduled(cron = CronTime.fetchTime)
-    public void CronFetch(){
+    public void cronFetch(){
         String url = "https://data.gov.sg/dataset/f3005537-b958-479c-9ba9-d2adffeb9c73/download";
         String fileName = "parks.zip";
         try {

@@ -19,8 +19,5 @@ public interface HouseDao {
     void removeHouseFromFavourite(@Param("userId") UUID userId, @Param("houseId") UUID houseId);
     List<House> getFavouriteByUserId(@Param("userId") UUID userId);
     List<House> getPostedRecordsByOwnerId(@Param("userId") UUID userId);
-    void updateHouseStatus(@Param("houseId") UUID houseId, @Param("isAvailable") boolean isAvailable);
-//    void updateHouseDescription(id: String, description: String)
-//    void updateHouseImage(id: String, image: String)
 
 }
