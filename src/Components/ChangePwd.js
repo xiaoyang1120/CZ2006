@@ -86,7 +86,7 @@ class ChangePwd extends React.Component {
                             type={"password"}
                             value={this.state.password}
                             onChange={this.handleChange("password")}
-                            labelWidth={70}
+                            labelWidth={108}
                         />
                     </FormControl>
                     <br/>
