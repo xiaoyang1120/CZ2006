@@ -13,6 +13,7 @@ import Particles from "react-particles-js";
 import Navbar from "../Components/NavBar";
 import isSimplePwd from "../tool/PasswordCheck";
 import md5Encode from "../tool/md5"
+import isValidateEmail from "../tool/EmailCheck";
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -84,7 +85,9 @@ const LoginPage = (props) => {
     }
 
     const handleSignUpSubmit = (event) => {
-        if (isSimplePwd(values.password)) {
+        if (!isValidateEmail(values.email)) {
+            alert("Please enter a valid email address!")
+        }else if (isSimplePwd(values.password)) {
             alert("Password is too simple!")
         } else {
             axios.post(
