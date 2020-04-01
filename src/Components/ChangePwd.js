@@ -51,7 +51,7 @@ class ChangePwd extends React.Component {
             axios.post(
                 "http://5e7ce96f71384.freetunnel.cc/api/user/change_password",
                 {
-                    email: md5Encode(sessionStorage.getItem("email")),
+                    email: sessionStorage.getItem("email"),
                     password: md5Encode(this.state.password),
                     newPassword: md5Encode(this.state.newPassword)
                 },
@@ -59,11 +59,11 @@ class ChangePwd extends React.Component {
             ).then(
                 response => {
                     if (response.data.status === "Success") {
-                        alert("Password Updated")
+                        alert("Password Updated!")
                     }
                 }
             ).catch(error => {
-                alert(error)
+                alert("Wrong old password!")
             });
         }
         event.preventDefault()
@@ -80,7 +80,7 @@ class ChangePwd extends React.Component {
                         className={clsx(classes.margin, classes.textField)}
                         variant="outlined"
                     >
-                        <InputLabel>Password</InputLabel>
+                        <InputLabel>Old Password</InputLabel>
                         <OutlinedInput
                             id="password"
                             type={"password"}
