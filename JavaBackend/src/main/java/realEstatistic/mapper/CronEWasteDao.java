@@ -6,7 +6,6 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -17,7 +16,6 @@ import realEstatistic.util.Unzipper;
 
 import java.io.File;
 import java.net.URL;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
@@ -35,7 +33,7 @@ public class CronEWasteDao extends FacilityDao {
     }
 
     @Scheduled(cron = CronTime.fetchTime)
-    public void CronFetch(){
+    public void cronFetch(){
         String url = "https://data.gov.sg/dataset/fcc50758-b469-4980-a0b1-00321da6aa09/download";
         String fileName = "eWaste.zip";
         try {
@@ -50,13 +48,13 @@ public class CronEWasteDao extends FacilityDao {
             Unzipper.unzip(downloadDir+"/" + fileName, downloadDir);
             System.out.println("download finished");
             facilityList.clear();
-            EWasteListGenerator();
+            eWasteListGenerator();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-    private void EWasteListGenerator(){
+    private void eWasteListGenerator(){
         String unzippedFileName = "e-waste-recycling-kml.kml";
         //read downloadDir + "/" + unzippedFileName, update supermarketList here
         SAXReader reader = new SAXReader();

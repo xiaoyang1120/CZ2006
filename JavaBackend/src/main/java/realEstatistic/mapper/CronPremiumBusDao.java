@@ -3,18 +3,16 @@ package realEstatistic.mapper;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.context.annotation.Lazy;
-import org.springframework.context.annotation.Primary;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import realEstatistic.config.CronTime;
 import realEstatistic.model.FACILITY_TYPE;
 import realEstatistic.model.Facility;
-import realEstatistic.config.CronTime;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -50,7 +48,7 @@ public class CronPremiumBusDao extends FacilityDao{
     }
 
     @Scheduled(cron = CronTime.fetchTime)
-    public void CronFetch() throws IOException, JSONException {
+    public void cronFetch() throws IOException, JSONException {
         System.setProperty("http.agent", "Mozilla/5.0");
         JSONObject json =  readJsonFromUrl("https://data.gov.sg/api/action/datastore_search?resource_id=7670be81-ca96-49ba-9215-caf1f218954b&limit=10000");
         facilityList.clear();

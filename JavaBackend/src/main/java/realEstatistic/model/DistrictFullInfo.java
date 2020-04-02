@@ -6,14 +6,14 @@ import realEstatistic.mapper.DistrictDao;
 
 public class DistrictFullInfo extends DistrictInfo{
     private List<Float> districtRange;
-    private String Name;
-    private String Description;
+    private String name;
+    private String description;
 
     public DistrictFullInfo(UUID districtId, int numOfPrimary, int numOfSecondary, int numOfJc, int numOfMixed, int numOfPark, int numOfSupermarket, int numOfHawkerCentre, int numOfClinic, int numOfPremiumBus, int numOfEWaste, int numOfMRT, List<Float> districtRange, String Name, String Description) {
         super(districtId, numOfPrimary, numOfSecondary, numOfJc, numOfMixed, numOfPark, numOfSupermarket, numOfHawkerCentre, numOfClinic, numOfPremiumBus, numOfEWaste, numOfMRT);
         this.districtRange=districtRange;
-        this.Name=Name;
-        this.Description=Description;
+        this.name=Name;
+        this.description=Description;
     }
 
     public List<Float> getDistrictRange() {
@@ -21,11 +21,11 @@ public class DistrictFullInfo extends DistrictInfo{
     }
 
     public String getName() {
-        return this.Name;
+        return this.name;
     }
 
     public String getDescription() {
-        return this.Description;
+        return this.description;
     }
 
     public void setDistrictRange(List<Float> districtRange) {
@@ -33,10 +33,10 @@ public class DistrictFullInfo extends DistrictInfo{
     }
 
     public void setName(String name) {
-        this.Name = name;
+        this.name = name;
     }
 
     public void setDescription(String description) {
-        this.Description = description;
+        this.description = description;
     }
 }

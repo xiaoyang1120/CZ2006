@@ -129,7 +129,7 @@ public class CronSchoolDao implements SchoolDao{
     }
 
     @Scheduled(cron = CronTime.fetchTime)
-    public static void CronFetch() throws IOException, JSONException, ParseException, InterruptedException {
+    public static void cronFetch() throws IOException, JSONException, ParseException, InterruptedException {
         System.setProperty("http.agent", "Mozilla/5.0");
         JSONObject json =  readJsonFromUrl("https://data.gov.sg/api/action/datastore_search?resource_id=ede26d32-01af-4228-b1ed-f05c45a1d8ee&limit=10000");
         primaryList.clear();
