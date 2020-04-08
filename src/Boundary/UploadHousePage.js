@@ -59,7 +59,7 @@ class UploadHousePage extends React.Component {
 
     componentDidMount() {
         let nameList = [], idList = []
-        axios.get("http://5e7ce96f71384.freetunnel.cc/api/district/get_all")
+        axios.get("/api/district/get_all")
             .then(response => {
                 for (let i = 0; i < response.data.length; i++) {
                     nameList.push(response.data[i].districtName);
@@ -101,7 +101,7 @@ class UploadHousePage extends React.Component {
     handleChangePostal(event) {
         this.setState({postal: event.target.value})
         axios.get(
-            "http://5e7ce96f71384.freetunnel.cc/api/district/get_district_by_postal",
+            "/api/district/get_district_by_postal",
             {
                 withCredentials: true,
                 params: {
@@ -125,7 +125,7 @@ class UploadHousePage extends React.Component {
     handleCheck(event) {
         let postal = this.state.postal
         axios.get(
-            "http://5e7ce96f71384.freetunnel.cc/api/district/get_district_by_postal",
+            "/api/district/get_district_by_postal",
             {
                 withCredentials: true,
                 params: {
@@ -157,7 +157,7 @@ class UploadHousePage extends React.Component {
         } else if (!this.state.venue) {
             alert("Please specify the venue!")
         } else if (this.state.houseId && window.confirm("Confirm to save changes?")) {
-            axios.post("http://5e7ce96f71384.freetunnel.cc/api/house/" + this.state.houseId + "/update",
+            axios.post("/api/house/" + this.state.houseId + "/update",
                 {
                     image: this.state.image,
                     houseDescription: this.state.houseDescription,
@@ -174,7 +174,7 @@ class UploadHousePage extends React.Component {
                 }
             })
         } else if (!this.state.houseId && window.confirm("Confirm to upload your house?")) {
-            axios.post("http://5e7ce96f71384.freetunnel.cc/api/house/add",
+            axios.post("/api/house/add",
                 {
                     image: this.state.image,
                     houseDescription: this.state.houseDescription,

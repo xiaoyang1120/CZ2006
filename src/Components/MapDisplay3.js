@@ -151,7 +151,7 @@ class MapDisplay extends Component {
     // }
     //console.log("query called!props.districtId:", id);
     const url =
-      "http://5e7ce96f71384.freetunnel.cc/api/district/" + id + "/detail";
+      "/api/district/" + id + "/detail";
     //console.log("url:", url);
     axios
       .get(url)
@@ -181,7 +181,7 @@ class MapDisplay extends Component {
   _queryFac(id, type) {
     console.log("facility query called!")
     const url =
-      "http://5e7ce96f71384.freetunnel.cc/api/district/" +
+      "/api/district/" +
       id +
       "/get_facility_list?type=" +
       type;

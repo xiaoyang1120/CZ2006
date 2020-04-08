@@ -63,11 +63,11 @@ class HouseList extends Component {
         // const curDis = JSON.parse(sessionStorage.getItem("currentDistrict"));
         const curDis = this.state.currentDistrict
         this.setState({currentDistrict: curDis, isLoading: true});
-        fetch("http://5e7ce96f71384.freetunnel.cc/api/district/" + curDis + "/detail")
+        fetch("/api/district/" + curDis + "/detail")
             .then(response => response.json())
             .then(data => this.setState({districtName: data.districtName}))
         fetch(
-            "http://5e7ce96f71384.freetunnel.cc/api/house/get_list?district_id=" + curDis
+            "/api/house/get_list?district_id=" + curDis
         ).then(response => response.json())
             .then(data => this.setState({isLoading: false, House: data}));
     }

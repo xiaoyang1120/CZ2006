@@ -72,19 +72,19 @@ class HouseCard extends React.Component {
     componentDidMount() {
         this.setState({isLoading: true});
         console.log(this.state.houseData)
-        axios.get("http://5e7ce96f71384.freetunnel.cc/api/user/" + this.state.houseData.ownerId + "/get_email")
+        axios.get("/api/user/" + this.state.houseData.ownerId + "/get_email")
             .then(response => {
                 this.setState({email: response.data})
             }).catch(error => {
             console.log(error)
         })
-        axios.get("http://5e7ce96f71384.freetunnel.cc/api/district/" + this.state.houseData.districtId + "/detail")
+        axios.get("/api/district/" + this.state.houseData.districtId + "/detail")
             .then(response => {
                 this.setState({districtName: response.data.districtName})
             }).catch(error => {
             console.log(error)
         })
-        axios.get("http://5e7ce96f71384.freetunnel.cc/api/user/" + sessionStorage.getItem("uuid") + "/get_fav")
+        axios.get("/api/user/" + sessionStorage.getItem("uuid") + "/get_fav")
             .then(response => {
                 let flag = false
                 for (let i = 0; i < response.data.length; i++) {
@@ -133,7 +133,7 @@ class HouseCard extends React.Component {
                                 action={
                                     <IconButton aria-label="settings" onMouseUp={() => {
                                         if (isFav) {
-                                            axios.delete("http://5e7ce96f71384.freetunnel.cc/api/house/" + data.houseId
+                                            axios.delete("/api/house/" + data.houseId
                                                 + "/remove_from_fav?userId=" + sessionStorage.getItem("uuid"))
                                                 .then(response => {
                                                     console.log(response.data)
@@ -141,7 +141,7 @@ class HouseCard extends React.Component {
                                                 alert(error)
                                             })
                                         } else {
-                                            axios.get("http://5e7ce96f71384.freetunnel.cc/api/house/" + data.houseId
+                                            axios.get("/api/house/" + data.houseId
                                                 + "/add_to_fav?userId=" + sessionStorage.getItem("uuid"))
                                                 .then(response => {
                                                     console.log(response.data)

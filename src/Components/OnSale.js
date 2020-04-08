@@ -27,7 +27,7 @@ class OnSale extends Component {
     componentDidMount() {
         this.setState({isLoading: true});
         fetch(
-            "http://5e7ce96f71384.freetunnel.cc/api/user/" + sessionStorage.getItem("uuid") + "/get_posted"
+            "/api/user/" + sessionStorage.getItem("uuid") + "/get_posted"
         )
             .then(response => response.json())
             .then(data => this.setState({isLoading: false, saleHouse: data}));

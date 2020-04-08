@@ -169,7 +169,7 @@ class AreaListUI extends Component {
         //query offset=0
         const offset = this.state.districtOffset;
         var data;
-        const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
+        const url = "/api/criteria/get_districts";
         axios
             .post(url, chosenCri, { withCredentials: true, params: { offset } })
             .then(response => {
@@ -191,7 +191,7 @@ class AreaListUI extends Component {
 
     queryDistrictList(offset) {
         console.log("query called!offset=", offset);
-        const url = "http://5e7ce96f71384.freetunnel.cc/api/criteria/get_districts";
+        const url = "/api/criteria/get_districts";
         const sending = this.state.chosenCriterion;
         console.log("sending...", sending);
         axios

@@ -76,7 +76,7 @@ const LoginPage = props => {
   const handleLoginSubmit = event => {
     axios
       .post(
-        "http://5e7ce96f71384.freetunnel.cc/api/user/log_in",
+        "/api/user/log_in",
         {
           email: values.email,
           password: md5Encode(values.password)
@@ -103,7 +103,7 @@ const LoginPage = props => {
     } else {
       axios
         .post(
-          "http://5e7ce96f71384.freetunnel.cc/api/user/sign_up",
+          "/api/user/sign_up",
           {
             email: values.email,
             password: md5Encode(values.password)

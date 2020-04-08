@@ -51,7 +51,7 @@ class ChangePwd extends React.Component {
         } else {
             const email = sessionStorage.getItem("email")
             axios.post(
-                "http://5e7ce96f71384.freetunnel.cc/api/user/change_password",
+                "/api/user/change_password",
                 {
                     email: email,
                     password: md5Encode(this.state.password),

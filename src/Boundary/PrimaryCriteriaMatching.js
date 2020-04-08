@@ -53,7 +53,7 @@ class PrimaryCriteriaMatching extends Component {
     //this.checkSubmission = this.checkSubmission.bind(this)
   }
   componentDidMount() {
-    fetch("http://5e7ce96f71384.freetunnel.cc/api/criteria/get_all")
+    fetch("/api/criteria/get_all")
       .then(res => res.json())
       .then(data => {
         console.log("Fetched criterion:", data);

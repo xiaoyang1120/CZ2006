@@ -24,7 +24,7 @@ class Favorite extends Component {
   componentDidMount() {
     this.setState({ isLoading: true });
     fetch(
-      "http://5e7ce96f71384.freetunnel.cc/api/user/" + sessionStorage.getItem("uuid") + "/get_fav",
+      "/api/user/" + sessionStorage.getItem("uuid") + "/get_fav",
     )
       .then(response => response.json())
       .then(data => this.setState({ isLoading: false, favHouse: data }));
