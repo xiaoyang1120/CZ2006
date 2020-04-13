@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * This class implements the CronMRTDao entity, which is a extension of FacilityDao and is specifically designed to get MRT information from file.
+ */
 @Component(value = "CronMRTDao")
 @EnableScheduling
 @Lazy(value = false)

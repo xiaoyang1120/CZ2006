@@ -2,6 +2,9 @@ package realEstatistic.model;
 
 import java.util.UUID;
 
+/**
+ * This class implements School entity, which is taken as a special Facility due to the attribute schoolType.
+ */
 public class School extends Facility{
     private SCHOOL_TYPE schoolType;
 

@@ -16,6 +16,9 @@ import java.nio.charset.Charset;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * This class implements the CronPremiumBusDao entity, which is a extension of FacilityDao and is specifically designed to refresh Premium Bus information periodically.
+ */
 @Component(value = "CronPremiumBusDao")
 @EnableScheduling
 @Lazy(value = false)
@@ -47,6 +50,11 @@ public class CronPremiumBusDao extends FacilityDao{
         }
     }
 
+    /**
+     * This method is set to be a cron method and is used to fetch Premium Bus data from Gov Data.
+     * @throws IOException Thrown when the data sent from Gov Data is not in Json format
+     * @throws JSONException Thrown when the data sent from Gov Data lacks essential information
+     */
     @Scheduled(cron = CronTime.fetchTime)
     public void cronFetch() throws IOException, JSONException {
         System.setProperty("http.agent", "Mozilla/5.0");

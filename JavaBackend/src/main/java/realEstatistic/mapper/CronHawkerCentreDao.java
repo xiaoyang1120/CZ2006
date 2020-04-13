@@ -20,6 +20,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * This class implements the CronHawkerCentreDao entity, which is a extension of FacilityDao and is specifically designed to refresh Hawker Center information periodically.
+ */
 @Component(value = "CronHawkerCentreDao")
 @EnableScheduling
 @Lazy(value = false)
@@ -31,6 +34,9 @@ public class CronHawkerCentreDao extends FacilityDao{
         return facilityList;
     }
 
+    /**
+     * This method is set to be a cron method and is used to fetch Hawker Center data from Gov Data.
+     */
     @Scheduled(cron = CronTime.fetchTime)
     public void cronFetch(){
         String url = "https://data.gov.sg/dataset/aeaf4704-5be1-4b33-993d-c70d8dcc943e/download";

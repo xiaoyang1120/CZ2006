@@ -8,7 +8,10 @@ import java.util.UUID;
  
 import org.apache.ibatis.type.BaseTypeHandler;
 import org.apache.ibatis.type.JdbcType;
- 
+
+/**
+ * This class implements a type converter between UUID and String. Used by MaBatis 3.
+ */
 public class UUIDTypeHandler extends BaseTypeHandler {
  
 	@Override

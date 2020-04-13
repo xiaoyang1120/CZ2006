@@ -2,6 +2,10 @@ package realEstatistic.model;
 
 import java.util.UUID;
 
+/**
+ * This class implements the Facility Entity with the attributes id, type, name, description, latitude and longitude.
+ * Facility represents a public building or service that is provided for a particular purpose, e.g. Clinic
+ */
 public class Facility {
     protected UUID id;
     protected FACILITY_TYPE type;

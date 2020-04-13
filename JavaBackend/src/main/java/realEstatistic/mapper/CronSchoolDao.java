@@ -19,7 +19,9 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.util.*;
 
-
+/**
+ * This class implements the CronSchoolDao entity, which implements the interface SchoolDao and is specifically designed to refresh School information periodically.
+ */
 @Primary
 @Component
 @EnableScheduling
@@ -31,26 +33,50 @@ public class CronSchoolDao implements SchoolDao{
     private static final List<School> jcList = new ArrayList<>();
     private static final List<School> mixedList = new ArrayList<>();
 
+    /**
+     * This method is to get all secondary school in Singapore
+     * @return a List of School objects
+     */
     @Override
     public List<School> getAllSecondary() {
         return secondaryList;
     }
 
+    /**
+     * This method is to get all primary school in Singapore
+     * @return a List of School objects
+     */
     @Override
     public List<School> getAllPrimary() {
         return primaryList;
     }
 
+    /**
+     * This method is to get all JC in Singapore
+     * @return a List of School objects
+     */
     @Override
     public List<School> getAllJc() {
         return jcList;
     }
 
+    /**
+     * This method is to get all schools of mixed level in Singapore
+     * @return a List of School objects
+     */
     @Override
     public List<School> getAllMixed() {
         return mixedList;
     }
 
+    /**
+     * This method is to get all primary school that lays within the given region
+     * @param startLat the starting latitude
+     * @param endLat the ending latitude
+     * @param startLon the starting longitude
+     * @param endLon the ending longitude
+     * @return a List of School objects
+     */
     @Override
     public List<School> getPrimaryByLocation(float startLat, float endLat, float startLon, float endLon) {
         ArrayList<School> filteredList = new ArrayList<>();
@@ -65,6 +91,14 @@ public class CronSchoolDao implements SchoolDao{
         return filteredList;
     }
 
+    /**
+     * This method is to get all secondary school that lays within the given region
+     * @param startLat the starting latitude
+     * @param endLat the ending latitude
+     * @param startLon the starting longitude
+     * @param endLon the ending longitude
+     * @return a List of School objects
+     */
     @Override
     public List<School> getSecondaryByLocation(float startLat, float endLat, float startLon, float endLon) {
         ArrayList<School> filteredList = new ArrayList<>();
@@ -78,6 +112,14 @@ public class CronSchoolDao implements SchoolDao{
         return filteredList;
     }
 
+    /**
+     * This method is to get all jc that lays within the given region
+     * @param startLat the starting latitude
+     * @param endLat the ending latitude
+     * @param startLon the starting longitude
+     * @param endLon the ending longitude
+     * @return a List of School objects
+     */
     @Override
     public List<School> getJcByLocation(float startLat, float endLat, float startLon, float endLon) {
         ArrayList<School> filteredList = new ArrayList<>();
@@ -91,6 +133,14 @@ public class CronSchoolDao implements SchoolDao{
         return filteredList;
     }
 
+    /**
+     * This method is to get all schools of mixed levels that lays within the given region
+     * @param startLat the starting latitude
+     * @param endLat the ending latitude
+     * @param startLon the starting longitude
+     * @param endLon the ending longitude
+     * @return a List of School objects
+     */
     @Override
     public List<School> getMixedByLocation(float startLat, float endLat, float startLon, float endLon) {
         ArrayList<School> filteredList = new ArrayList<>();
@@ -128,8 +178,13 @@ public class CronSchoolDao implements SchoolDao{
         }
     }
 
+    /**
+     * This method is set to be a cron method and is used to fetch school data from Gov Data.
+     * @throws IOException Thrown when the data sent from Gov Data is not in Json format
+     * @throws JSONException Thrown when the data sent from Gov Data lacks essential information
+     */
     @Scheduled(cron = CronTime.fetchTime)
-    public static void cronFetch() throws IOException, JSONException, ParseException, InterruptedException {
+    public static void cronFetch() throws IOException, JSONException {
         System.setProperty("http.agent", "Mozilla/5.0");
         JSONObject json =  readJsonFromUrl("https://data.gov.sg/api/action/datastore_search?resource_id=ede26d32-01af-4228-b1ed-f05c45a1d8ee&limit=10000");
         primaryList.clear();

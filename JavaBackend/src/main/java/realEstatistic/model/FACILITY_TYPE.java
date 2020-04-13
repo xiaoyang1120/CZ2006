@@ -3,6 +3,9 @@ package realEstatistic.model;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class represents all provided types of facilities that are recorded in the System and can be selected as housing-criteria
+ */
 public enum FACILITY_TYPE {
     PRIMARY_SCHOOL, SECONDARY_SCHOOL, JUNIOR_COLLEGE, MIXED_SCHOOL, MRT, HAWKER_CENTER, PARK, CLINIC, SUPERMARKET,
     PREMIUM_BUS, E_WASTE;

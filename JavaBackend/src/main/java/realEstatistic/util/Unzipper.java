@@ -7,6 +7,9 @@ import java.io.IOException;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
+/**
+ * This class implements an unzipping tool to extract local file.
+ */
 public class Unzipper {
     public static void unzip(String zipFilePath, String destDir) {
         File dir = new File(destDir);

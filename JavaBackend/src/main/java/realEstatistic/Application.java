@@ -14,6 +14,9 @@ import org.xml.sax.SAXException;
 import javax.xml.parsers.ParserConfigurationException;
 import java.io.IOException;
 
+/**
+ * This class is the entry of the who program
+ */
 @SpringBootApplication
 @MapperScan("softwareGenius.mapper")
 public class Application implements CommandLineRunner{

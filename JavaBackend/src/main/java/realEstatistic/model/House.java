@@ -2,6 +2,10 @@ package realEstatistic.model;
 
 import java.util.UUID;
 
+/**
+ * This class implements the House entity with attributes houseId, image, houseDescription, ownerId, isAvailable (for sell or rent), districtId, venue, and postal.
+ * House is posted by user and is meant to be sold or rent.
+ */
 public class House {
     private UUID houseId;
     private String image;

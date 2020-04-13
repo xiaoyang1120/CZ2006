@@ -14,9 +14,9 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
-
-
+/**
+ * This class implements services that are House-Searching-oriented
+ */
 @Service
 public class SearchService {
     private DistrictInfoDao districtInfoDao;
@@ -28,6 +28,10 @@ public class SearchService {
         this.districtService = districtService;
     }
 
+    /**
+     * This method is to get all available facility types
+     * @return a String list of all values in FACILITY_TYPE
+     */
     public static String[] getAllAvailableCriteria() {
         return EnumStringlizer.getNames(FACILITY_TYPE.class);
     }
@@ -268,7 +272,12 @@ public class SearchService {
         return score;
     }
 
-
+    /**
+     * This method is to filter out the desired District list according to the user's preference
+     * @param facility_types the user chosen criteria, which is a list facility types
+     * @param k the offset, top k results will be excluded from the result
+     * @return a List of 10 DistrictFullInfo objects, sorted by their scores based on facility_types
+     */
     public List<DistrictFullInfo> getSortedDistrictByCriteria(FACILITY_TYPE[] facility_types,int k) {
 
         List<DistrictInfo> districts = districtInfoDao.getAllInfo();
@@ -307,8 +316,6 @@ public class SearchService {
                 }
             }
         }
-
-
         return Dresults;
 
     }

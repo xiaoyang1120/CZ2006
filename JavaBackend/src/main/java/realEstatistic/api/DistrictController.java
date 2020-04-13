@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ *  This class implements the controller that provides District-Related APIs used by the front-end
+ */
 @RequestMapping("api/district")// or use "district" to clear ambiguity?
 @RestController
 public class DistrictController {
@@ -26,11 +29,20 @@ public class DistrictController {
         this.govDataService = govDataService;
     }
 
+    /**
+     * This method is to define a Restful API (HTTP GET) to get all defined District
+     * @return a list of all District
+     */
     @GetMapping("/get_all")
     public List<District> getAllDistrict(){
         return districtService.getAllDistrict();
     }
 
+    /**
+     * This method is to define a Restful API (HTTP GET) to get district Id by postal code; used to validate postal code
+     * @param postal the user entered postal code
+     * @return id of the district if postal is valid; Warning information if not.
+     */
     @GetMapping("/get_district_by_postal")
     public String getDistrictByPostal(@RequestParam("postal") String postal){
         UUID districtId = districtService.getDistrictIdByPostal(postal);
@@ -41,6 +53,13 @@ public class DistrictController {
         }
     }
 
+    /**
+     * This method is to define a Restful API (HTTP GET) to get district details by district Id
+     * @param districtId id of the target district
+     * @param response 400 if the given districtId is invalid
+     * @return a District object whose districtId attribute matches with the given districtId
+     * @throws IOException thrown if response not correctly sent
+     */
     @GetMapping("/{id}/detail")
     public District getDistrictDetails(@PathVariable("id") String districtId, HttpServletResponse response) throws IOException {
         try{
@@ -56,6 +75,14 @@ public class DistrictController {
         return null;
     }
 
+    /**
+     * This method is to define a Restful API (HTTP GET) to get facility details by district Id
+     * @param districtId id of the target district
+     * @param facilityType the type of the desired facility
+     * @param response 400 if the given districtId is invalid
+     * @return a List of Facility objects
+     * @throws IOException thrown if response not correctly sent
+     */
     @GetMapping("/{id}/get_facility_list")
     public List<? extends Facility> getFacility(@PathVariable("id") String districtId, @RequestParam("type") FACILITY_TYPE facilityType, HttpServletResponse response) throws IOException {
         try{

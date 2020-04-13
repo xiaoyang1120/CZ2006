@@ -4,6 +4,10 @@ import java.util.List;
 import java.util.UUID;
 import realEstatistic.mapper.DistrictDao;
 
+/**
+ * This class is used to represent a full record entry of a District.
+ * It contains basic District information as well as numbers of various facilities within the District
+ */
 public class DistrictFullInfo extends DistrictInfo{
     private List<Float> districtRange;
     private String name;

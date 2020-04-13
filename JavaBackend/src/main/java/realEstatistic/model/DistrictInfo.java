@@ -2,6 +2,10 @@ package realEstatistic.model;
 
 import java.util.UUID;
 
+/**
+ * This class represents an entry in the DistrictInfo SQL table.
+ * It records the numbers of various facilities within a District.
+ */
 public class DistrictInfo {
     private UUID districtId;
     private int numOfPrimary;

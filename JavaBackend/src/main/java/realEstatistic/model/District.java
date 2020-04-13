@@ -2,6 +2,10 @@ package realEstatistic.model;
 
 import java.util.UUID;
 
+/**
+ * This class implements the District entity with the attributes districtId, districtName, latStart, latEnd, longStart, longEnd and districtDescription
+ * District represents a square region
+ */
 public class District {
     private UUID districtId;
     private String districtName;

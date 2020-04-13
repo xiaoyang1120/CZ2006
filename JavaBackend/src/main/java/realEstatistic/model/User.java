@@ -2,6 +2,10 @@ package realEstatistic.model;
 
 import java.util.UUID;
 
+/**
+ * This class implements the User entity with the attributes userId, email, password.
+ * User can be either seller or buyer, depending on their needs.
+ */
 public class User {
     private UUID userId;
     private String email;

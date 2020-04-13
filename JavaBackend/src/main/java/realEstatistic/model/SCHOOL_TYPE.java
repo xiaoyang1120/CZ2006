@@ -3,6 +3,9 @@ package realEstatistic.model;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * This class represents all provided types of schools that are indicated in the Gov Data. It is more detailed than FACILITY_TYPE
+ */
 public enum SCHOOL_TYPE {
     PRIMARY, SECONDASRY, MIXEDLEVEL, JC, CI, NA;
     static final private Map<String,SCHOOL_TYPE> ALIAS_MAP = new HashMap<>();

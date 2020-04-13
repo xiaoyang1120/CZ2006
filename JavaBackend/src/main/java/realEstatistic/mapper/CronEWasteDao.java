@@ -20,6 +20,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * This class implements the CronEWasteDao entity, which is a extension of FacilityDao and is specifically designed to refresh E-Waste information periodically.
+ */
 @Component(value = "CronEWasteDao")
 @EnableScheduling
 @Lazy(value = false)
@@ -32,6 +35,9 @@ public class CronEWasteDao extends FacilityDao {
         return facilityList;
     }
 
+    /**
+     * This method is set to be a cron method and is used to fetch E-Waste data from Gov Data.
+     */
     @Scheduled(cron = CronTime.fetchTime)
     public void cronFetch(){
         String url = "https://data.gov.sg/dataset/fcc50758-b469-4980-a0b1-00321da6aa09/download";

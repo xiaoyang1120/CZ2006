@@ -15,6 +15,9 @@ import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * This class implements services that are Facility-oriented
+ */
 @Service
 @EnableScheduling
 @Lazy(value = false)
@@ -53,6 +56,9 @@ public class GovDataService {
         this.schoolDao = schoolDao;
     }
 
+    /**
+     * This method is set to be a cron method and is used to update districtInfo SQL table
+     */
     @Scheduled(cron = CronTime.updateTime)
     public void updateDistrictInfoDao(){
         // one hour after the rest cron fetch
@@ -178,6 +184,12 @@ public class GovDataService {
         return null;
     }
 
+    /**
+     * This method is to get all facilities of a particular type that lays within the given region
+     * @param districtId the id of the District
+     * @param facilityType the type of facility
+     * @return a List of Facility objects whose type attribute matches with facilityType and lays inside the given region
+     */
     public List<? extends Facility> getFacilityByDistrict(UUID districtId, FACILITY_TYPE facilityType){
         District district = districtDao.getDistrictById(districtId);
         float startLat = district.getLatStart();

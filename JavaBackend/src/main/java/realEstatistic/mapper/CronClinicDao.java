@@ -20,6 +20,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * This class implements the CronClinicDao entity, which is a extension of FacilityDao and is specifically designed to refresh Clinic information periodically.
+ */
 @Component(value = "CronClinicDao")
 @EnableScheduling
 @Lazy(value = false)
@@ -31,6 +34,9 @@ public class CronClinicDao extends FacilityDao {
         return facilityList;
     }
 
+    /**
+     * This method is set to be a cron method and is used to fetch Clinic data from Gov Data.
+     */
     @Scheduled(cron = CronTime.fetchTime)
     public void cronFetch(){
         String url = "https://data.gov.sg/dataset/31e92629-980d-4672-af33-cec147c18102/download";

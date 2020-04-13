@@ -3,7 +3,13 @@ package realEstatistic.util;
 import java.io.File;
 import java.util.*;
 
+/**
+ * This class implements a tool that can map a postal code to its corresponding latitude and longitude
+ */
 public class PostalConverter {
+    /**
+     * The mapping table of postal code to geo coordinate
+     */
     private static Map<String, String> map = new HashMap<>();
 
     static {
@@ -21,6 +27,11 @@ public class PostalConverter {
         }
     }
 
+    /**
+     * This method is to map a postal code to its corresponding latitude and longitude
+     * @param postalCode the given postal code
+     * @return a string contains latitude and longitude, separated by comma
+     */
     public static String convertPostal(String postalCode){
         if (!map.containsKey(postalCode)){
             return null;

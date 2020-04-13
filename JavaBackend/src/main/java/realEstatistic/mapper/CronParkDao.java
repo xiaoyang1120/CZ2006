@@ -20,6 +20,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * This class implements the CronParkDao entity, which is a extension of FacilityDao and is specifically designed to refresh park information periodically.
+ */
 @Component(value = "CronParkDao")
 @EnableScheduling
 @Lazy(value = false)
@@ -31,6 +34,9 @@ public class CronParkDao extends FacilityDao{
         return facilityList;
     }
 
+    /**
+     * This method is set to be a cron method and is used to fetch Park data from Gov Data.
+     */
     @Scheduled(cron = CronTime.fetchTime)
     public void cronFetch(){
         String url = "https://data.gov.sg/dataset/f3005537-b958-479c-9ba9-d2adffeb9c73/download";

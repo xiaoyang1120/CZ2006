@@ -7,6 +7,10 @@ import realEstatistic.model.School;
 
 import java.util.List;
 
+/**
+ * This interface defines the legal operations to read buffered school information.
+ * Solid implementations are done in CronSchoolDao class.
+ */
 @Mapper
 @Component
 public interface SchoolDao {
